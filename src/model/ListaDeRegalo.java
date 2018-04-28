@@ -2,9 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import observer.*;
 
-
-public class ListaDeRegalo {
+public class ListaDeRegalo extends Observable implements IObserver{
 	private static int maxIntegrantes = 10;
 		
 	
@@ -77,6 +77,12 @@ public class ListaDeRegalo {
 
 	public void setAdmin(Usuario admin) {
 		this.admin = admin;
+	}
+
+	@Override
+	public void noti() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
