@@ -12,7 +12,7 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	private Fecha fecha;
 	private String agasajado;
 	private Usuario admin;
-	private List<UsuarioDeLista> usuarios = new ArrayList<UsuarioDeLista>();
+	private List<Participante> usuarios = new ArrayList<Participante>();
 	private float monto;
 	private boolean estado;
 	
@@ -28,7 +28,7 @@ public class ListaDeRegalo extends Observable implements IObserver{
 		
 	}
 	
-	public String addUser(UsuarioDeLista user){	
+	public String addUser(Participante user){	
 		if (this.usuarios.size() <= 10){
 			this.usuarios.add(user);	
 			return "Usuario añadido!";
