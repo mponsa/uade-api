@@ -15,6 +15,7 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	private List<Participante> usuarios = new ArrayList<Participante>();
 	private float monto;
 	private boolean estado;
+	private float montoPorParticipante;
 	
 	
 	public ListaDeRegalo (String nombre , Fecha fecha , String agasajado, float monto, Usuario admin){
