@@ -8,7 +8,7 @@ import javax.swing.JTextField;
 
 public class CrearUsuario {
 
-	private JFrame frmListaDeRegalos;
+	JFrame frmListaDeRegalos;
 	private JTextField textField;
 	private JLabel lblEmail;
 	private JTextField textField_1;

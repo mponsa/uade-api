@@ -82,6 +82,15 @@ public class Login {
 		frmListaDeRegalos.getContentPane().add(btnIngresar);
 		
 		JButton btnCrearUsuario = new JButton("Crear usuario..");
+		btnCrearUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				CrearUsuario window = new CrearUsuario();
+				window.frmListaDeRegalos.setVisible(true);
+			
+				
+			}
+		});
 		btnCrearUsuario.setBounds(10, 227, 142, 23);
 		frmListaDeRegalos.getContentPane().add(btnCrearUsuario);
 	}
