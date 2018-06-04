@@ -1,0 +1,5 @@
+jdbc=jdbc:sqlserver://
+servidor=localhost\\SQLEXPRESS:1433
+usuario=GRUPO_25
+password=GRUPO_25
+conexiones=3

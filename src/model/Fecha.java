@@ -6,6 +6,8 @@ public class Fecha {
 	private int mes;
 	private int año;
 	
+	public Fecha(){}
+	
 	public int getDia() {
 		return dia;
 	}
