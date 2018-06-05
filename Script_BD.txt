@@ -1,0 +1,32 @@
+IF  NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = N'API_GRUPO_25')
+    BEGIN
+        CREATE DATABASE [API_GRUPO_25]
+    END;
+
+CREATE LOGIN GRUPO_25  with 
+			PASSWORD = 'GRUPO_25', 
+			DEFAULT_DATABASE = API_GRUPO_25,
+			CHECK_POLICY = off;
+GO
+
+CREATE USER GRUPO_25 FOR LOGIN GRUPO_25 WITH DEFAULT_SCHEMA = API_GRUPO_25;
+GO
+
+USE [API_GRUPO_25]
+
+EXEC SP_CHANGEDBOWNER 'GRUPO_25' 
+
+IF  NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = N'Usuarios')
+BEGIN
+	CREATE TABLE Usuarios(
+		IdUsuario int IDENTITY(1,1),
+		Nombre VARCHAR(20) not null,
+		Apellido VARCHAR(20) not null, 
+		FechaNac DATETIME not null,
+		Mail VARCHAR(30) not null,
+		Pass VARCHAR(20) not null,
+		Activo BIT not null,
+
+		CONSTRAINT pk_usuarios PRIMARY KEY (Mail)
+	);
+END;

@@ -12,6 +12,36 @@ public class Usuario {
 	private String Password;
 	private boolean Activo;
 	
+	public Usuario(){}
+	
+	//Constructor para la creacion de usuarios en la base
+	public Usuario(String n, String a, Date f, String m, String p, boolean aa){
+		this.setNombre(n);
+		this.setApellido(a);
+		this.setFechaNac(f);
+		this.setMail(m);
+		this.setPassword(p);
+		this.setActivo(aa);
+	}
+	
+	//Constructor para la creacion de usuarios en el sistema
+		public Usuario(String n, String a, Date f, String m){
+			this.setNombre(n);
+			this.setApellido(a);
+			this.setFechaNac(f);
+			this.setMail(m);
+		}
+	
+	//Sobrecarga del constructor para cuando se lean usuarios de la base
+	public Usuario(int id,String n, String a, Date f, String m, String p, boolean aa){
+		this.setIdUsuario(id);
+		this.setNombre(n);
+		this.setApellido(a);
+		this.setFechaNac(f);
+		this.setMail(m);
+		this.setPassword(p);
+		this.setActivo(aa);
+	}
 	
 	public String getMail() {
 		return Mail;

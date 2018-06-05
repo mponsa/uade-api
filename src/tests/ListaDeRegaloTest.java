@@ -14,7 +14,7 @@ public class ListaDeRegaloTest {
 
 	
 	
-	@Test
+	/*@Test
 	public void testCreateLista(){
 		
 		String nombre = "Cumple David";
@@ -26,7 +26,7 @@ public class ListaDeRegaloTest {
 		ListaDeRegalo lista = new ListaDeRegalo(nombre, fecha, agasajado, monto, admin);
 		
 		assertTrue(lista.getMonto() > 0);
-	}
+	}*/
 	
 	
 
