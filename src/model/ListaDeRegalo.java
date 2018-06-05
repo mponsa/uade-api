@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 import observer.*;
 
 public class ListaDeRegalo extends Observable implements IObserver{
@@ -9,7 +10,7 @@ public class ListaDeRegalo extends Observable implements IObserver{
 		
 	
 	private String nombre;
-	private Fecha fecha;
+	private Date fecha;
 	private String agasajado;
 	private Usuario admin;
 	private List<Participante> usuarios = new ArrayList<Participante>();
@@ -18,7 +19,7 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	private float montoPorParticipante;
 	
 	
-	public ListaDeRegalo (String nombre , Fecha fecha , String agasajado, float monto, Usuario admin){
+	public ListaDeRegalo (String nombre , Date fecha , String agasajado, float monto, Usuario admin){
 	
 		setNombre(nombre);
 		setFecha(fecha);
@@ -48,11 +49,11 @@ public class ListaDeRegalo extends Observable implements IObserver{
 		this.nombre = nombre;
 	}
 
-	public Fecha getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Fecha fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 

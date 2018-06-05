@@ -1,5 +1,8 @@
 package view;
 
+import controlador.ControladorDeUsuarios;
+import model.Usuario;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,88 +13,115 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Login {
+	
+	public JFrame frame;
+	private JTextField mailText;
+	private JTextField passwordText;
 
-	private JFrame frmListaDeRegalos;
-	private JTextField emailField;
-	private JTextField passwordField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login window = new Login();
-					window.frmListaDeRegalos.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
+	
+	private ControladorDeUsuarios cu;
+	private JLabel lblError;
+	private JButton btnCrearUsuario;
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Login window = new Login();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+	
+	/**Constructor para diseño de la ventana.
+	 * @wbp.parser.constructor
 	 */
 	public Login() {
 		initialize();
 	}
+	
+	/***
+	 * Constructur para ejecución desde el main.
+	 * @param cu
+	 */
+	public Login(ControladorDeUsuarios cu) {
+		this.cu = cu;
+		initialize();
+	}
+
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmListaDeRegalos = new JFrame();
-		frmListaDeRegalos.setTitle("Lista de Regalos");
-		frmListaDeRegalos.setBounds(100, 100, 450, 300);
-		frmListaDeRegalos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmListaDeRegalos.getContentPane().setLayout(null);
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
-		JLabel lblEmail = new JLabel("email");
-		lblEmail.setBounds(10, 36, 46, 14);
-		frmListaDeRegalos.getContentPane().add(lblEmail);
+		JLabel lblUsuario = new JLabel("E-Mail");
+		lblUsuario.setBounds(10, 29, 92, 14);
+		frame.getContentPane().add(lblUsuario);
 		
-		JLabel lblPassword = new JLabel("password");
-		lblPassword.setBounds(10, 61, 46, 14);
-		frmListaDeRegalos.getContentPane().add(lblPassword);
+		mailText = new JTextField();
+		mailText.setBounds(112, 26, 179, 20);
+		frame.getContentPane().add(mailText);
+		mailText.setColumns(10);
 		
-		emailField = new JTextField();
-		emailField.setBounds(66, 33, 86, 20);
-		frmListaDeRegalos.getContentPane().add(emailField);
-		emailField.setColumns(10);
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(10, 57, 92, 14);
+		frame.getContentPane().add(lblPassword);
 		
-		passwordField = new JTextField();
-		passwordField.setColumns(10);
-		passwordField.setBounds(66, 58, 86, 20);
-		frmListaDeRegalos.getContentPane().add(passwordField);
-		
-		JLabel lblIniciarSesin = new JLabel("Iniciar sesi\u00F3n");
-		lblIniciarSesin.setBounds(10, 11, 142, 14);
-		frmListaDeRegalos.getContentPane().add(lblIniciarSesin);
+		passwordText = new JTextField();
+		passwordText.setColumns(10);
+		passwordText.setBounds(112, 54, 179, 20);
+		frame.getContentPane().add(passwordText);
 		
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String mail = emailField.getText();
-				String password = passwordField.getText();
-					
-			}
-		});
-		btnIngresar.setBounds(10, 86, 89, 23);
-		frmListaDeRegalos.getContentPane().add(btnIngresar);
-		
-		JButton btnCrearUsuario = new JButton("Crear usuario..");
-		btnCrearUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 				
-				CrearUsuario window = new CrearUsuario();
-				window.frmListaDeRegalos.setVisible(true);
+				Usuario user = cu.getUsuario(mailText.getText());
+				if(user == null) {
+					lblError.setText("Usuario inexistente!");
+					lblError.setVisible(true);
+				}
+				else {
+					if (!user.getPassword().equals(passwordText.getText())) {
+						lblError.setText("Contraseña errónea");
+						lblError.setVisible(true);
+					}
+				}
+				
+				
+				
 			
+			}
+		});
+		btnIngresar.setBounds(10, 82, 89, 23);
+		frame.getContentPane().add(btnIngresar);
+		
+		lblError = new JLabel("Usuario inexistente!");
+		lblError.setBounds(301, 29, 123, 14);
+		lblError.setVisible(false);
+		frame.getContentPane().add(lblError);
+		
+		btnCrearUsuario = new JButton("Crear Usuario");
+		btnCrearUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				CrearUsuario window = new CrearUsuario(cu);
+				window.frame.setVisible(true);
+				
 				
 			}
 		});
-		btnCrearUsuario.setBounds(10, 227, 142, 23);
-		frmListaDeRegalos.getContentPane().add(btnCrearUsuario);
+		btnCrearUsuario.setBounds(10, 227, 128, 23);
+		frame.getContentPane().add(btnCrearUsuario);
 	}
 }

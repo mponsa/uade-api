@@ -1,42 +1,56 @@
 package view;
 
 import java.awt.EventQueue;
+import java.util.Date;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import controlador.ControladorDeUsuarios;
+import model.Usuario;
+import controlador.ControladorDeUsuarios;
+import model.Usuario;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CrearUsuario {
 
-	JFrame frmListaDeRegalos;
-	private JTextField textField;
-	private JLabel lblEmail;
-	private JTextField textField_1;
-	private JLabel lblFechaDeNacimiento;
-	private JTextField textField_2;
-	private JLabel lblPassword;
-	private JTextField textField_3;
+	JFrame frame;
+	private JTextField nombreText;
+	private JTextField apellidoText;
+	private JTextField emailText;
+	private JTextField diaText;
+	private JTextField mesText;
+	private JTextField añoText;
+	private JTextField passwordText;
+	
+	private ControladorDeUsuarios cu;
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					CrearUsuario window = new CrearUsuario();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CrearUsuario window = new CrearUsuario();
-					window.frmListaDeRegalos.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
+	 * @wbp.parser.constructor
 	 */
 	public CrearUsuario() {
+		initialize();
+	}
+	
+	public CrearUsuario(ControladorDeUsuarios cu) {
+		this.cu = cu;
 		initialize();
 	}
 
@@ -44,51 +58,89 @@ public class CrearUsuario {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmListaDeRegalos = new JFrame();
-		frmListaDeRegalos.setTitle("Lista de Regalos");
-		frmListaDeRegalos.setBounds(100, 100, 450, 300);
-		frmListaDeRegalos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmListaDeRegalos.getContentPane().setLayout(null);
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
-		JLabel lblNuevoUsuario = new JLabel("Nuevo usuario");
-		lblNuevoUsuario.setBounds(10, 11, 69, 14);
-		frmListaDeRegalos.getContentPane().add(lblNuevoUsuario);
-		
-		textField = new JTextField();
-		textField.setBounds(124, 36, 86, 20);
-		frmListaDeRegalos.getContentPane().add(textField);
-		textField.setColumns(10);
+		nombreText = new JTextField();
+		nombreText.setBounds(92, 11, 224, 20);
+		frame.getContentPane().add(nombreText);
+		nombreText.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Nombre");
-		lblNewLabel.setBounds(20, 39, 46, 14);
-		frmListaDeRegalos.getContentPane().add(lblNewLabel);
+		lblNewLabel.setBounds(10, 14, 72, 14);
+		frame.getContentPane().add(lblNewLabel);
 		
-		lblEmail = new JLabel("E-Mail");
-		lblEmail.setBounds(20, 70, 46, 14);
-		frmListaDeRegalos.getContentPane().add(lblEmail);
+		JLabel lblApellido = new JLabel("Apellido");
+		lblApellido.setBounds(10, 45, 72, 14);
+		frame.getContentPane().add(lblApellido);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(124, 67, 86, 20);
-		frmListaDeRegalos.getContentPane().add(textField_1);
+		apellidoText = new JTextField();
+		apellidoText.setColumns(10);
+		apellidoText.setBounds(92, 42, 224, 20);
+		frame.getContentPane().add(apellidoText);
 		
-		lblFechaDeNacimiento = new JLabel("Fecha de nacimiento");
-		lblFechaDeNacimiento.setBounds(20, 107, 98, 14);
-		frmListaDeRegalos.getContentPane().add(lblFechaDeNacimiento);
+		JLabel lblEmail = new JLabel("E-Mail");
+		lblEmail.setBounds(10, 73, 72, 14);
+		frame.getContentPane().add(lblEmail);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(124, 104, 86, 20);
-		frmListaDeRegalos.getContentPane().add(textField_2);
+		emailText = new JTextField();
+		emailText.setColumns(10);
+		emailText.setBounds(92, 70, 224, 20);
+		frame.getContentPane().add(emailText);
 		
-		lblPassword = new JLabel("Password");
-		lblPassword.setBounds(20, 145, 46, 14);
-		frmListaDeRegalos.getContentPane().add(lblPassword);
+		JLabel lblFechaDeNacimientop = new JLabel("Fecha de nacimiento");
+		lblFechaDeNacimientop.setBounds(10, 101, 126, 14);
+		frame.getContentPane().add(lblFechaDeNacimientop);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(124, 142, 86, 20);
-		frmListaDeRegalos.getContentPane().add(textField_3);
+		diaText = new JTextField();
+		diaText.setColumns(10);
+		diaText.setBounds(58, 121, 47, 20);
+		frame.getContentPane().add(diaText);
+		
+		JLabel lblDia = new JLabel("Dia");
+		lblDia.setBounds(10, 126, 38, 14);
+		frame.getContentPane().add(lblDia);
+		
+		JLabel lblMes = new JLabel("Mes");
+		lblMes.setBounds(124, 126, 38, 14);
+		frame.getContentPane().add(lblMes);
+		
+		mesText = new JTextField();
+		mesText.setColumns(10);
+		mesText.setBounds(172, 121, 47, 20);
+		frame.getContentPane().add(mesText);
+		
+		JLabel lblAo = new JLabel("A\u00F1o");
+		lblAo.setBounds(242, 126, 38, 14);
+		frame.getContentPane().add(lblAo);
+		
+		añoText = new JTextField();
+		añoText.setColumns(10);
+		añoText.setBounds(290, 121, 47, 20);
+		frame.getContentPane().add(añoText);
+		
+		passwordText = new JTextField();
+		passwordText.setBounds(92, 166, 224, 20);
+		frame.getContentPane().add(passwordText);
+		passwordText.setColumns(10);
+		
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(10, 169, 72, 14);
+		frame.getContentPane().add(lblPassword);
+		
+		JButton btnNewButton = new JButton("Crear usuario");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				cu.crearUsuario(nombreText.getText(), apellidoText.getText(), new Date(), emailText.getText(), passwordText.getText(), true);
+				frame.dispose();
+
+			}
+		});
+		btnNewButton.setBounds(10, 227, 210, 23);
+		frame.getContentPane().add(btnNewButton);
 	}
 
 }

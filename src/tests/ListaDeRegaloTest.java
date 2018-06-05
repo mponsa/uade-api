@@ -6,7 +6,7 @@ import java.sql.Date;
 
 import org.junit.Test;
 
-import model.Fecha;
+
 import model.ListaDeRegalo;
 import model.Usuario;
 

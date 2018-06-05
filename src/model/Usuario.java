@@ -12,7 +12,7 @@ public class Usuario {
 	private String Password;
 	private boolean Activo;
 	
-	public Usuario(){}
+	//public Usuario(){}
 	
 	//Constructor para la creacion de usuarios en la base
 	public Usuario(String n, String a, Date f, String m, String p, boolean aa){
@@ -24,13 +24,6 @@ public class Usuario {
 		this.setActivo(aa);
 	}
 	
-	//Constructor para la creacion de usuarios en el sistema
-		public Usuario(String n, String a, Date f, String m){
-			this.setNombre(n);
-			this.setApellido(a);
-			this.setFechaNac(f);
-			this.setMail(m);
-		}
 	
 	//Sobrecarga del constructor para cuando se lean usuarios de la base
 	public Usuario(int id,String n, String a, Date f, String m, String p, boolean aa){
