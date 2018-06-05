@@ -1,6 +1,8 @@
 package view;
 
+import java.awt.Component;
 import java.awt.EventQueue;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -24,8 +26,7 @@ public class CrearUsuario {
 	private JTextField mesText;
 	private JTextField añoText;
 	private JTextField passwordText;
-	
-	private ControladorDeUsuarios cu;
+
 //	/**
 //	 * Launch the application.
 //	 */
@@ -49,10 +50,6 @@ public class CrearUsuario {
 		initialize();
 	}
 	
-	public CrearUsuario(ControladorDeUsuarios cu) {
-		this.cu = cu;
-		initialize();
-	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -130,17 +127,40 @@ public class CrearUsuario {
 		lblPassword.setBounds(10, 169, 72, 14);
 		frame.getContentPane().add(lblPassword);
 		
+		JLabel lblError = new JLabel("Usuario ya registrado!");
+		lblError.setBounds(234, 231, 190, 14);
+		frame.getContentPane().add(lblError);
+		lblError.setVisible(false);
+		
+		
 		JButton btnNewButton = new JButton("Crear usuario");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				cu.crearUsuario(nombreText.getText(), apellidoText.getText(), new Date(), emailText.getText(), passwordText.getText(), true);
+				if(ControladorDeUsuarios.getInstancia().getUsuario(emailText.getText()) == null) {
+				Calendar cal = Calendar.getInstance();
+				cal.set(Integer.parseInt(añoText.getText()),Integer.parseInt(mesText.getText()) - 1,Integer.parseInt(diaText.getText()));
+				Date date = cal.getTime();
+				ControladorDeUsuarios.getInstancia().crearUsuario(nombreText.getText(), apellidoText.getText(), new java.sql.Date(date.getTime()), emailText.getText(), passwordText.getText(), true);
 				frame.dispose();
-
+				}else{
+					lblError.setVisible(true);
+					limpiarPantalla();
+				}
 			}
 		});
 		btnNewButton.setBounds(10, 227, 210, 23);
 		frame.getContentPane().add(btnNewButton);
+		
+
+	}
+	
+	public void limpiarPantalla() {
+		for (Component e : frame.getContentPane().getComponents()) {
+			if(e instanceof JTextField) {
+				((JTextField) e).setText("");
+			}
+		}
 	}
 
 }

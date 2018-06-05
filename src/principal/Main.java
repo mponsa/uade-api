@@ -11,7 +11,7 @@ public class Main {
 		ControladorDeUsuarios cu = new ControladorDeUsuarios();
 		
 		//Login start
-		Login window = new Login(cu);
+		Login window = new Login();
 		window.frame.setVisible(true);
 		
 	}

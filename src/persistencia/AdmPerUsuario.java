@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import controlador.ControladorDeUsuarios;
 import persistencia.PoolConnection;
 import model.Usuario;
 import persistencia.AdmPerUsuario;
@@ -147,6 +148,23 @@ private static AdmPerUsuario instancia;
 		}
 		catch (Exception e)
 		{
+			System.out.println();
+		}
+		return null;
+	}
+	
+	public Usuario getUsuario(String mail){
+		Usuario a = null;
+		try {
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Usuarios] where mail = ?");
+			s.setString(1, mail);
+			ResultSet result = s.executeQuery();
+			while(result.next()) {
+				a = new Usuario(result.getInt(1),result.getString(2),result.getString(3),result.getDate(4),result.getString(5),result.getString(6),result.getBoolean(7));
+				return a;
+			}
+		}catch(Exception e) {
 			System.out.println();
 		}
 		return null;

@@ -1,7 +1,7 @@
 package view;
 
 import controlador.ControladorDeUsuarios;
-import model.Usuario;
+
 
 import java.awt.EventQueue;
 
@@ -17,9 +17,6 @@ public class Login {
 	public JFrame frame;
 	private JTextField mailText;
 	private JTextField passwordText;
-
-	
-	private ControladorDeUsuarios cu;
 	private JLabel lblError;
 	private JButton btnCrearUsuario;
 //	/**
@@ -45,15 +42,6 @@ public class Login {
 		initialize();
 	}
 	
-	/***
-	 * Constructur para ejecución desde el main.
-	 * @param cu
-	 */
-	public Login(ControladorDeUsuarios cu) {
-		this.cu = cu;
-		initialize();
-	}
-
 
 	/**
 	 * Initialize the contents of the frame.
@@ -86,15 +74,19 @@ public class Login {
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				Usuario user = cu.getUsuario(mailText.getText());
-				if(user == null) {
+				//Se llama al controlador para que recupere el usuario ingresado por mail.
+				//Si coincide se pregunta por el password, y si el password coincide el usuario accede al sistema.
+				if(ControladorDeUsuarios.getInstancia().getUsuario(mailText.getText()) == null){
 					lblError.setText("Usuario inexistente!");
 					lblError.setVisible(true);
 				}
 				else {
-					if (!user.getPassword().equals(passwordText.getText())) {
+					if (!ControladorDeUsuarios.getInstancia().getUsuario(mailText.getText()).getPassword().equals(passwordText.getText())) {
 						lblError.setText("Contraseña errónea");
 						lblError.setVisible(true);
+					}else {
+						//ACCESS GRANTED!!
+						
 					}
 				}
 				
@@ -115,7 +107,7 @@ public class Login {
 		btnCrearUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				CrearUsuario window = new CrearUsuario(cu);
+				CrearUsuario window = new CrearUsuario();
 				window.frame.setVisible(true);
 				
 				
