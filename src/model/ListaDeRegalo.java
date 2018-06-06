@@ -12,31 +12,28 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	private String nombre;
 	private Date vigencia;
 	private String agasajado;
-	private Participante admin;
 	private List<Participante> usuarios = new ArrayList<Participante>();
 	private float monto;
 	private boolean estado;
 	private float montoPorParticipante;
 	
 	
-	public ListaDeRegalo (String nombre , Date fecha , String agasajado, float monto, Usuario admin){
+	public ListaDeRegalo (String nombre , Date fecha , String agasajado, float monto){
 		
 		setNombre(nombre);
 		setVigencia(fecha);
 		setAgasajado(agasajado);
 		setMonto(monto);
-		setAdmin(admin); 
 		this.estado = false;	
 	}
 	
 	//Sobrecarga del constructor para cuando se lean usuarios de la base
-	public ListaDeRegalo (int IdLista, String nombre , Date fecha , String agasajado, float monto, Usuario admin){
+	public ListaDeRegalo (int IdLista, String nombre , Date fecha , String agasajado, float monto){
 		setIdLista(IdLista);
 		setNombre(nombre);
 		setVigencia(fecha);
 		setAgasajado(agasajado);
 		setMonto(monto);
-		setAdmin(admin); 
 		this.estado = false;	
 	}
 	
@@ -85,13 +82,6 @@ public class ListaDeRegalo extends Observable implements IObserver{
 		this.monto = monto;
 	}
 	
-	public Usuario getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(Usuario admin) {
-		this.admin = admin;
-	}
 	
 	public int getIdLista() {
 		return IdLista;
