@@ -8,11 +8,11 @@ import observer.*;
 public class ListaDeRegalo extends Observable implements IObserver{
 	private static int maxIntegrantes = 10;
 		
-	
+	private int IdLista; //Identity en la base.
 	private String nombre;
-	private Date fecha;
+	private Date vigencia;
 	private String agasajado;
-	private Usuario admin;
+	private Participante admin;
 	private List<Participante> usuarios = new ArrayList<Participante>();
 	private float monto;
 	private boolean estado;
@@ -20,18 +20,30 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	
 	
 	public ListaDeRegalo (String nombre , Date fecha , String agasajado, float monto, Usuario admin){
-	
+		
 		setNombre(nombre);
-		setFecha(fecha);
+		setVigencia(fecha);
 		setAgasajado(agasajado);
 		setMonto(monto);
 		setAdmin(admin); 
-		this.estado = false;
-		
+		this.estado = false;	
 	}
 	
+	//Sobrecarga del constructor para cuando se lean usuarios de la base
+	public ListaDeRegalo (int IdLista, String nombre , Date fecha , String agasajado, float monto, Usuario admin){
+		setIdLista(IdLista);
+		setNombre(nombre);
+		setVigencia(fecha);
+		setAgasajado(agasajado);
+		setMonto(monto);
+		setAdmin(admin); 
+		this.estado = false;	
+	}
+	
+	
+	
 	public String addUser(Participante user){	
-		if (this.usuarios.size() <= 10){
+		if (this.usuarios.size() <= maxIntegrantes){
 			this.usuarios.add(user);	
 			return "Usuario añadido!";
 		}else{
@@ -49,12 +61,12 @@ public class ListaDeRegalo extends Observable implements IObserver{
 		this.nombre = nombre;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	public Date getVigencia() {
+		return vigencia;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setVigencia(Date fecha) {
+		this.vigencia = fecha;
 	}
 
 	public String getAgasajado() {
@@ -79,6 +91,14 @@ public class ListaDeRegalo extends Observable implements IObserver{
 
 	public void setAdmin(Usuario admin) {
 		this.admin = admin;
+	}
+	
+	public int getIdLista() {
+		return IdLista;
+	}
+
+	public void setIdLista(int idLista) {
+		IdLista = idLista;
 	}
 
 	@Override
