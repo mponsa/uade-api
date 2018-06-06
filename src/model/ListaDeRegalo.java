@@ -17,23 +17,25 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	private boolean estado;
 	private float montoPorParticipante;
 	
-	
-	public ListaDeRegalo (String nombre , Date fecha , String agasajado, float monto){
+
+	public ListaDeRegalo (String nombre , Date vigencia , String agasajado, float monto,float montoPorParticipante){
 		
 		setNombre(nombre);
-		setVigencia(fecha);
+		setVigencia(vigencia);
 		setAgasajado(agasajado);
 		setMonto(monto);
+		setMontoPorParticipante(montoPorParticipante);
 		this.estado = false;	
 	}
 	
 	//Sobrecarga del constructor para cuando se lean usuarios de la base
-	public ListaDeRegalo (int IdLista, String nombre , Date fecha , String agasajado, float monto){
+	public ListaDeRegalo (int IdLista, String nombre , Date vigencia , String agasajado, float monto, float montoPorParticipante){
 		setIdLista(IdLista);
 		setNombre(nombre);
-		setVigencia(fecha);
+		setVigencia(vigencia);
 		setAgasajado(agasajado);
 		setMonto(monto);
+		setMontoPorParticipante(montoPorParticipante);
 		this.estado = false;	
 	}
 	
@@ -62,8 +64,8 @@ public class ListaDeRegalo extends Observable implements IObserver{
 		return vigencia;
 	}
 
-	public void setVigencia(Date fecha) {
-		this.vigencia = fecha;
+	public void setVigencia(Date vigencia) {
+		this.vigencia = vigencia;
 	}
 
 	public String getAgasajado() {
@@ -89,6 +91,15 @@ public class ListaDeRegalo extends Observable implements IObserver{
 
 	public void setIdLista(int idLista) {
 		IdLista = idLista;
+	}
+	
+	
+	public float getMontoPorParticipante() {
+		return montoPorParticipante;
+	}
+
+	public void setMontoPorParticipante(float montoPorParticipante) {
+		this.montoPorParticipante = montoPorParticipante;
 	}
 
 	@Override
