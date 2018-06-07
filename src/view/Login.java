@@ -86,7 +86,11 @@ public class Login {
 						lblError.setVisible(true);
 					}else {
 						//ACCESS GRANTED!!
+						AdmListas window = AdmListas.getInstancia();
+						window.frame.setVisible(true);
 						
+						
+						frame.dispose();
 					}
 				}
 				

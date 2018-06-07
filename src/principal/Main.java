@@ -9,6 +9,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		//Creamos los controladores
 		ControladorDeUsuarios cu = new ControladorDeUsuarios();
+		ControladorDeLista cl = new ControladorDeLista();
 		
 		//Login start
 		Login window = new Login();

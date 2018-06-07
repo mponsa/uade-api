@@ -14,6 +14,8 @@ public class ControladorDeUsuarios {
 	private static ControladorDeUsuarios instancia;
 	//Lista de usuarios manejados por el controlador.
 	private List<Usuario> usuarios;
+	private Usuario adm;
+	
 	
 	public ControladorDeUsuarios() {
 		usuarios = new ArrayList<Usuario>();
@@ -27,6 +29,7 @@ public class ControladorDeUsuarios {
 			return instancia;
 		}
 	}
+	
 	
 	//Crea el usuario, lo guarda en la lista y ademas lo persiste en la base de datos.
 	public void crearUsuario(String n, String a, Date f, String m, String p, boolean aa) {
@@ -52,4 +55,13 @@ public class ControladorDeUsuarios {
 		}
 		return null;
 	}
+	
+	public Usuario getAdm() {
+		return adm;
+	}
+
+	public void setAdm(Usuario adm) {
+		this.adm = adm;
+	}
+
 }

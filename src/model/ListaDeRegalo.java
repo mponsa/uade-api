@@ -13,12 +13,14 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	private Date vigencia;
 	private String agasajado;
 	private List<Participante> usuarios = new ArrayList<Participante>();
+
 	private float monto;
 	private boolean estado;
+	private boolean activo;
 	private float montoPorParticipante;
 	
 
-	public ListaDeRegalo (String nombre , Date vigencia , String agasajado, float monto,float montoPorParticipante){
+	public ListaDeRegalo (String nombre , Date vigencia , String agasajado, float monto, boolean estado, boolean activo,float montoPorParticipante){
 		
 		setNombre(nombre);
 		setVigencia(vigencia);
@@ -29,7 +31,7 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	}
 	
 	//Sobrecarga del constructor para cuando se lean usuarios de la base
-	public ListaDeRegalo (int IdLista, String nombre , Date vigencia , String agasajado, float monto, float montoPorParticipante){
+	public ListaDeRegalo (int IdLista, String nombre , Date vigencia , String agasajado,boolean estado, boolean activo, float montoPorParticipante){
 		setIdLista(IdLista);
 		setNombre(nombre);
 		setVigencia(vigencia);
@@ -101,7 +103,27 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	public void setMontoPorParticipante(float montoPorParticipante) {
 		this.montoPorParticipante = montoPorParticipante;
 	}
+	
+	public List<Participante> getUsuarios() {
+		return usuarios;
+	}
+	public boolean getEstado() {
+		return estado;
+	}
 
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
+	
 	@Override
 	public void noti() {
 		// TODO Auto-generated method stub

@@ -1,5 +1,6 @@
 package controlador;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,10 @@ public class ControladorDeLista {
 	private List<ListaDeRegalo> listas;
 	
 	public ControladorDeLista(){
-		
+		listas = new ArrayList<ListaDeRegalo>();
 	}
 	
-	public ControladorDeLista getInstancia() {
+	public static ControladorDeLista getInstancia() {
 		if (instancia == null) {
 			return new ControladorDeLista();
 		}else{
@@ -22,8 +23,8 @@ public class ControladorDeLista {
 		}
 	}
 	
-	public void crearLista (String nombre , Date vigencia , String agasajado, float monto, float montoPorParticipante) {
-		ListaDeRegalo lista = new ListaDeRegalo(nombre,vigencia,agasajado,monto,montoPorParticipante);
+	public void crearLista (String nombre , Date vigencia , String agasajado, float monto,boolean estado, boolean activo, float montoPorParticipante) {
+		ListaDeRegalo lista = new ListaDeRegalo(nombre,vigencia,agasajado,monto,estado, activo,montoPorParticipante);
 		listas.add(lista);
 	}
 	
