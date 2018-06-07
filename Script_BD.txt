@@ -30,3 +30,18 @@ BEGIN
 		CONSTRAINT pk_usuarios PRIMARY KEY (Mail)
 	);
 END;
+
+CREATE TABLE dbo.ListaDeRegalo
+(
+		IdLista int IDENTITY(1,1),
+		Nombre VARCHAR(20) not null, 
+		Vigencia DATETIME not null,
+		Agasajado VARCHAR(30) not null,
+		Monto decimal, 
+		Estado bit not null,
+		Activo bit not null,
+		MontoXParticipante decimal not null,
+
+
+		CONSTRAINT pk_listas PRIMARY KEY (IdLista)
+);

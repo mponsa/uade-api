@@ -48,7 +48,7 @@ private static AdmPerUsuario instancia;
 		}
 		catch (Exception e)
 		{
-			System.out.println(e.getMessage());
+			System.out.println("Mensaje Error: " + e.getMessage());
 		}
 		
 	}
@@ -75,7 +75,7 @@ private static AdmPerUsuario instancia;
 		}
 		catch (Exception e)
 		{
-			System.out.println();
+			System.out.println("Mensaje Error: " + e.getMessage());
 		}
 		
 	}
@@ -94,15 +94,9 @@ private static AdmPerUsuario instancia;
 		}
 		catch (Exception e)
 		{
-			System.out.println(e.getMessage());
+			System.out.println("Mensaje Error: " + e.getMessage());
 		}
 		
-	}
-
-	@Override
-	public Vector<Object> select(Object o) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	//Si mail es null, me trae todos, sino, al que corresponda
