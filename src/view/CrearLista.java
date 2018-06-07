@@ -29,28 +29,7 @@ public class CrearLista {
 	private JTextField añoText;
 	private JTextField montoPorParticipanteText;
 
-///*	*//**
-//	 * Launch the application.
-//	 *//*
-//	*//**
-//	 * @wbp.parser.entryPoint
-//	 *//*
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					CrearUsuario window = new CrearUsuario();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}*/
 
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public CrearLista() {
 		initialize();
 	}
@@ -64,6 +43,7 @@ public class CrearLista {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle(Parametros.getInstancia().getTitle());
 		
 		nombreText = new JTextField();
 		nombreText.setBounds(92, 11, 224, 20);

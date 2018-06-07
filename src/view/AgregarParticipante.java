@@ -20,22 +20,6 @@ public class AgregarParticipante {
 	private JFrame frame;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AgregarParticipante window = new AgregarParticipante();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public AgregarParticipante() {
@@ -50,6 +34,7 @@ public class AgregarParticipante {
 		frame.setBounds(100, 100, 450, 130);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle(Parametros.getInstancia().getTitle());
 		
 		JButton btnNewButton = new JButton("Agregar participante");
 		btnNewButton.addActionListener(new ActionListener() {

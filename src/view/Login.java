@@ -11,29 +11,16 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class Login {
 	
 	public JFrame frame;
 	private JTextField mailText;
-	private JTextField passwordText;
 	private JLabel lblError;
 	private JButton btnCrearUsuario;
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Login window = new Login();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	private JPasswordField passwordText;
+
 	
 	/**Constructor para diseño de la ventana.
 	 * @wbp.parser.constructor
@@ -51,6 +38,7 @@ public class Login {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle(Parametros.getInstancia().getTitle());
 		
 		JLabel lblUsuario = new JLabel("E-Mail");
 		lblUsuario.setBounds(10, 29, 92, 14);
@@ -65,11 +53,6 @@ public class Login {
 		lblPassword.setBounds(10, 57, 92, 14);
 		frame.getContentPane().add(lblPassword);
 		
-		passwordText = new JTextField();
-		passwordText.setColumns(10);
-		passwordText.setBounds(112, 54, 179, 20);
-		frame.getContentPane().add(passwordText);
-		
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -81,7 +64,7 @@ public class Login {
 					lblError.setVisible(true);
 				}
 				else {
-					if (!ControladorDeUsuarios.getInstancia().getUsuario(mailText.getText()).getPassword().equals(passwordText.getText())) {
+					if (!ControladorDeUsuarios.getInstancia().getUsuario(mailText.getText()).getPassword().equals(String.valueOf(passwordText.getPassword()))) {
 						lblError.setText("Contraseña errónea");
 						lblError.setVisible(true);
 					}else {
@@ -121,5 +104,9 @@ public class Login {
 		});
 		btnCrearUsuario.setBounds(10, 227, 128, 23);
 		frame.getContentPane().add(btnCrearUsuario);
+		
+		passwordText = new JPasswordField();
+		passwordText.setBounds(112, 59, 179, 22);
+		frame.getContentPane().add(passwordText);
 	}
 }

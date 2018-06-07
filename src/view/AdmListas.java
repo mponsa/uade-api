@@ -40,6 +40,8 @@ public class AdmListas {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle(Parametros.getInstancia().getTitle());
+		
 		
 		JButton btnNewButton = new JButton("Crear Lista.");
 		btnNewButton.addActionListener(new ActionListener() {

@@ -15,6 +15,7 @@ import controlador.ControladorDeUsuarios;
 import model.Usuario;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class CrearUsuario {
 
@@ -25,27 +26,10 @@ public class CrearUsuario {
 	private JTextField diaText;
 	private JTextField mesText;
 	private JTextField añoText;
-	private JTextField passwordText;
+	private JPasswordField passwordText;
 
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					CrearUsuario window = new CrearUsuario();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
-	/**
-	 * @wbp.parser.constructor
-	 */
+
 	public CrearUsuario() {
 		initialize();
 	}
@@ -59,6 +43,7 @@ public class CrearUsuario {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setTitle(Parametros.getInstancia().getTitle());
 		
 		nombreText = new JTextField();
 		nombreText.setBounds(92, 11, 224, 20);
@@ -118,11 +103,6 @@ public class CrearUsuario {
 		añoText.setBounds(290, 121, 47, 20);
 		frame.getContentPane().add(añoText);
 		
-		passwordText = new JTextField();
-		passwordText.setBounds(92, 166, 224, 20);
-		frame.getContentPane().add(passwordText);
-		passwordText.setColumns(10);
-		
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setBounds(10, 169, 72, 14);
 		frame.getContentPane().add(lblPassword);
@@ -141,7 +121,7 @@ public class CrearUsuario {
 				Calendar cal = Calendar.getInstance();
 				cal.set(Integer.parseInt(añoText.getText()),Integer.parseInt(mesText.getText()) - 1,Integer.parseInt(diaText.getText()));
 				Date date = cal.getTime();
-				ControladorDeUsuarios.getInstancia().crearUsuario(nombreText.getText(), apellidoText.getText(), new java.sql.Date(date.getTime()), emailText.getText(), passwordText.getText(), true);
+				ControladorDeUsuarios.getInstancia().crearUsuario(nombreText.getText(), apellidoText.getText(), new java.sql.Date(date.getTime()), emailText.getText(), String.valueOf(passwordText.getPassword()), true);
 				frame.dispose();
 				}else{
 					lblError.setVisible(true);
@@ -151,6 +131,10 @@ public class CrearUsuario {
 		});
 		btnNewButton.setBounds(10, 227, 210, 23);
 		frame.getContentPane().add(btnNewButton);
+		
+		passwordText = new JPasswordField();
+		passwordText.setBounds(92, 165, 224, 22);
+		frame.getContentPane().add(passwordText);
 		
 
 	}
