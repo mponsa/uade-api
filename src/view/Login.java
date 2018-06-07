@@ -86,10 +86,12 @@ public class Login {
 						lblError.setVisible(true);
 					}else {
 						//ACCESS GRANTED!!
+						//Setea el administrador de la sesión.
+						ControladorDeUsuarios.getInstancia().setAdm(ControladorDeUsuarios.getInstancia().getUsuario(mailText.getText()));
+						
 						AdmListas window = AdmListas.getInstancia();
 						window.frame.setVisible(true);
-						
-						
+
 						frame.dispose();
 					}
 				}

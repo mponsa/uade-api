@@ -23,7 +23,8 @@ public class ControladorDeUsuarios {
 	
 	public static ControladorDeUsuarios getInstancia() {
 		if (instancia == null) {
-			return new ControladorDeUsuarios();
+			instancia = new ControladorDeUsuarios();
+			return instancia;
 		}
 		else {
 			return instancia;

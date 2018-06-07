@@ -8,7 +8,7 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//Creamos los controladores
-		ControladorDeUsuarios cu = new ControladorDeUsuarios();
+		//ControladorDeUsuarios cu = new ControladorDeUsuarios();
 		ControladorDeLista cl = new ControladorDeLista();
 		
 		//Login start

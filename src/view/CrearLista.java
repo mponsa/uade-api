@@ -97,71 +97,64 @@ public class CrearLista {
 		frame.getContentPane().add(lblDia);
 		
 		JLabel lblMes = new JLabel("Mes");
-		lblMes.setBounds(10, 129, 38, 14);
+		lblMes.setBounds(125, 98, 38, 14);
 		frame.getContentPane().add(lblMes);
 		
 		mesText = new JTextField();
-		mesText.setBounds(58, 126, 47, 20);
+		mesText.setBounds(173, 93, 47, 20);
 		mesText.setColumns(10);
 		frame.getContentPane().add(mesText);
 		
 		JLabel lblAo = new JLabel("A\u00F1o");
-		lblAo.setBounds(10, 165, 38, 14);
+		lblAo.setBounds(242, 99, 38, 14);
 		frame.getContentPane().add(lblAo);
 		
 		añoText = new JTextField();
-		añoText.setBounds(58, 162, 47, 20);
+		añoText.setBounds(279, 93, 47, 20);
 		añoText.setColumns(10);
 		frame.getContentPane().add(añoText);
 		
 		JLabel lblListaCreada = new JLabel("Lista creada!");
-		lblListaCreada.setBounds(242, 231, 99, 14);
+		lblListaCreada.setBounds(242, 207, 99, 14);
 		frame.getContentPane().add(lblListaCreada);
 		lblListaCreada.setVisible(false);
 		
 		JButton btnNewButton = new JButton("Crear lista");
-		btnNewButton.setBounds(10, 227, 210, 23);
+		btnNewButton.setBounds(10, 203, 210, 23);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (ControladorDeLista.getInstancia().getListaDeRegalo(nombreText.getText())== null){
+				
 				Calendar cal = Calendar.getInstance();
 				cal.set(Integer.parseInt(añoText.getText()),Integer.parseInt(mesText.getText()) - 1,Integer.parseInt(diaText.getText()));
 				Date date = cal.getTime();
 				ControladorDeLista.getInstancia().crearLista(nombreText.getText(), new java.sql.Date(date.getTime()), agasajadoText.getText(), 0,true,true,Float.parseFloat(montoPorParticipanteText.getText()));		
+				lblListaCreada.setText("Lista creada!");
 				lblListaCreada.setVisible(true);
+				limpiarPantalla();
+				frame.dispose();
+				
+				}else {
+					lblListaCreada.setText("Lista existente");
+					lblListaCreada.setVisible(true);
+					limpiarPantalla();
+				}
 			}
 		});
 		frame.getContentPane().add(btnNewButton);
 		
 		JLabel lblMonto = new JLabel("Monto por participante");
-		lblMonto.setBounds(10, 202, 152, 14);
+		lblMonto.setBounds(10, 130, 152, 14);
 		frame.getContentPane().add(lblMonto);
 		
 		montoPorParticipanteText = new JTextField();
-		montoPorParticipanteText.setBounds(172, 196, 47, 20);
+		montoPorParticipanteText.setBounds(172, 124, 47, 20);
 		montoPorParticipanteText.setColumns(10);
 		frame.getContentPane().add(montoPorParticipanteText);
 		
 		JLabel lblMontoARecaudar = new JLabel("");
 		lblMontoARecaudar.setBounds(242, 129, 166, 14);
 		frame.getContentPane().add(lblMontoARecaudar);
-		
-		JButton btnNewButton_1 = new JButton("Agregar participantes");
-		btnNewButton_1.setBounds(272, 69, 152, 23);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}
-		});
-		frame.getContentPane().add(btnNewButton_1);
-		
-		JLabel lblParticipantes = new JLabel("Participantes:");
-		lblParticipantes.setBounds(199, 73, 74, 14);
-		frame.getContentPane().add(lblParticipantes);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(242, 98, 182, 118);
-		frame.getContentPane().add(textArea);
 		
 		
 

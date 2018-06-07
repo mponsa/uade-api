@@ -36,7 +36,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			s.setString(3, a.getAgasajado());
 			s.setFloat(4,0);
 			s.setBoolean(5, a.getEstado());
-			s.setBoolean(5, a.isActivo());
+			s.setBoolean(6, a.isActivo());
 			s.setFloat(7,a.getMontoPorParticipante());
 			
 			s.execute();
@@ -105,6 +105,30 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[ListaDeRegalo] where IdLista = ?");
 			s.setInt(1, id);
+			ResultSet result = s.executeQuery();
+			while(result.next()) {
+				a = new ListaDeRegalo(
+						result.getInt(1)
+						,result.getString(2)
+						,result.getDate(3)
+						,result.getString(4)
+						,result.getBoolean(5)
+						,result.getBoolean(6)
+						,result.getFloat(7));
+				return a;
+			}
+		}catch(Exception e) {
+			System.out.println();
+		}
+		return null;
+	}
+	
+	public ListaDeRegalo getListaDeRegalo(String nombre) {
+		ListaDeRegalo a = null;
+		try {
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[ListaDeRegalo] where Nombre = ?");
+			s.setString(1, nombre);
 			ResultSet result = s.executeQuery();
 			while(result.next()) {
 				a = new ListaDeRegalo(
