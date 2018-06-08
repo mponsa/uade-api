@@ -39,6 +39,7 @@ public class Login {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle(Parametros.getInstancia().getTitle());
+		frame.setResizable(Parametros.getInstancia().getResizable());
 		
 		JLabel lblUsuario = new JLabel("E-Mail");
 		lblUsuario.setBounds(10, 29, 92, 14);

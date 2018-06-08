@@ -86,11 +86,12 @@ public class ControladorDeLista {
 			return null; 
 		}
 	}
-
+	
+	//Devuelve la lista que se está administrando.
 	public ListaDeRegalo getListaAdm() {
 		return listaAdm;
 	}
-
+	//Setea la lista que se está administrando.
 	public void setListaAdm(ListaDeRegalo listaAdm) {
 		this.listaAdm = listaAdm;
 	}

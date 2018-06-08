@@ -44,6 +44,7 @@ public class CrearLista {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle(Parametros.getInstancia().getTitle());
+		frame.setResizable(Parametros.getInstancia().getResizable());
 		
 		nombreText = new JTextField();
 		nombreText.setBounds(92, 11, 224, 20);

@@ -107,9 +107,28 @@ public class ListaDeRegalo extends Observable implements IObserver{
 		this.montoPorParticipante = montoPorParticipante;
 	}
 	
+	//Devuelve la lista de usuarios.
 	public List<Participante> getUsuarios() {
 		return usuarios;
 	}
+	
+	//Devuelve la lista de mails de usuarios.
+	public List<String> getMailParticipantes(){
+		List<String> result = new ArrayList<String>();
+		for (Participante p : usuarios){
+			result.add(p.getMailUsuario());
+		}
+		return result;
+	}
+	
+	public Participante getAdminLista(){
+		for (Participante p : usuarios){
+			if (p.isAdmin())
+				return p;
+		}
+		return null;
+	}
+	
 	public boolean getEstado() {
 		return estado;
 	}

@@ -50,6 +50,7 @@ public class AdmListas {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle(Parametros.getInstancia().getTitle());
+		frame.setResizable(Parametros.getInstancia().getResizable());
 		
 		
 		JButton btnNewButton = new JButton("Crear Lista");
