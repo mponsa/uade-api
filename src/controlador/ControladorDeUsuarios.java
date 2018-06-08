@@ -1,4 +1,4 @@
-package controlador;
+	package controlador;
 
 import persistencia.*;
 
@@ -14,6 +14,8 @@ public class ControladorDeUsuarios {
 	private static ControladorDeUsuarios instancia;
 	//Lista de usuarios manejados por el controlador.
 	private List<Usuario> usuarios;
+
+
 	private Usuario adm;
 	
 	
@@ -40,7 +42,22 @@ public class ControladorDeUsuarios {
 	}
 	
 	public List<Usuario> getUsuarios(){
+		setUsuarios(AdmPerUsuario.getInstancia().buscarUsuarios(null));
 		return usuarios;
+	}
+	
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+	
+	public List<String> getMailsUsuarios(){
+		List<String>  mails = new ArrayList<String>();
+ 		List<Usuario> usuarios = getUsuarios();
+		for(Usuario user : usuarios){
+			mails.add(user.getMail());
+		}
+		
+		return mails;
 	}
 	
 	public Usuario getUsuario(String email) {

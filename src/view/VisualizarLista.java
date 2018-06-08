@@ -29,19 +29,10 @@ public class VisualizarLista {
 	private JTextField vigenciaAñoText;
 	
 	
-	private boolean isAdm = true;
+	private boolean isAdm = false;
 	
-	public void setAdm(){
-		List<String> mailsParticipantes = new ArrayList<String>();
-		
-		String mailUserAdm = ControladorDeUsuarios.getInstancia().getAdm().getMail();
-		String mailListaAdm = ControladorDeLista.getInstancia().getListaAdm().getAdminLista().getMailUsuario();
-		
-		if(mailUserAdm.equals(mailListaAdm)){
-			this.isAdm = true;
-		}else{
-			this.isAdm = false;
-		}
+	public void setAdm(boolean adm){
+		this.isAdm = adm;
 	}
 	
 	public boolean isAdm(){
@@ -51,9 +42,9 @@ public class VisualizarLista {
 	/**
 	 * Create the application.
 	 */
-	public VisualizarLista() {
-		//Realiza la comparacion para saber si la lista que se está administrando, es administrada por el usuario logueado.
-		setAdm();
+	public VisualizarLista(boolean adm) {
+		//Realiza la comparacion para saber si la lista que se está administrando, es administrada por el usuario logueado
+		setAdm(adm);
 		initialize();
 	}
 
@@ -63,7 +54,7 @@ public class VisualizarLista {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 531, 322);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(Parametros.getInstancia().getResizable());
@@ -151,6 +142,10 @@ public class VisualizarLista {
 		JButton btnAgregarParticipante = new JButton("Agregar Participante");
 		btnAgregarParticipante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				AgregarParticipante window = new AgregarParticipante();
+				window.frame.setVisible(true);
+				
 			}
 		});
 		btnAgregarParticipante.setBounds(309, 228, 196, 23);
@@ -202,7 +197,10 @@ public class VisualizarLista {
 	
 	void setearParticipantes(JTextArea textArea){
 		for(String str : ControladorDeLista.getInstancia().getListaAdm().getMailParticipantes()){
-			textArea.append(str);
+
+			textArea.append(str + "\n");
+				
+			
 		}
 	}
 }

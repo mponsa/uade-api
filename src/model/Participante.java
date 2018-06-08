@@ -17,6 +17,7 @@ public class Participante {
 	public Participante(int idLista, String mailUsuario, boolean IsAdmin, boolean pagado){
 		setIdLista(idLista);
 		setMailUsuario(mailUsuario);
+		setAdmin(IsAdmin);
 		setPagado(pagado);
 	}
 	

@@ -33,8 +33,7 @@ public class ControladorDeLista {
 		AdmPerListaDeRegalo.getInstancia().insert(lista);
 		//Inserta el participante a la lista, la tenemos que traer de vuelta de memoria para recuperar el ID que genero la base.
 		lista.setIdLista(AdmPerListaDeRegalo.getInstancia().getListaDeRegalo(lista.getNombre()).getIdLista());
-		lista.addUser(new Participante(lista.getIdLista(),ControladorDeUsuarios.getInstancia().getAdm().getMail(),true));
-		AdmPerListaDeRegalo.getInstancia().insertParticipantesALista(lista);
+		lista.addUser(new Participante(lista.getIdLista(),ControladorDeUsuarios.getInstancia().getAdm().getMail(),true,false));
 		listas.add(lista);
 	}
 	
@@ -94,5 +93,9 @@ public class ControladorDeLista {
 	//Setea la lista que se está administrando.
 	public void setListaAdm(ListaDeRegalo listaAdm) {
 		this.listaAdm = listaAdm;
+	}
+	
+	public Participante crearParticipante(int idLista, String mailUsuario, boolean IsAdmin, boolean pagado){
+		return new Participante(idLista,mailUsuario,IsAdmin,pagado);
 	}
 }

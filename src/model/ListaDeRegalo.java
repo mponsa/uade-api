@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import observer.*;
+import persistencia.AdmPerListaDeRegalo;
 
 public class ListaDeRegalo extends Observable implements IObserver{
 	private static int maxIntegrantes = 10;
@@ -48,7 +49,8 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	
 	public String addUser(Participante user){	
 		if (this.usuarios.size() <= maxIntegrantes){
-			this.usuarios.add(user);	
+			this.usuarios.add(user);
+			AdmPerListaDeRegalo.getInstancia().insertParticipantesALista(this,user);
 			return "Usuario añadido!";
 		}else{
 			return "Limite de usuarios alcanzado!";	

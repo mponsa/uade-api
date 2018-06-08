@@ -216,12 +216,33 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		
 	}
 	
+	public void insertParticipantesALista(ListaDeRegalo l, Participante p){
+		try{
+			
+				Connection con = PoolConnection.getPoolConnection().getConnection();
+				PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Participantes] values (?,?,?,?)");
+				s.setInt(1, l.getIdLista());
+				s.setString(2, p.getMailUsuario());
+				s.setBoolean(3,p.isAdmin());
+				s.setBoolean(4, p.isPagado());
+				s.execute();
+				PoolConnection.getPoolConnection().realeaseConnection(con);
+			
+			
+		}catch(Exception e){
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+		
+	}
+	
+	
+	
 	//Devuelve las listas administradas por un usuario
 	public List<ListaDeRegalo> getListasAdm(Usuario user) {
 		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
 		try {
 		Connection con = PoolConnection.getPoolConnection().getConnection();
-		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where MailUsuario = ? AND isAdmin = '0'");
+		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where MailUsuario = ? AND isAdmin = '1'");
 		s.setString(1,user.getMail());
 		ResultSet resultP = s.executeQuery();
 		while(resultP.next()){
@@ -241,9 +262,8 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
 		try {
 		Connection con = PoolConnection.getPoolConnection().getConnection();
-		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where MailUsuario = ? AND IsAdmin = '1'");
+		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where MailUsuario = ? AND IsAdmin = '0'");
 		s.setString(1,user.getMail());
-		s.setBoolean(2, false);
 		ResultSet resultP = s.executeQuery();
 		while(resultP.next()){
 			result.add(this.getListaDeRegalo(resultP.getInt(1)));
