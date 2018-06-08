@@ -18,7 +18,7 @@ EXEC SP_CHANGEDBOWNER 'GRUPO_25'
 
 IF  NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = N'Usuarios')
 BEGIN
-	CREATE TABLE Usuarios(
+	CREATE TABLE dbo.Usuarios(
 		IdUsuario int IDENTITY(1,1),
 		Nombre VARCHAR(20) not null,
 		Apellido VARCHAR(20) not null, 
@@ -45,3 +45,11 @@ CREATE TABLE dbo.ListaDeRegalo
 
 		CONSTRAINT pk_listas PRIMARY KEY (IdLista)
 );
+
+CREATE TABLE dbo.Participantes(
+		IdLista int  foreign  key references dbo.ListaDeRegalo (IdLista),
+		MailUsuario varchar(30) foreign  key references dbo.Usuarios (Mail),
+		Pagado BIT not null,
+
+		CONSTRAINT pk_participante PRIMARY KEY (IdLista, MailUsuario)
+	);

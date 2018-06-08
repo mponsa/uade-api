@@ -2,32 +2,54 @@ package tests;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.junit.Test;
 
 
 import model.ListaDeRegalo;
-import model.Usuario;
+import model.Participante;
 
 public class ListaDeRegaloTest {
 
 	
 	
-	/*@Test
+	@Test
 	public void testCreateLista(){
+
+		//Usuario admin = new Usuario();
 		
-		String nombre = "Cumple David";
-		Fecha fecha = new Fecha(); 
-		String agasajado = "David";
-		float monto = 500;
-		Usuario admin = new Usuario();
+		ListaDeRegalo lista = new ListaDeRegalo(
+				"Cumple David"
+				, new java.sql.Date(new Date().getTime())
+				, "David"
+				, 0
+				,false
+				,true
+				,100);
 		
-		ListaDeRegalo lista = new ListaDeRegalo(nombre, fecha, agasajado, monto, admin);
-		
-		assertTrue(lista.getMonto() > 0);
-	}*/
+		assertTrue(lista.getUsuarios().size() == 0);
+	}
 	
-	
+	@Test
+	public void testCreateListaConParticipantes(){
+
+		//Usuario admin = new Usuario();
+		
+		ListaDeRegalo lista = new ListaDeRegalo(
+				"Cumple David"
+				, new java.sql.Date(new Date().getTime())
+				, "David"
+				, 0
+				,false
+				,true
+				,100);
+		
+		lista.addUser(new Participante(1,"dmala@gmail.com"));
+		lista.addUser(new Participante(1,"sarasa@gmail.com"));
+		lista.addUser(new Participante(1,"Ponsa@hotmail.com"));
+		
+		assertTrue(lista.getUsuarios().size() > 0);
+	}
 
 }

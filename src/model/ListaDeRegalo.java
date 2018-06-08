@@ -12,8 +12,7 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	private String nombre;
 	private Date vigencia;
 	private String agasajado;
-	private List<Participante> usuarios = new ArrayList<Participante>();
-
+	private List<Participante> usuarios; 
 	private float monto;
 	private boolean estado;
 	private boolean activo;
@@ -27,18 +26,22 @@ public class ListaDeRegalo extends Observable implements IObserver{
 		setAgasajado(agasajado);
 		setMonto(monto);
 		setMontoPorParticipante(montoPorParticipante);
-		this.estado = false;	
+		setEstado(false);
+		setActivo(activo);
+		this.usuarios = new ArrayList<Participante>();
 	}
 	
 	//Sobrecarga del constructor para cuando se lean usuarios de la base
-	public ListaDeRegalo (int IdLista, String nombre , Date vigencia , String agasajado,boolean estado, boolean activo, float montoPorParticipante){
+	public ListaDeRegalo (int IdLista, String nombre , Date vigencia , String agasajado, float monto,boolean estado, boolean activo, float montoPorParticipante){
 		setIdLista(IdLista);
 		setNombre(nombre);
 		setVigencia(vigencia);
 		setAgasajado(agasajado);
 		setMonto(monto);
+		setEstado(estado);	
+		setActivo(activo);
 		setMontoPorParticipante(montoPorParticipante);
-		this.estado = false;	
+		this.usuarios = new ArrayList<Participante>();
 	}
 	
 	
