@@ -13,6 +13,7 @@ import persistencia.AdmPerUsuario;
 public class ControladorDeLista {
 	private static ControladorDeLista instancia;
 	private List<ListaDeRegalo> listas;
+	private ListaDeRegalo listaAdm; //Variable para cuando se administra una lista en particular;
 	
 	public ControladorDeLista(){
 		listas = new ArrayList<ListaDeRegalo>();
@@ -29,8 +30,12 @@ public class ControladorDeLista {
 	
 	public void crearLista (String nombre , Date vigencia , String agasajado, float monto,boolean estado, boolean activo, float montoPorParticipante) {
 		ListaDeRegalo lista = new ListaDeRegalo(nombre,vigencia,agasajado,monto,estado,activo,montoPorParticipante);
-		listas.add(lista);
 		AdmPerListaDeRegalo.getInstancia().insert(lista);
+		//Inserta el participante a la lista, la tenemos que traer de vuelta de memoria para recuperar el ID que genero la base.
+		lista.setIdLista(AdmPerListaDeRegalo.getInstancia().getListaDeRegalo(lista.getNombre()).getIdLista());
+		lista.addUser(new Participante(lista.getIdLista(),ControladorDeUsuarios.getInstancia().getAdm().getMail(),true));
+		AdmPerListaDeRegalo.getInstancia().insertParticipantesALista(lista);
+		listas.add(lista);
 	}
 	
 	public ListaDeRegalo getListaDeRegalo(String nombre){;
@@ -45,8 +50,48 @@ public class ControladorDeLista {
 		return null;
 	}
 	
-	public List<ListaDeRegalo> getListas(Participante participante){
-		
-		return null;
+	
+	//Devuelve los nombres de las listas administradas por un usuario.
+	public List<String> getListasAdm(Usuario user){
+		List<String> result = new ArrayList<String>();
+		List<ListaDeRegalo> listas = AdmPerListaDeRegalo.getInstancia().getListasAdm(user);
+		if (listas != null) {
+		for (ListaDeRegalo lista : listas) {
+			result.add(lista.getNombre());
+		}
+		if (result.size() == 0) {
+			return null;
+		}else {
+			return result;
+		}
+		}else {
+			return null; 
+		}
+	}
+	
+	//Devuelve los nombres de las listas en las que un usuario es participante.
+	public List<String> getListasPar(Usuario user){
+		List<String> result = new ArrayList<String>();
+		List<ListaDeRegalo> listas = AdmPerListaDeRegalo.getInstancia().getListasPar(user);
+		if (listas != null) {
+		for (ListaDeRegalo lista : listas) {
+			result.add(lista.getNombre());
+		}
+		if (result.size() == 0) {
+			return null;
+		}else {
+			return result;
+		}
+		}else {
+			return null; 
+		}
+	}
+
+	public ListaDeRegalo getListaAdm() {
+		return listaAdm;
+	}
+
+	public void setListaAdm(ListaDeRegalo listaAdm) {
+		this.listaAdm = listaAdm;
 	}
 }

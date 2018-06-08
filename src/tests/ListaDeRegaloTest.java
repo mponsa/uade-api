@@ -45,9 +45,9 @@ public class ListaDeRegaloTest {
 				,true
 				,100);
 		
-		lista.addUser(new Participante(1,"dmala@gmail.com"));
-		lista.addUser(new Participante(1,"sarasa@gmail.com"));
-		lista.addUser(new Participante(1,"Ponsa@hotmail.com"));
+		lista.addUser(new Participante(1,"dmala@gmail.com",true));
+		lista.addUser(new Participante(1,"sarasa@gmail.com",true));
+		lista.addUser(new Participante(1,"Ponsa@hotmail.com",false));
 		
 		assertTrue(lista.getUsuarios().size() > 0);
 	}

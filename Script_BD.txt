@@ -49,7 +49,9 @@ CREATE TABLE dbo.ListaDeRegalo
 CREATE TABLE dbo.Participantes(
 		IdLista int  foreign  key references dbo.ListaDeRegalo (IdLista),
 		MailUsuario varchar(30) foreign  key references dbo.Usuarios (Mail),
+		IsAdmin BIT not null,
 		Pagado BIT not null,
+		
 
 		CONSTRAINT pk_participante PRIMARY KEY (IdLista, MailUsuario)
 	);

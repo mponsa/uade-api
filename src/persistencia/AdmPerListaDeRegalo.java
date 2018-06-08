@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.ListaDeRegalo;
 import model.Participante;
@@ -131,7 +133,8 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 				part = new Participante(
 						resultP.getInt(1),
 						resultP.getString(2),
-						resultP.getBoolean(3)
+						resultP.getBoolean(3),
+						resultP.getBoolean(4)
 						);
 				a.addUser(part);
 			}
@@ -176,7 +179,8 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 				part = new Participante(
 						resultP.getInt(1),
 						resultP.getString(2),
-						resultP.getBoolean(3)
+						resultP.getBoolean(3),
+						resultP.getBoolean(4)
 						);
 				a.addUser(part);
 			}
@@ -197,11 +201,11 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		try{
 			for (Participante p : l.getUsuarios()) {
 				Connection con = PoolConnection.getPoolConnection().getConnection();
-				PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Participante] values (?,?,?)");
+				PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Participantes] values (?,?,?,?)");
 				s.setInt(1, p.getIdLista());
 				s.setString(2, p.getMailUsuario());
-				s.setBoolean(3, p.isPagado());
-				
+				s.setBoolean(3,p.isAdmin());
+				s.setBoolean(4, p.isPagado());
 				s.execute();
 				PoolConnection.getPoolConnection().realeaseConnection(con);
 			}
@@ -210,6 +214,48 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			System.out.println("Mensaje Error: " + e.getMessage());
 		}
 		
+	}
+	
+	//Devuelve las listas administradas por un usuario
+	public List<ListaDeRegalo> getListasAdm(Usuario user) {
+		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
+		try {
+		Connection con = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where MailUsuario = ? AND isAdmin = '0'");
+		s.setString(1,user.getMail());
+		ResultSet resultP = s.executeQuery();
+		while(resultP.next()){
+			result.add(this.getListaDeRegalo(resultP.getInt(1)));
+		}
+		}catch(Exception e) {
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+		if (result.size() == 0) {
+			return null;
+		}else {
+			return result;
+		}
+	}
+	
+	public List<ListaDeRegalo> getListasPar(Usuario user) {
+		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
+		try {
+		Connection con = PoolConnection.getPoolConnection().getConnection();
+		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where MailUsuario = ? AND IsAdmin = '1'");
+		s.setString(1,user.getMail());
+		s.setBoolean(2, false);
+		ResultSet resultP = s.executeQuery();
+		while(resultP.next()){
+			result.add(this.getListaDeRegalo(resultP.getInt(1)));
+		}
+		}catch(Exception e) {
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+		if (result.size() == 0) {
+			return null;
+		}else {
+			return result;
+		}
 	}
 
 }

@@ -5,15 +5,16 @@ public class Participante {
 	private int IdLista;
 	private String MailUsuario;
 	private boolean Pagado;
+	private boolean IsAdmin;
 	
 	
-	public Participante(int idLista, String mailUsuario){
+	public Participante(int idLista, String mailUsuario, boolean IsAdmin){
 		setIdLista(idLista);
 		setMailUsuario(mailUsuario);
 		setPagado(false);
 	}
 	
-	public Participante(int idLista, String mailUsuario, boolean pagado){
+	public Participante(int idLista, String mailUsuario, boolean IsAdmin, boolean pagado){
 		setIdLista(idLista);
 		setMailUsuario(mailUsuario);
 		setPagado(pagado);
@@ -39,6 +40,14 @@ public class Participante {
 
 	public void setMailUsuario(String mailUsuario) {
 		MailUsuario = mailUsuario;
+	}
+	
+	public boolean isAdmin() {
+		return IsAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.IsAdmin = isAdmin;
 	}
 
 }
