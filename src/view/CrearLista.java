@@ -45,7 +45,7 @@ public class CrearLista {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent arg0) {
-				AdmListas.getInstancia().reInit();
+				AdmListas.getInstancia().actualizarCombos();
 			}
 		});
 		frame.setBounds(100, 100, 450, 300);

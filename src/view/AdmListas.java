@@ -20,9 +20,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+
 public class AdmListas {
 	private static AdmListas instancia;
 	public JFrame frame;
+	public JComboBox<String> listasAdmCombo;
+	public JComboBox<String> listasPartCombo;
 
 	/**
 	 * Create the application.
@@ -73,29 +76,19 @@ public class AdmListas {
 		lblListasAdm.setBounds(10, 36, 297, 14);
 		frame.getContentPane().add(lblListasAdm);
 		
-		JComboBox<String> listasAdmCombo = new JComboBox<String>();
+		listasAdmCombo = new JComboBox<String>();
 		listasAdmCombo.setBounds(10, 58, 176, 20);
-		List<String> listas = ControladorDeLista.getInstancia().getListasAdm(ControladorDeUsuarios.getInstancia().getAdm());
-		if (listas != null) {
-		for (String lista : listas) {
-			listasAdmCombo.addItem(lista);
-		}
-		}
 		frame.getContentPane().add(listasAdmCombo);
 		
 		JLabel labelListasPart = new JLabel("Listas en las que participa");
 		labelListasPart.setBounds(10, 89, 297, 14);
 		frame.getContentPane().add(labelListasPart);
 		
-		JComboBox<String> listasPartCombo = new JComboBox<String>();
+		listasPartCombo = new JComboBox<String>();
 		listasPartCombo.setBounds(10, 114, 176, 20);
-		List<String> listasPar = ControladorDeLista.getInstancia().getListasPar(ControladorDeUsuarios.getInstancia().getAdm());
-		if (listasPar != null) {
-		for (String lista : listasPar) {
-			listasPartCombo.addItem(lista);
-		}
-		}
 		frame.getContentPane().add(listasPartCombo);
+		
+		actualizarCombos();
 		
 		JButton btnVisualizarAdm = new JButton("Visualizar ");
 		btnVisualizarAdm.addActionListener(new ActionListener() {
@@ -131,12 +124,50 @@ public class AdmListas {
 		menuBar.add(mnSistema);
 		
 		JMenuItem mntmLogOut = new JMenuItem("Log out..");
+		mntmLogOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Login window = new Login();
+				window.frame.setVisible(true);
+				ControladorDeLista.getInstancia().setListaAdm(null);
+				ControladorDeUsuarios.getInstancia().setAdm(null);
+				frame.dispose();
+			
+			}
+		});
 		mnSistema.add(mntmLogOut);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
 		mnSistema.add(mntmSalir);
 		
 		JMenu menu = new JMenu("");
 		menuBar.add(menu);
+		
 	}
+
+	public void actualizarCombos(){
+		List<String> listas = ControladorDeLista.getInstancia().getListasAdm(ControladorDeUsuarios.getInstancia().getAdm());
+		if (listas != null) {
+		for (String lista : listas) {
+			this.listasAdmCombo.setSelectedIndex(-1);
+			this.listasAdmCombo.setSelectedItem(lista);
+			if(this.listasAdmCombo.getSelectedIndex() < 0){
+				this.listasAdmCombo.addItem(lista);
+			}
+		}
+		}
+		
+		
+		List<String> listasPar = ControladorDeLista.getInstancia().getListasPar(ControladorDeUsuarios.getInstancia().getAdm());
+		if (listasPar != null) {
+		for (String lista : listasPar) {
+			this.listasPartCombo.addItem(lista);
+		}
+		}
+	}
+
 }

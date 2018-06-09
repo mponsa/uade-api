@@ -91,8 +91,8 @@ public class ControladorDeLista {
 		return listaAdm;
 	}
 	//Setea la lista que se está administrando.
-	public void setListaAdm(ListaDeRegalo listaAdm) {
-		this.listaAdm = listaAdm;
+	public void setListaAdm(ListaDeRegalo lista) {
+		this.listaAdm = lista;
 	}
 	
 	public Participante crearParticipante(int idLista, String mailUsuario, boolean IsAdmin, boolean pagado){
