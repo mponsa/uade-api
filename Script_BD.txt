@@ -1,7 +1,7 @@
-IF  NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = N'API_GRUPO_25')
-    BEGIN
-        CREATE DATABASE [API_GRUPO_25]
-    END;
+USE[master]
+
+CREATE DATABASE [API_GRUPO_25]
+GO
 
 CREATE LOGIN GRUPO_25  with 
 			PASSWORD = 'GRUPO_25', 
@@ -12,18 +12,15 @@ GO
 CREATE USER GRUPO_25 FOR LOGIN GRUPO_25 WITH DEFAULT_SCHEMA = API_GRUPO_25;
 GO
 
+--Asignacion de rol
+
 USE [API_GRUPO_25]
 
-
-sp_addrolemember 'db_owner', 'GRUPO_25'
+exec sp_addrolemember 'db_owner', 'GRUPO_25'
 GO
 
-EXEC SP_CHANGEDBOWNER 'GRUPO_25' 
+--Creacion de tablas
 
-
-
-IF  NOT EXISTS (SELECT 1 FROM sys.databases WHERE name = N'Usuarios')
-BEGIN
 	CREATE TABLE dbo.Usuarios(
 		IdUsuario int IDENTITY(1,1),
 		Nombre VARCHAR(20) not null,
@@ -34,30 +31,80 @@ BEGIN
 		Activo BIT not null,
 
 		CONSTRAINT pk_usuarios PRIMARY KEY (Mail)
-	);
-END;
+	)
 
-CREATE TABLE dbo.ListaDeRegalo
-(
-		IdLista int IDENTITY(1,1),
-		Nombre VARCHAR(20) not null, 
-		Vigencia DATETIME not null,
-		Agasajado VARCHAR(30) not null,
-		Monto decimal, 
-		Estado bit not null,
-		Activo bit not null,
-		MontoXParticipante decimal not null,
+	CREATE TABLE dbo.ListaDeRegalo
+	(
+			IdLista int IDENTITY(1,1),
+			Nombre VARCHAR(20) not null, 
+			Vigencia DATETIME not null,
+			Agasajado VARCHAR(30) not null,
+			Monto decimal, 
+			Estado bit not null,
+			Activo bit not null,
+			MontoXParticipante decimal not null,
 
 
-		CONSTRAINT pk_listas PRIMARY KEY (IdLista)
-);
+			CONSTRAINT pk_listas PRIMARY KEY (IdLista)
+	)
 
-CREATE TABLE dbo.Participantes(
-		IdLista int  foreign  key references dbo.ListaDeRegalo (IdLista),
-		MailUsuario varchar(30) foreign  key references dbo.Usuarios (Mail),
-		IsAdmin BIT not null,
-		Pagado BIT not null,
+	CREATE TABLE dbo.Participantes(
+			IdLista int  foreign  key references dbo.ListaDeRegalo (IdLista),
+			MailUsuario varchar(30) foreign  key references dbo.Usuarios (Mail),
+			IsAdmin BIT not null,
+			Pagado BIT not null,
 		
 
-		CONSTRAINT pk_participante PRIMARY KEY (IdLista, MailUsuario)
-	);
+			CONSTRAINT pk_participante PRIMARY KEY (IdLista, MailUsuario)
+	)
+
+
+
+
+--Inserts
+INSERT [dbo].[Usuarios]  VALUES ('Damian', 'Carrasco', '20000101', 'dcarrasco@gmail.com', 'lorenzo', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('David', 'Suarez', '19991010', 'dsuarez@gmail.com', 'cosme', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('David', 'Malagueño', '19871208', 'dmalag@gmail.com', 'admin1', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('Jorgelina', 'Gomez', '20000101', 'jgomez@aol.com', 'pepita', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('Mariela', 'Fernandez', '20011212', 'mferchu@gmail.com', 'mfer', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('Manuel', 'Ponsa', '19990505', 'mponsa@gmail.com', 'ponsa', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('Nicolas', 'Fumasoni', '19980404', 'nicof@aol.com', 'nicolas', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('Pedro', 'Argento', '19981008', 'parg@yahoo.com', 'veronica', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('Pablo', 'Marquez', '20001024', 'pmarquez@uade.edu.ar', 'pedro', 1)
+GO
+INSERT [dbo].[Usuarios]  VALUES ('Veronica', 'Guzman', '19990101', 'vguzman@hotmail.com', 'vecky', 1)
+GO
+
+
+INSERT [dbo].[ListaDeRegalo]  VALUES ('Cumple Manu', '20181010', 'Manuel Ponsa', 0, 0, 1, 100)
+GO
+INSERT [dbo].[ListaDeRegalo]  VALUES ('Cumple Nico', '20181208', N'Nicolas Fumasoni', 0, 0, 1, 150)
+GO
+
+
+--El id lista al ser un Identity, no tengo manera de saber de antemano cual debo poner, por ello uso los selects anidados
+
+INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Manu'), 'dmalag@gmail.com', 1, 0)
+GO
+INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Manu'), 'mferchu@gmail.com', 0, 0)
+GO
+INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Manu'), 'mponsa@gmail.com', 0, 0)
+GO
+INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Manu'), 'pmarquez@uade.edu.ar', 0, 0)
+GO
+INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Nico'), 'mferchu@gmail.com', 0, 0)
+GO
+INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Nico'), 'mponsa@gmail.com', 1, 0)
+GO
+INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Nico'), 'parg@yahoo.com', 0, 0)
+GO
+INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Nico'), 'vguzman@hotmail.com', 0, 0)
+GO
