@@ -18,16 +18,17 @@ import javax.swing.JTextField;
 import controlador.ControladorDeLista;
 import controlador.ControladorDeUsuarios;
 
-public class VisualizarLista {
+public class VisualizarUsuario {
 
 	public JFrame frame;
 	private JTextField nombreText;
 	private JTextField agasajadoText;
 	private JTextField vigenciaDiaText;
-	private JTextField montoText;
 	private JTextField vigenciaMesText;
 	private JTextField vigenciaAñoText;
 	private boolean isAdm = false;
+	private JTextField textField;
+	private JTextField textField_1;
 	
 	
 	public void setAdm(boolean adm){
@@ -39,7 +40,7 @@ public class VisualizarLista {
 	}
 	
 	//Constructor
-	public VisualizarLista(boolean adm) {
+	public VisualizarUsuario(boolean adm) {
 		//Realiza la comparacion para saber si la lista que se está administrando, es administrada por el usuario logueado
 		setAdm(adm);
 		initialize();
@@ -48,7 +49,7 @@ public class VisualizarLista {
 	//Inizializa el frame
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 531, 322);
+		frame.setBounds(100, 100, 401, 248);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.getContentPane().setLayout(null);
@@ -59,21 +60,13 @@ public class VisualizarLista {
 		lblNombre.setBounds(10, 11, 54, 14);
 		frame.getContentPane().add(lblNombre);
 		
-		JLabel lblAgasajado = new JLabel("Agasajado:");
-		lblAgasajado.setBounds(10, 42, 75, 14);
-		frame.getContentPane().add(lblAgasajado);
+		JLabel Apellido = new JLabel("Agasajado:");
+		Apellido.setBounds(10, 42, 75, 14);
+		frame.getContentPane().add(Apellido);
 		
-		JLabel lblFecha = new JLabel("Vigencia:");
+		JLabel lblFecha = new JLabel("Fecha de nacimiento:");
 		lblFecha.setBounds(10, 67, 110, 14);
 		frame.getContentPane().add(lblFecha);
-		
-		JLabel lblMontoPorParticipante = new JLabel("Monto por participante:");
-		lblMontoPorParticipante.setBounds(10, 148, 131, 14);
-		frame.getContentPane().add(lblMontoPorParticipante);
-		
-		JLabel lblParticipantes = new JLabel("Participantes:");
-		lblParticipantes.setBounds(309, 8, 94, 14);
-		frame.getContentPane().add(lblParticipantes);
 		
 		JLabel lblDia = new JLabel("Dia");
 		lblDia.setBounds(10, 89, 46, 14);
@@ -123,63 +116,44 @@ public class VisualizarLista {
 		vigenciaAñoText.setText(String.valueOf(calendar.get(Calendar.YEAR)));
 		frame.getContentPane().add(vigenciaAñoText);
 		
-		montoText = new JTextField();
-		montoText.setColumns(10);
-		montoText.setBounds(151, 145, 86, 20);
-		montoText.setText(String.valueOf(ControladorDeLista.getInstancia().getListaAdm().getMontoPorParticipante()));
-		frame.getContentPane().add(montoText);
-		
 		setearTextFields();
-		///Fin text fields.
 		
-
-		//Buttons.
-		JButton btnAgregarParticipante = new JButton("Agregar Participante");
-		btnAgregarParticipante.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				AgregarParticipante window = new AgregarParticipante();
-				window.frame.setVisible(true);
-				
-			}
-		});
-		btnAgregarParticipante.setBounds(309, 228, 196, 23);
-		btnAgregarParticipante.setVisible(isAdm);
-		frame.getContentPane().add(btnAgregarParticipante);
-		
-		JButton btnEnviarMsg = new JButton("Enviar mensaje al administrador");
-		btnEnviarMsg.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnEnviarMsg.setBounds(10, 187, 289, 23);
-		btnEnviarMsg.setVisible(!isAdm);
-		frame.getContentPane().add(btnEnviarMsg);
-		
-		JButton btnGuardarCambios = new JButton("Guardar cambios");
-		btnGuardarCambios.setBounds(114, 227, 185, 23);
-		btnGuardarCambios.setVisible(isAdm);
-		frame.getContentPane().add(btnGuardarCambios);
-		
-		JButton btnEliminarLista = new JButton("Eliminar lista");
+		JButton btnEliminarLista = new JButton("Eliminar usuario");
 		btnEliminarLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnEliminarLista.setBounds(10, 227, 94, 23);
+		btnEliminarLista.setBounds(10, 190, 150, 23);
 		btnEliminarLista.setVisible(isAdm);
 		frame.getContentPane().add(btnEliminarLista);
 		
-		JButton btnEliminarParticipante = new JButton("Eliminar Participante");
-		btnEliminarParticipante.setBounds(309, 262, 196, 23);
-		frame.getContentPane().add(btnEliminarParticipante);
-		///Fin buttons
+		JLabel lblEmaik = new JLabel("E-Mail");
+		lblEmaik.setBounds(10, 137, 75, 14);
+		frame.getContentPane().add(lblEmaik);
 		
-		///Text area.
-		JTextArea textAreaParticipantes = new JTextArea();
-		textAreaParticipantes.setBounds(309, 25, 196, 192);
-		setearParticipantes(textAreaParticipantes);
-		frame.getContentPane().add(textAreaParticipantes);
+		textField = new JTextField();
+		textField.setText((String) null);
+		textField.setColumns(10);
+		textField.setBounds(74, 134, 196, 20);
+		frame.getContentPane().add(textField);
+		
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(10, 165, 75, 14);
+		frame.getContentPane().add(lblPassword);
+		
+		textField_1 = new JTextField();
+		textField_1.setText((String) null);
+		textField_1.setColumns(10);
+		textField_1.setBounds(74, 162, 196, 20);
+		frame.getContentPane().add(textField_1);
+		
+		JButton btnCambiar = new JButton("Cambiar");
+		btnCambiar.setBounds(299, 161, 89, 23);
+		frame.getContentPane().add(btnCambiar);
+		
+		JButton button = new JButton("Cambiar");
+		button.setBounds(299, 133, 89, 23);
+		frame.getContentPane().add(button);
 		///Fin text area
 
 

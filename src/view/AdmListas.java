@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -8,13 +7,8 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
-import javax.swing.JList;
-
 import controlador.ControladorDeLista;
 import controlador.ControladorDeUsuarios;
-import javax.swing.AbstractListModel;
-import javax.swing.ListSelectionModel;
-import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -27,10 +21,7 @@ public class AdmListas {
 	public JComboBox<String> listasAdmCombo;
 	public JComboBox<String> listasPartCombo;
 
-	/**
-	 * Create the application.
-	 */
-	
+	//Singleton
 	public static AdmListas getInstancia() {
 		if (instancia == null) {
 			instancia = new AdmListas();
@@ -40,17 +31,12 @@ public class AdmListas {
 		}
 	}
 	
+	//Constructor
 	public AdmListas() {
 		initialize();
 	}
 	
-	public void reInit(){
-		this.initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	//Inizializa el frame
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 472, 214);
@@ -59,9 +45,35 @@ public class AdmListas {
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.setResizable(Parametros.getInstancia().getResizable());
 		
+		//Labels
+		JLabel lblListasAdm = new JLabel("Listas administradas");
+		lblListasAdm.setBounds(10, 36, 297, 14);
+		frame.getContentPane().add(lblListasAdm);
 		
-		JButton btnNewButton = new JButton("Crear Lista");
-		btnNewButton.addActionListener(new ActionListener() {
+		JLabel labelListasPart = new JLabel("Listas en las que participa");
+		labelListasPart.setBounds(10, 89, 297, 14);
+		frame.getContentPane().add(labelListasPart);
+		
+		JLabel lblBienvenido = new JLabel("Bienvenido "+ ControladorDeUsuarios.getInstancia().getAdm().getNombre() + "!");
+		lblBienvenido.setBounds(10, 11, 297, 14);
+		frame.getContentPane().add(lblBienvenido);
+		//Fin labels.
+		
+		//ComboBox
+		listasAdmCombo = new JComboBox<String>();
+		listasAdmCombo.setBounds(10, 58, 176, 20);
+		frame.getContentPane().add(listasAdmCombo);
+		
+		listasPartCombo = new JComboBox<String>();
+		listasPartCombo.setBounds(10, 114, 176, 20);
+		frame.getContentPane().add(listasPartCombo);
+	
+		actualizarCombos();
+		//Fin Combo Box.
+		
+		//Buttons
+		JButton btnCrearLista = new JButton("Crear Lista");
+		btnCrearLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				CrearLista window = new CrearLista();
@@ -69,26 +81,8 @@ public class AdmListas {
 				
 			}
 		});
-		btnNewButton.setBounds(326, 57, 120, 23);
-		frame.getContentPane().add(btnNewButton);
-		
-		JLabel lblListasAdm = new JLabel("Listas administradas");
-		lblListasAdm.setBounds(10, 36, 297, 14);
-		frame.getContentPane().add(lblListasAdm);
-		
-		listasAdmCombo = new JComboBox<String>();
-		listasAdmCombo.setBounds(10, 58, 176, 20);
-		frame.getContentPane().add(listasAdmCombo);
-		
-		JLabel labelListasPart = new JLabel("Listas en las que participa");
-		labelListasPart.setBounds(10, 89, 297, 14);
-		frame.getContentPane().add(labelListasPart);
-		
-		listasPartCombo = new JComboBox<String>();
-		listasPartCombo.setBounds(10, 114, 176, 20);
-		frame.getContentPane().add(listasPartCombo);
-		
-		actualizarCombos();
+		btnCrearLista.setBounds(326, 57, 120, 23);
+		frame.getContentPane().add(btnCrearLista);
 		
 		JButton btnVisualizarAdm = new JButton("Visualizar ");
 		btnVisualizarAdm.addActionListener(new ActionListener() {
@@ -112,11 +106,10 @@ public class AdmListas {
 		});
 		btnVisualizarPart.setBounds(196, 113, 120, 23);
 		frame.getContentPane().add(btnVisualizarPart);
+		//Fin buttons
+
 		
-		JLabel lblBienvenido = new JLabel("Bienvenido "+ ControladorDeUsuarios.getInstancia().getAdm().getNombre() + "!");
-		lblBienvenido.setBounds(10, 11, 297, 14);
-		frame.getContentPane().add(lblBienvenido);
-		
+		//Menu
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
@@ -142,13 +135,17 @@ public class AdmListas {
 				frame.dispose();
 			}
 		});
+		
+		JMenuItem mntmDarseDeBaja = new JMenuItem("Administrar usuario");
+		mnSistema.add(mntmDarseDeBaja);
 		mnSistema.add(mntmSalir);
 		
 		JMenu menu = new JMenu("");
 		menuBar.add(menu);
-		
+		//Fin menu
 	}
 
+	//función para tomar las listas administradas y particpantes
 	public void actualizarCombos(){
 		List<String> listas = ControladorDeLista.getInstancia().getListasAdm(ControladorDeUsuarios.getInstancia().getAdm());
 		if (listas != null) {
@@ -169,5 +166,4 @@ public class AdmListas {
 		}
 		}
 	}
-
 }

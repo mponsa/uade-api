@@ -1,23 +1,15 @@
 package view;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-
 import controlador.ControladorDeLista;
-import controlador.ControladorDeUsuarios;
-import model.Usuario;
-import controlador.ControladorDeUsuarios;
-import model.Usuario;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextArea;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -31,17 +23,16 @@ public class CrearLista {
 	private JTextField añoText;
 	private JTextField montoPorParticipanteText;
 
-
+	//Constructor
 	public CrearLista() {
 		initialize();
 	}
 	
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	//Inizializa el frame
 	private void initialize() {
 		frame = new JFrame();
+		
+		//Window Listener, para actualizar combos en Clase AdmListas si se creo una lista nueva.
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosed(WindowEvent arg0) {
@@ -54,32 +45,18 @@ public class CrearLista {
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.setResizable(Parametros.getInstancia().getResizable());
 		
-		nombreText = new JTextField();
-		nombreText.setBounds(92, 11, 224, 20);
-		frame.getContentPane().add(nombreText);
-		nombreText.setColumns(10);
-		
-		JLabel lblNewLabel = new JLabel("Nombre");
-		lblNewLabel.setBounds(10, 14, 72, 14);
-		frame.getContentPane().add(lblNewLabel);
+		//Labels
+		JLabel lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(10, 14, 72, 14);
+		frame.getContentPane().add(lblNombre);
 		
 		JLabel lblApellido = new JLabel("Agasajado");
 		lblApellido.setBounds(10, 45, 72, 14);
 		frame.getContentPane().add(lblApellido);
 		
-		agasajadoText = new JTextField();
-		agasajadoText.setBounds(92, 42, 224, 20);
-		agasajadoText.setColumns(10);
-		frame.getContentPane().add(agasajadoText);
-		
-		JLabel lblFechaDeNacimientop = new JLabel("Vigencia");
-		lblFechaDeNacimientop.setBounds(10, 73, 126, 14);
-		frame.getContentPane().add(lblFechaDeNacimientop);
-		
-		diaText = new JTextField();
-		diaText.setBounds(58, 93, 47, 20);
-		diaText.setColumns(10);
-		frame.getContentPane().add(diaText);
+		JLabel lblVigencia = new JLabel("Vigencia");
+		lblVigencia.setBounds(10, 73, 126, 14);
+		frame.getContentPane().add(lblVigencia);
 		
 		JLabel lblDia = new JLabel("Dia");
 		lblDia.setBounds(10, 98, 38, 14);
@@ -89,28 +66,60 @@ public class CrearLista {
 		lblMes.setBounds(125, 98, 38, 14);
 		frame.getContentPane().add(lblMes);
 		
-		mesText = new JTextField();
-		mesText.setBounds(173, 93, 47, 20);
-		mesText.setColumns(10);
-		frame.getContentPane().add(mesText);
-		
-		JLabel lblAo = new JLabel("A\u00F1o");
-		lblAo.setBounds(242, 99, 38, 14);
-		frame.getContentPane().add(lblAo);
-		
-		añoText = new JTextField();
-		añoText.setBounds(279, 93, 47, 20);
-		añoText.setColumns(10);
-		frame.getContentPane().add(añoText);
+		JLabel lblAño = new JLabel("A\u00F1o");
+		lblAño.setBounds(242, 99, 38, 14);
+		frame.getContentPane().add(lblAño);
 		
 		JLabel lblListaCreada = new JLabel("Lista creada!");
 		lblListaCreada.setBounds(242, 207, 99, 14);
 		frame.getContentPane().add(lblListaCreada);
 		lblListaCreada.setVisible(false);
 		
-		JButton btnNewButton = new JButton("Crear lista");
-		btnNewButton.setBounds(10, 203, 210, 23);
-		btnNewButton.addActionListener(new ActionListener() {
+		JLabel lblMonto = new JLabel("Monto por participante");
+		lblMonto.setBounds(10, 130, 152, 14);
+		frame.getContentPane().add(lblMonto);
+		
+		JLabel lblMontoARecaudar = new JLabel("");
+		lblMontoARecaudar.setBounds(242, 129, 166, 14);
+		frame.getContentPane().add(lblMontoARecaudar);
+		//Fin Labels
+		
+		//TextFields
+		nombreText = new JTextField();
+		nombreText.setBounds(92, 11, 224, 20);
+		frame.getContentPane().add(nombreText);
+		nombreText.setColumns(10);
+			
+		agasajadoText = new JTextField();
+		agasajadoText.setBounds(92, 42, 224, 20);
+		agasajadoText.setColumns(10);
+		frame.getContentPane().add(agasajadoText);
+		
+		diaText = new JTextField();
+		diaText.setBounds(58, 93, 47, 20);
+		diaText.setColumns(10);
+		frame.getContentPane().add(diaText);
+		
+		mesText = new JTextField();
+		mesText.setBounds(173, 93, 47, 20);
+		mesText.setColumns(10);
+		frame.getContentPane().add(mesText);
+		
+		añoText = new JTextField();
+		añoText.setBounds(279, 93, 47, 20);
+		añoText.setColumns(10);
+		frame.getContentPane().add(añoText);
+		
+		montoPorParticipanteText = new JTextField();
+		montoPorParticipanteText.setBounds(172, 124, 47, 20);
+		montoPorParticipanteText.setColumns(10);
+		frame.getContentPane().add(montoPorParticipanteText);
+		//Fin TextFields
+		
+		//Buttons
+		JButton btnCrearLista = new JButton("Crear lista");
+		btnCrearLista.setBounds(10, 203, 210, 23);
+		btnCrearLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (ControladorDeLista.getInstancia().getListaDeRegalo(nombreText.getText())== null){
 				
@@ -130,25 +139,17 @@ public class CrearLista {
 				}
 			}
 		});
-		frame.getContentPane().add(btnNewButton);
+		frame.getContentPane().add(btnCrearLista);
+		//Fin Buttons
+
 		
-		JLabel lblMonto = new JLabel("Monto por participante");
-		lblMonto.setBounds(10, 130, 152, 14);
-		frame.getContentPane().add(lblMonto);
-		
-		montoPorParticipanteText = new JTextField();
-		montoPorParticipanteText.setBounds(172, 124, 47, 20);
-		montoPorParticipanteText.setColumns(10);
-		frame.getContentPane().add(montoPorParticipanteText);
-		
-		JLabel lblMontoARecaudar = new JLabel("");
-		lblMontoARecaudar.setBounds(242, 129, 166, 14);
-		frame.getContentPane().add(lblMontoARecaudar);
-		
+
+
 		
 
 	}
 	
+	//Limpia los textfield de la pantalla.
 	public void limpiarPantalla() {
 		for (Component e : frame.getContentPane().getComponents()) {
 			if(e instanceof JTextField) {

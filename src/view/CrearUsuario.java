@@ -1,18 +1,13 @@
 package view;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import controlador.ControladorDeUsuarios;
-import model.Usuario;
-import controlador.ControladorDeUsuarios;
-import model.Usuario;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
@@ -29,15 +24,12 @@ public class CrearUsuario {
 	private JPasswordField passwordText;
 
 
-
+	//Constructor
 	public CrearUsuario() {
 		initialize();
 	}
 	
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	//Inizializa el frame
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
@@ -45,12 +37,8 @@ public class CrearUsuario {
 		frame.getContentPane().setLayout(null);
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.setResizable(Parametros.getInstancia().getResizable());
-		
-		nombreText = new JTextField();
-		nombreText.setBounds(92, 11, 224, 20);
-		frame.getContentPane().add(nombreText);
-		nombreText.setColumns(10);
-		
+	
+		//Labels
 		JLabel lblNewLabel = new JLabel("Nombre");
 		lblNewLabel.setBounds(10, 14, 72, 14);
 		frame.getContentPane().add(lblNewLabel);
@@ -59,28 +47,13 @@ public class CrearUsuario {
 		lblApellido.setBounds(10, 45, 72, 14);
 		frame.getContentPane().add(lblApellido);
 		
-		apellidoText = new JTextField();
-		apellidoText.setColumns(10);
-		apellidoText.setBounds(92, 42, 224, 20);
-		frame.getContentPane().add(apellidoText);
-		
 		JLabel lblEmail = new JLabel("E-Mail");
 		lblEmail.setBounds(10, 73, 72, 14);
 		frame.getContentPane().add(lblEmail);
 		
-		emailText = new JTextField();
-		emailText.setColumns(10);
-		emailText.setBounds(92, 70, 224, 20);
-		frame.getContentPane().add(emailText);
-		
 		JLabel lblFechaDeNacimientop = new JLabel("Fecha de nacimiento");
 		lblFechaDeNacimientop.setBounds(10, 101, 126, 14);
 		frame.getContentPane().add(lblFechaDeNacimientop);
-		
-		diaText = new JTextField();
-		diaText.setColumns(10);
-		diaText.setBounds(58, 121, 47, 20);
-		frame.getContentPane().add(diaText);
 		
 		JLabel lblDia = new JLabel("Dia");
 		lblDia.setBounds(10, 126, 38, 14);
@@ -90,19 +63,9 @@ public class CrearUsuario {
 		lblMes.setBounds(124, 126, 38, 14);
 		frame.getContentPane().add(lblMes);
 		
-		mesText = new JTextField();
-		mesText.setColumns(10);
-		mesText.setBounds(172, 121, 47, 20);
-		frame.getContentPane().add(mesText);
-		
 		JLabel lblAo = new JLabel("A\u00F1o");
 		lblAo.setBounds(242, 126, 38, 14);
 		frame.getContentPane().add(lblAo);
-		
-		añoText = new JTextField();
-		añoText.setColumns(10);
-		añoText.setBounds(290, 121, 47, 20);
-		frame.getContentPane().add(añoText);
 		
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setBounds(10, 169, 72, 14);
@@ -112,8 +75,46 @@ public class CrearUsuario {
 		lblError.setBounds(234, 231, 190, 14);
 		frame.getContentPane().add(lblError);
 		lblError.setVisible(false);
+		//Fin Labels
 		
+		//TextFields
+		nombreText = new JTextField();
+		nombreText.setBounds(92, 11, 224, 20);
+		frame.getContentPane().add(nombreText);
+		nombreText.setColumns(10);
 		
+		apellidoText = new JTextField();
+		apellidoText.setColumns(10);
+		apellidoText.setBounds(92, 42, 224, 20);
+		frame.getContentPane().add(apellidoText);
+	
+		emailText = new JTextField();
+		emailText.setColumns(10);
+		emailText.setBounds(92, 70, 224, 20);
+		frame.getContentPane().add(emailText);
+		
+		diaText = new JTextField();
+		diaText.setColumns(10);
+		diaText.setBounds(58, 121, 47, 20);
+		frame.getContentPane().add(diaText);
+		
+		mesText = new JTextField();
+		mesText.setColumns(10);
+		mesText.setBounds(172, 121, 47, 20);
+		frame.getContentPane().add(mesText);
+		
+		añoText = new JTextField();
+		añoText.setColumns(10);
+		añoText.setBounds(290, 121, 47, 20);
+		frame.getContentPane().add(añoText);
+		
+		passwordText = new JPasswordField();
+		passwordText.setBounds(92, 165, 224, 22);
+		frame.getContentPane().add(passwordText);
+		//Fin TextFields
+
+		
+		//Buttons
 		JButton btnNewButton = new JButton("Crear usuario");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -132,14 +133,13 @@ public class CrearUsuario {
 		});
 		btnNewButton.setBounds(10, 227, 210, 23);
 		frame.getContentPane().add(btnNewButton);
-		
-		passwordText = new JPasswordField();
-		passwordText.setBounds(92, 165, 224, 22);
-		frame.getContentPane().add(passwordText);
+		//Fin buttons
+
 		
 
 	}
 	
+	//Limpia los TextField de la pantalla
 	public void limpiarPantalla() {
 		for (Component e : frame.getContentPane().getComponents()) {
 			if(e instanceof JTextField) {

@@ -1,35 +1,27 @@
 package view;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-
 import controlador.ControladorDeLista;
 import controlador.ControladorDeUsuarios;
-import model.Usuario;
 
 public class AgregarParticipante {
 
 	public JFrame frame;
 
-	/**
-	 * Create the application.
-	 */
+
+	//Constructor
 	public AgregarParticipante() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	//Inizializa el frame
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 130);
@@ -37,11 +29,14 @@ public class AgregarParticipante {
 		frame.getContentPane().setLayout(null);
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.setResizable(Parametros.getInstancia().getResizable());
-				
+		
+		//Labels
 		JLabel lblIngresarEmailDel = new JLabel("Seleccione un usuario:");
 		lblIngresarEmailDel.setBounds(10, 11, 259, 14);
 		frame.getContentPane().add(lblIngresarEmailDel);
+		//Fin labels
 		
+		//ComboBox
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setBounds(10, 36, 230, 20);
 		List<String> mailsUsuarios = ControladorDeUsuarios.getInstancia().getMailsUsuarios();
@@ -58,9 +53,11 @@ public class AgregarParticipante {
 		}
 		
 		frame.getContentPane().add(comboBox);
+		//Fin ComboBox
 		
-		JButton btnNewButton = new JButton("Agregar participante");
-		btnNewButton.addActionListener(new ActionListener() {
+		//Button.
+		JButton btnAgPart = new JButton("Agregar participante");
+		btnAgPart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ControladorDeLista.getInstancia().getListaAdm().addUser(
 						ControladorDeLista.getInstancia().crearParticipante(
@@ -68,10 +65,11 @@ public class AgregarParticipante {
 				frame.dispose();
 			}
 		});
-		btnNewButton.setBounds(252, 35, 180, 23);
-		frame.getContentPane().add(btnNewButton);
+		btnAgPart.setBounds(252, 35, 180, 23);
+		frame.getContentPane().add(btnAgPart);
+		//Fin buttons
 	}
 
 	
-	//Devuelve una lista con los Mails de los usuarios que pueden agregarse a la lista
+
 }

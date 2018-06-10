@@ -22,17 +22,12 @@ public class Login {
 	private JPasswordField passwordText;
 
 	
-	/**Constructor para diseño de la ventana.
-	 * @wbp.parser.constructor
-	 */
+	//Constructor
 	public Login() {
 		initialize();
 	}
-	
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	//Inizializa el frame
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
@@ -41,19 +36,33 @@ public class Login {
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.setResizable(Parametros.getInstancia().getResizable());
 		
+		//Labels
 		JLabel lblUsuario = new JLabel("E-Mail");
 		lblUsuario.setBounds(10, 29, 92, 14);
 		frame.getContentPane().add(lblUsuario);
+				
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setBounds(10, 57, 92, 14);
+		frame.getContentPane().add(lblPassword);
 		
+		lblError = new JLabel("Usuario inexistente!");
+		lblError.setBounds(301, 29, 123, 14);
+		lblError.setVisible(false);
+		frame.getContentPane().add(lblError);
+		//Fin labels
+		
+		//TextFields
 		mailText = new JTextField();
 		mailText.setBounds(112, 26, 179, 20);
 		frame.getContentPane().add(mailText);
 		mailText.setColumns(10);
 		
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(10, 57, 92, 14);
-		frame.getContentPane().add(lblPassword);
+		passwordText = new JPasswordField();
+		passwordText.setBounds(112, 59, 179, 22);
+		frame.getContentPane().add(passwordText);
+		//Fin TextFields
 		
+		//Buttons
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -88,11 +97,6 @@ public class Login {
 		btnIngresar.setBounds(10, 82, 89, 23);
 		frame.getContentPane().add(btnIngresar);
 		
-		lblError = new JLabel("Usuario inexistente!");
-		lblError.setBounds(301, 29, 123, 14);
-		lblError.setVisible(false);
-		frame.getContentPane().add(lblError);
-		
 		btnCrearUsuario = new JButton("Crear Usuario");
 		btnCrearUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -105,9 +109,7 @@ public class Login {
 		});
 		btnCrearUsuario.setBounds(10, 227, 128, 23);
 		frame.getContentPane().add(btnCrearUsuario);
-		
-		passwordText = new JPasswordField();
-		passwordText.setBounds(112, 59, 179, 22);
-		frame.getContentPane().add(passwordText);
+		//Fin BUttons
+
 	}
 }
