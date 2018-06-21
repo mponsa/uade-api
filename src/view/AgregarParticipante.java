@@ -25,7 +25,7 @@ public class AgregarParticipante {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 130);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.setResizable(Parametros.getInstancia().getResizable());

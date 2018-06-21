@@ -53,6 +53,7 @@ GO
 			MailUsuario varchar(30) foreign  key references dbo.Usuarios (Mail),
 			IsAdmin BIT not null,
 			Pagado BIT not null,
+			Activo BIT not null,
 		
 
 			CONSTRAINT pk_participante PRIMARY KEY (IdLista, MailUsuario)

@@ -6,12 +6,14 @@ public class Participante {
 	private String MailUsuario;
 	private boolean Pagado;
 	private boolean IsAdmin;
+	private boolean Activo;
 	
 	
 	public Participante(int idLista, String mailUsuario, boolean IsAdmin){
 		setIdLista(idLista);
 		setMailUsuario(mailUsuario);
 		setPagado(false);
+		setActivo(true);
 	}
 	
 	public Participante(int idLista, String mailUsuario, boolean IsAdmin, boolean pagado){
@@ -19,6 +21,7 @@ public class Participante {
 		setMailUsuario(mailUsuario);
 		setAdmin(IsAdmin);
 		setPagado(pagado);
+		setActivo(true);
 	}
 	
 	public boolean isPagado() {
@@ -49,6 +52,14 @@ public class Participante {
 
 	public void setAdmin(boolean isAdmin) {
 		this.IsAdmin = isAdmin;
+	}
+	
+	public void setActivo(boolean activo) {
+		this.Activo = activo;
+	}
+	
+	public boolean isActivo() {
+		return this.Activo;
 	}
 
 }

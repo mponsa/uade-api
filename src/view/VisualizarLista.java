@@ -10,13 +10,20 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import controlador.ControladorDeLista;
 import controlador.ControladorDeUsuarios;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class VisualizarLista {
 
@@ -47,6 +54,11 @@ public class VisualizarLista {
 
 	//Inizializa el frame
 	private void initialize() {
+		//Calendar para fechas.
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(ControladorDeLista.getInstancia().getListaAdm().getVigencia());
+		
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 531, 322);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -88,50 +100,6 @@ public class VisualizarLista {
 		frame.getContentPane().add(lblAo);
 		///Fin Labels.
 		
-		///Text Fields.
-		nombreText = new JTextField();
-		nombreText.setBounds(74, 8, 86, 20);
-		nombreText.setText(ControladorDeLista.getInstancia().getListaAdm().getNombre());
-		frame.getContentPane().add(nombreText);
-		nombreText.setColumns(10);
-		
-		agasajadoText = new JTextField();
-		agasajadoText.setColumns(10);
-		agasajadoText.setBounds(74, 39, 86, 20);
-		agasajadoText.setText(ControladorDeLista.getInstancia().getListaAdm().getAgasajado());
-		frame.getContentPane().add(agasajadoText);
-		
-		//Calendar para fechas.
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(ControladorDeLista.getInstancia().getListaAdm().getVigencia());
-		
-		vigenciaDiaText = new JTextField();
-		vigenciaDiaText.setColumns(10);
-		vigenciaDiaText.setBounds(10, 103, 46, 20);
-		vigenciaDiaText.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-		frame.getContentPane().add(vigenciaDiaText);
-		
-		vigenciaMesText = new JTextField();
-		vigenciaMesText.setColumns(10);
-		vigenciaMesText.setBounds(74, 103, 46, 20);
-		vigenciaMesText.setText(String.valueOf(calendar.get(Calendar.MONTH)));
-		frame.getContentPane().add(vigenciaMesText);
-		
-		vigenciaAñoText = new JTextField();
-		vigenciaAñoText.setColumns(10);
-		vigenciaAñoText.setBounds(136, 103, 46, 20);
-		vigenciaAñoText.setText(String.valueOf(calendar.get(Calendar.YEAR)));
-		frame.getContentPane().add(vigenciaAñoText);
-		
-		montoText = new JTextField();
-		montoText.setColumns(10);
-		montoText.setBounds(151, 145, 86, 20);
-		montoText.setText(String.valueOf(ControladorDeLista.getInstancia().getListaAdm().getMontoPorParticipante()));
-		frame.getContentPane().add(montoText);
-		
-		setearTextFields();
-		///Fin text fields.
-		
 
 		//Buttons.
 		JButton btnAgregarParticipante = new JButton("Agregar Participante");
@@ -157,13 +125,34 @@ public class VisualizarLista {
 		frame.getContentPane().add(btnEnviarMsg);
 		
 		JButton btnGuardarCambios = new JButton("Guardar cambios");
+		btnGuardarCambios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			
+				ControladorDeLista.getInstancia().getListaAdm().setNombre(nombreText.getText());
+				calendar.set(Integer.parseInt(vigenciaAñoText.getText()),Integer.parseInt(vigenciaMesText.getText()) - 1,Integer.parseInt(vigenciaDiaText.getText()));
+				Date date = calendar.getTime();
+				ControladorDeLista.getInstancia().getListaAdm().setVigencia(new java.sql.Date(date.getTime()));
+				ControladorDeLista.getInstancia().modificarLista(ControladorDeLista.getInstancia().getListaAdm());
+				
+				//Actualizamos los combos del administrador.
+				AdmListas.getInstancia().borrarCombos();
+				AdmListas.getInstancia().actualizarCombos();
+				
+			
+			}
+		});
 		btnGuardarCambios.setBounds(114, 227, 185, 23);
 		btnGuardarCambios.setVisible(isAdm);
+		btnGuardarCambios.setEnabled(false);
 		frame.getContentPane().add(btnGuardarCambios);
 		
 		JButton btnEliminarLista = new JButton("Eliminar lista");
 		btnEliminarLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ControladorDeLista.getInstancia().eliminarLista(ControladorDeLista.getInstancia().getListaAdm());
+				AdmListas.getInstancia().borrarCombos();
+				AdmListas.getInstancia().actualizarCombos();
+				frame.dispose();
 			}
 		});
 		btnEliminarLista.setBounds(10, 227, 94, 23);
@@ -175,24 +164,90 @@ public class VisualizarLista {
 		frame.getContentPane().add(btnEliminarParticipante);
 		///Fin buttons
 		
+		///Text Fields.
+				nombreText = new JTextField();
+				nombreText.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent arg0) {
+						btnGuardarCambios.setEnabled(true);
+					}
+				});
+				nombreText.setBounds(74, 8, 86, 20);
+				nombreText.setText(ControladorDeLista.getInstancia().getListaAdm().getNombre());
+				frame.getContentPane().add(nombreText);
+				nombreText.setEditable(isAdm);
+				nombreText.setColumns(10);
+				
+				agasajadoText = new JTextField();
+				agasajadoText.setColumns(10);
+				agasajadoText.setBounds(74, 39, 86, 20);
+				agasajadoText.setText(ControladorDeLista.getInstancia().getListaAdm().getAgasajado());
+				agasajadoText.setEditable(false);
+				frame.getContentPane().add(agasajadoText);
+				
+
+				
+				vigenciaDiaText = new JTextField();
+				vigenciaDiaText.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+						btnGuardarCambios.setEnabled(true);
+					}
+				});
+				vigenciaDiaText.setColumns(10);
+				vigenciaDiaText.setBounds(10, 103, 46, 20);
+				vigenciaDiaText.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+				vigenciaDiaText.setEditable(isAdm);
+				frame.getContentPane().add(vigenciaDiaText);
+				
+				vigenciaMesText = new JTextField();
+				vigenciaMesText.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+						btnGuardarCambios.setEnabled(true);
+					}
+				});
+				vigenciaMesText.setColumns(10);
+				vigenciaMesText.setBounds(74, 103, 46, 20);
+				vigenciaMesText.setText(String.valueOf(calendar.get(Calendar.MONTH)));
+				vigenciaMesText.setEditable(isAdm);
+				frame.getContentPane().add(vigenciaMesText);
+				
+				vigenciaAñoText = new JTextField();
+				vigenciaAñoText.addKeyListener(new KeyAdapter() {
+					@Override
+					public void keyPressed(KeyEvent e) {
+						btnGuardarCambios.setEnabled(true);
+					}
+				});
+				vigenciaAñoText.setColumns(10);
+				vigenciaAñoText.setBounds(136, 103, 46, 20);
+				vigenciaAñoText.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+				vigenciaAñoText.setEditable(isAdm);
+				frame.getContentPane().add(vigenciaAñoText);
+				
+				montoText = new JTextField();
+				montoText.setColumns(10);
+				montoText.setBounds(151, 145, 86, 20);
+				montoText.setText(String.valueOf(ControladorDeLista.getInstancia().getListaAdm().getMontoPorParticipante()));
+				montoText.setEditable(false);
+				frame.getContentPane().add(montoText);
+				
+				
+				///Fin text fields.
+		
 		///Text area.
 		JTextArea textAreaParticipantes = new JTextArea();
 		textAreaParticipantes.setBounds(309, 25, 196, 192);
 		setearParticipantes(textAreaParticipantes);
+		textAreaParticipantes.setEditable(false);
 		frame.getContentPane().add(textAreaParticipantes);
 		///Fin text area
 
 
 	}
 	
-	//Recorre los textFields y los setea editables o no según la visualización.
-	void setearTextFields(){
-		for (Component e : frame.getContentPane().getComponents()) {
-			if(e instanceof JTextField) {
-				((JTextField) e).setEditable(isAdm);
-			}
-		}
-	}
+	
 	
 	//Recorre el TextArea y lo completa con los participantes.
 	void setearParticipantes(JTextArea textArea){

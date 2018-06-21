@@ -144,7 +144,12 @@ public class AdmListas {
 		menuBar.add(menu);
 		//Fin menu
 	}
-
+	
+	public void borrarCombos() {
+		listasAdmCombo.removeAllItems();
+		listasPartCombo.removeAllItems();
+	}
+	
 	//función para tomar las listas administradas y particpantes
 	public void actualizarCombos(){
 		List<String> listas = ControladorDeLista.getInstancia().getListasAdm(ControladorDeUsuarios.getInstancia().getAdm());
@@ -157,7 +162,6 @@ public class AdmListas {
 			}
 		}
 		}
-		
 		
 		List<String> listasPar = ControladorDeLista.getInstancia().getListasPar(ControladorDeUsuarios.getInstancia().getAdm());
 		if (listasPar != null) {

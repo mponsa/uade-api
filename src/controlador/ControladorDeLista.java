@@ -37,6 +37,15 @@ public class ControladorDeLista {
 		listas.add(lista);
 	}
 	
+	
+	public void modificarLista(ListaDeRegalo l) {
+		AdmPerListaDeRegalo.getInstancia().update(l);
+	}
+	
+	public void eliminarLista(ListaDeRegalo l) {
+		AdmPerListaDeRegalo.getInstancia().delete(l);
+	}
+	
 	public ListaDeRegalo getListaDeRegalo(String nombre){;
 		for (ListaDeRegalo lista : listas) {
 			if (lista.getNombre().equals(nombre)){
