@@ -2,12 +2,13 @@ package model;
 
 public class Participante {
 	
-	private int IdLista;
-	private String MailUsuario;
+	//private int IdLista;
+	//private String MailUsuario;
 	private boolean Pagado;
 	private boolean IsAdmin;
 	private boolean Activo;
 	
+	private Usuario usuario;//agregar solo aca y no en la base
 	
 	public Participante(int idLista, String mailUsuario, boolean IsAdmin){
 		setIdLista(idLista);

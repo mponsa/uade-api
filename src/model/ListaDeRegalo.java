@@ -6,7 +6,7 @@ import java.util.Date;
 import observer.*;
 import persistencia.AdmPerListaDeRegalo;
 
-public class ListaDeRegalo extends Observable implements IObserver{
+public class ListaDeRegalo implements ObserverSP{
 	private static int maxIntegrantes = 10;
 		
 	private int IdLista; //Identity en la base.
@@ -47,9 +47,13 @@ public class ListaDeRegalo extends Observable implements IObserver{
 	
 	
 	
-	public String addUser(Participante user){	
+	//public String addUser(Participante user){	
+		public String addUser(Usuario user){
+			
+			//a partir de aca, se genera con el usuario, el participante
 		if (this.usuarios.size() <= maxIntegrantes){
 			this.usuarios.add(user);
+			
 			AdmPerListaDeRegalo.getInstancia().insertParticipantesALista(this,user);
 			return "Usuario añadido!";
 		}else{
