@@ -59,9 +59,7 @@ public class AgregarParticipante {
 		JButton btnAgPart = new JButton("Agregar participante");
 		btnAgPart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ControladorDeLista.getInstancia().getListaAdm().addUser(
-						ControladorDeLista.getInstancia().crearParticipante(
-								ControladorDeLista.getInstancia().getListaAdm().getIdLista(), comboBox.getSelectedItem().toString(), false, false));
+				ControladorDeLista.getInstancia().getListaAdm().addParticipante(ControladorDeUsuarios.getInstancia().getUsuario(comboBox.getSelectedItem().toString()), false);
 				frame.dispose();
 			}
 		});

@@ -13,15 +13,14 @@ public class ListaDeRegalo implements ObserverSP{
 	private String nombre;
 	private Date vigencia;
 	private String agasajado;
-	private List<Participante> usuarios; 
+	private List<Participante> participantes; 
 	private float monto;
 	private boolean estado;
 	private boolean activo;
 	private float montoPorParticipante;
 	
-
+	//Metodo para crear la lista e instertarla en la base de datos.
 	public ListaDeRegalo (String nombre , Date vigencia , String agasajado, float monto, boolean estado, boolean activo,float montoPorParticipante){
-		
 		setNombre(nombre);
 		setVigencia(vigencia);
 		setAgasajado(agasajado);
@@ -29,38 +28,54 @@ public class ListaDeRegalo implements ObserverSP{
 		setMontoPorParticipante(montoPorParticipante);
 		setEstado(false);
 		setActivo(activo);
-		this.usuarios = new ArrayList<Participante>();
+		this.participantes = new ArrayList<Participante>();
+		setIdLista(AdmPerListaDeRegalo.getInstancia().insert(this));
 	}
 	
-	//Sobrecarga del constructor para cuando se lean usuarios de la base
-	public ListaDeRegalo (int IdLista, String nombre , Date vigencia , String agasajado, float monto,boolean estado, boolean activo, float montoPorParticipante){
-		setIdLista(IdLista);
+	//Metodo que genera la lista cuando se busco en la base de datos.
+	public ListaDeRegalo (int IdLista, String nombre , Date vigencia , String agasajado, float monto, boolean estado, boolean activo,float montoPorParticipante){
 		setNombre(nombre);
 		setVigencia(vigencia);
 		setAgasajado(agasajado);
 		setMonto(monto);
-		setEstado(estado);	
-		setActivo(activo);
 		setMontoPorParticipante(montoPorParticipante);
-		this.usuarios = new ArrayList<Participante>();
+		setEstado(false);
+		setActivo(activo);
+		this.participantes = new ArrayList<Participante>();
+		setIdLista(IdLista);
+	}
+	
+
+	public void updateLista() {
+		AdmPerListaDeRegalo.getInstancia().update(this);
+	}
+	
+	public void deleteLista() {
+		AdmPerListaDeRegalo.getInstancia().delete(this);
+		AdmPerListaDeRegalo.getInstancia().deleteParticipantes(this);
 	}
 	
 	
-	
-	//public String addUser(Participante user){	
-		public String addUser(Usuario user){
-			
-			//a partir de aca, se genera con el usuario, el participante
-		if (this.usuarios.size() <= maxIntegrantes){
-			this.usuarios.add(user);
-			
-			AdmPerListaDeRegalo.getInstancia().insertParticipantesALista(this,user);
+	public String addParticipante(Usuario user, boolean isAdmin){
+		Participante p = new Participante(user,isAdmin);
+		if (this.participantes.size() <= maxIntegrantes){
+			this.participantes.add(p);
+			AdmPerListaDeRegalo.getInstancia().insertParticipante(this,p);
 			return "Usuario añadido!";
 		}else{
 			return "Limite de usuarios alcanzado!";	
 		}
 	}
-
+	
+	public void updateParticipante(Participante p) {
+		AdmPerListaDeRegalo.getInstancia().updateParticipante(this, p);
+	}
+	
+	public void deleteParticipante(Participante p) {
+		AdmPerListaDeRegalo.getInstancia().deleteParticipante(this, p);
+	}
+	
+	
 	
 	//Getters and Setters.
 	public String getNombre() {
@@ -114,26 +129,28 @@ public class ListaDeRegalo implements ObserverSP{
 	}
 	
 	//Devuelve la lista de usuarios.
-	public List<Participante> getUsuarios() {
-		return usuarios;
+	public List<Participante> getParticipantes() {
+		return participantes;
 	}
 	
-	//Devuelve la lista de mails de usuarios.
-	public List<String> getMailParticipantes(){
-		List<String> result = new ArrayList<String>();
-		for (Participante p : usuarios){
-			result.add(p.getMailUsuario());
-		}
-		return result;
-	}
 	
+	//Devuelve el participante administrador.
 	public Participante getAdminLista(){
-		for (Participante p : usuarios){
+		for (Participante p : participantes){
 			if (p.isAdmin())
 				return p;
 		}
 		return null;
 	}
+	
+	public Participante getParticipante(Usuario usuario) {
+		for (Participante p : participantes){
+			if (p.getUsuario().getIdUsuario() == usuario.getIdUsuario())
+				return p;
+		}
+		return null;
+	}
+	
 	
 	public boolean getEstado() {
 		return estado;

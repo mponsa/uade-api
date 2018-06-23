@@ -30,33 +30,56 @@ public class ControladorDeLista {
 	
 	public void crearLista (String nombre , Date vigencia , String agasajado, float monto,boolean estado, boolean activo, float montoPorParticipante) {
 		ListaDeRegalo lista = new ListaDeRegalo(nombre,vigencia,agasajado,monto,estado,activo,montoPorParticipante);
-		AdmPerListaDeRegalo.getInstancia().insert(lista);
 		//Inserta el participante a la lista, la tenemos que traer de vuelta de memoria para recuperar el ID que genero la base.
-		lista.setIdLista(AdmPerListaDeRegalo.getInstancia().getListaDeRegalo(lista.getNombre()).getIdLista());
-		lista.addUser(new Participante(lista.getIdLista(),ControladorDeUsuarios.getInstancia().getAdm().getMail(),true,false));
+		lista.addParticipante(ControladorDeUsuarios.getInstancia().getAdm(),true);
+		//Agregamos la lista al controlador.
 		listas.add(lista);
 	}
 	
 	
-	public void modificarLista(ListaDeRegalo l) {
-		AdmPerListaDeRegalo.getInstancia().update(l);
+	public void updateLista(ListaDeRegalo l) {
+		l.updateLista();;
 	}
 	
-	public void eliminarLista(ListaDeRegalo l) {
-		AdmPerListaDeRegalo.getInstancia().delete(l);
-	}
-	
-	public ListaDeRegalo getListaDeRegalo(String nombre){;
+	public void deleteLista(ListaDeRegalo l) {
+		//Eliminamos la lista del controlador si existe.
 		for (ListaDeRegalo lista : listas) {
-			if (lista.getNombre().equals(nombre)){
+			if (lista.getIdLista() == l.getIdLista()) {
+				listas.remove(l);
+			}
+		}
+		l.deleteLista();;
+	}
+	
+	public ListaDeRegalo getListaDeRegalo(int id){;
+		for (ListaDeRegalo lista : listas) {
+			if (lista.getIdLista() == id){
 				return lista;
 			}
 		}
-		ListaDeRegalo a = AdmPerListaDeRegalo.getInstancia().getListaDeRegalo(nombre);
-		if (a!=null)
+		ListaDeRegalo a = AdmPerListaDeRegalo.getInstancia().getListaDeRegalo(id);
+		if (a!=null) {
+			//Agrega la lista al controlador.
+			listas.add(a);
 			return a;
+		}
 		return null;
 	}
+	
+	public ListaDeRegalo getListaDeRegalo(String nombre){;
+	for (ListaDeRegalo lista : listas) {
+		if (lista.getNombre().equals(nombre)){
+			return lista;
+		}
+	}
+	ListaDeRegalo a = AdmPerListaDeRegalo.getInstancia().getListaDeRegalo(nombre);
+	if (a!=null) {
+		//Agrega la lista al controlador.
+		listas.add(a);
+		return a;
+	}
+	return null;
+}
 	
 	
 	//Devuelve los nombres de las listas administradas por un usuario.
@@ -104,7 +127,13 @@ public class ControladorDeLista {
 		this.listaAdm = lista;
 	}
 	
-	public Participante crearParticipante(int idLista, String mailUsuario, boolean IsAdmin, boolean pagado){
-		return new Participante(idLista,mailUsuario,IsAdmin,pagado);
+	public List<String> getMailParticipantes(ListaDeRegalo lista) {
+		List<String> result = new ArrayList<String>();
+		for (Participante p : lista.getParticipantes()) {
+			result.add(p.getUsuario().getMail());
+		}
+		return result;
 	}
+	
+	
 }

@@ -7,21 +7,11 @@ public class Participante {
 	private boolean Pagado;
 	private boolean IsAdmin;
 	private boolean Activo;
-	
 	private Usuario usuario;//agregar solo aca y no en la base
 	
-	public Participante(int idLista, String mailUsuario, boolean IsAdmin){
-		setIdLista(idLista);
-		setMailUsuario(mailUsuario);
-		setPagado(false);
-		setActivo(true);
-	}
-	
-	public Participante(int idLista, String mailUsuario, boolean IsAdmin, boolean pagado){
-		setIdLista(idLista);
-		setMailUsuario(mailUsuario);
+	public Participante(Usuario usuario,boolean IsAdmin){
 		setAdmin(IsAdmin);
-		setPagado(pagado);
+		setPagado(false);
 		setActivo(true);
 	}
 	
@@ -32,21 +22,6 @@ public class Participante {
 		Pagado = pagado;
 	}
 
-	public int getIdLista() {
-		return IdLista;
-	}
-	public void setIdLista(int idLista) {
-		IdLista = idLista;
-	}
-
-	public String getMailUsuario() {
-		return MailUsuario;
-	}
-
-	public void setMailUsuario(String mailUsuario) {
-		MailUsuario = mailUsuario;
-	}
-	
 	public boolean isAdmin() {
 		return IsAdmin;
 	}
@@ -61,6 +36,14 @@ public class Participante {
 	
 	public boolean isActivo() {
 		return this.Activo;
+	}
+	
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	public Usuario getUsuario() {
+		return this.usuario;
 	}
 
 }

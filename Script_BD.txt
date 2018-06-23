@@ -50,12 +50,11 @@ GO
 
 	CREATE TABLE dbo.Participantes(
 			IdLista int  foreign  key references dbo.ListaDeRegalo (IdLista),
-			MailUsuario varchar(30) foreign  key references dbo.Usuarios (Mail),
+			IdUsuario int foreign key references dbo.Usuarios (IdUsuario),
 			IsAdmin BIT not null,
 			Pagado BIT not null,
 			Activo BIT not null,
-		
-
+	
 			CONSTRAINT pk_participante PRIMARY KEY (IdLista, MailUsuario)
 	)
 
@@ -92,20 +91,3 @@ GO
 
 
 --El id lista al ser un Identity, no tengo manera de saber de antemano cual debo poner, por ello uso los selects anidados
-
-INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Manu'), 'dmalag@gmail.com', 1, 0)
-GO
-INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Manu'), 'mferchu@gmail.com', 0, 0)
-GO
-INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Manu'), 'mponsa@gmail.com', 0, 0)
-GO
-INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Manu'), 'pmarquez@uade.edu.ar', 0, 0)
-GO
-INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Nico'), 'mferchu@gmail.com', 0, 0)
-GO
-INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Nico'), 'mponsa@gmail.com', 1, 0)
-GO
-INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Nico'), 'parg@yahoo.com', 0, 0)
-GO
-INSERT [dbo].[Participantes]  VALUES ((select idLista from ListaDeRegalo where nombre = 'Cumple Nico'), 'vguzman@hotmail.com', 0, 0)
-GO
