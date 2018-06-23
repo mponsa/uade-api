@@ -3,6 +3,7 @@ package controlador;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import model.Pago;
 public class ControladorDePagos {
 	
 	private static ControladorDePagos instancia;
+	SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
 
 	public static ControladorDePagos getInstancia(){
 		if (instancia == null) {
@@ -33,9 +35,14 @@ public class ControladorDePagos {
 	    	String cadena;
 	        FileReader f = new FileReader("Pagos.txt");
 	        BufferedReader b = new BufferedReader(f);
+	        
 	        while((cadena = b.readLine())!=null) {
 	        	String[] partes = cadena.split(";");
-	            Pago p = new Pago(Float.parseFloat(partes[0]),partes[1],Integer.parseInt(partes[2]),partes[3]);
+	        	
+	            Pago p = new Pago(Float.parseFloat(partes[0])
+	            		,formatter.parse(partes[1]),
+	            		Integer.parseInt(partes[2]),
+	            		partes[3]);
 	            
 	            pagos.add(p);
 	            

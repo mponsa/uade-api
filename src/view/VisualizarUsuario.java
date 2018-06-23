@@ -168,10 +168,5 @@ public class VisualizarUsuario {
 		}
 	}
 	
-	//Recorre el TextArea y lo completa con los participantes.
-	void setearParticipantes(JTextArea textArea){
-		for(String str : ControladorDeLista.getInstancia().getListaAdm().getMailParticipantes()){
-			textArea.append(str + "\n");
-		}
-	}
+
 }

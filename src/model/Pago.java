@@ -5,13 +5,13 @@ import java.util.Date;
 public class Pago {
 
 	private float Monto;
-	private String Fecha;
+	private Date Fecha;
 	private int IdLista;
 	private String MailUsuario;
 	
 	public Pago(){}
 	
-	public Pago(float monto, String fecha, int idLista, String mailUsuario){
+	public Pago(float monto, Date fecha, int idLista, String mailUsuario){
 		setMonto(monto);
 		setFecha(fecha);
 		setIdLista(idLista);
@@ -24,10 +24,10 @@ public class Pago {
 	public void setMonto(float monto) {
 		Monto = monto;
 	}
-	public String getFecha() {
+	public Date getFecha() {
 		return Fecha;
 	}
-	public void setFecha(String fecha) {
+	public void setFecha(Date fecha) {
 		Fecha = fecha;
 	}
 	public int getIdLista() {

@@ -49,8 +49,7 @@ public class ControladorDeUsuarios {
 	 * @param aa Activo - Estado activo para recuperar o no en la base de datos.
 	 */
 	public void crearUsuario(String n, String a, Date f, String m, String p, boolean aa) {
-		Usuario user = new Usuario(n,a,f,m,p,aa);
-		AdmPerUsuario.getInstancia().insert(user);
+		usuarios.add(new Usuario(n,a,f,m,p,aa));
 	}
 	
 	/***
@@ -84,19 +83,39 @@ public class ControladorDeUsuarios {
 		return mails;
 	}
 	
-	public Usuario getUsuario(String email) {
+	public Usuario getUsuario(int id) {
 		for (Usuario a : usuarios) {
-			if (a.getMail().equals(email)) {
+			if (a.getIdUsuario() == id) {
 				return a;
 			}
 		}
 		//Si no se encontro en la memoria del controlador, se busca en la base de datos.
-		Usuario a = AdmPerUsuario.getInstancia().getUsuario(email);
+		Usuario a = AdmPerUsuario.getInstancia().getUsuario(id);
 		if (a!=null) {
+			//Agrego a la lista de usuarios el usuario.
+			this.usuarios.add(a);
 			return a;
 		}
 		return null;
 	}
+	
+	public Usuario getUsuario(String mail) {
+		for (Usuario a : usuarios) {
+			if (a.getMail().equals(mail)) {
+				return a;
+			}
+		}
+		//Si no se encontro en la memoria del controlador, se busca en la base de datos.
+		Usuario a = AdmPerUsuario.getInstancia().getUsuario(mail);
+		if (a!=null) {
+			//Agrego a la lista de usuarios el usuario.
+			this.usuarios.add(a);
+			return a;
+		}
+		return null;
+	}
+	
+	
 	
 	public Usuario getAdm() {
 		return adm;

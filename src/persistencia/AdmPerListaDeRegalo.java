@@ -27,7 +27,8 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 	}
 	
 	@Override
-	public void insert(Object o) {
+	public int insert(Object o) {	
+		int key = -1;
 		try
 		{
 			ListaDeRegalo a = (ListaDeRegalo)o;
@@ -43,11 +44,19 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			s.setFloat(7,a.getMontoPorParticipante());
 			s.execute();
 			PoolConnection.getPoolConnection().realeaseConnection(con);
+			//Devuelve la clave generada en la tabla Lista
+			ResultSet rs = s.getGeneratedKeys();
+			if(rs.next()) {
+				key = rs.getInt(1);
+			}
+			
 		}
 		catch (Exception e)
 		{
 			System.out.println("Mensaje Error: " + e.getMessage());
 		}
+	
+		return key;
 	}
 
 	@Override
@@ -94,8 +103,6 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			s.setInt(2, a.getIdLista());
 			s.execute();
 			PoolConnection.getPoolConnection().realeaseConnection(con);
-			//Realiza el borrado de las listas.
-			this.deleteParticipantes(a);
 		}
 		catch (Exception e)
 		{
@@ -103,10 +110,69 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		}
 	}
 	
-	public ListaDeRegalo getListaDeRegalo(int id){
-		ListaDeRegalo a = null;
-		Participante part = null;
+	public void insertParticipante(ListaDeRegalo l, Participante p){
+		try{
+				Connection con = PoolConnection.getPoolConnection().getConnection();
+				PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Participantes] values (?,?,?,?,?)");
+				s.setInt(1, l.getIdLista());
+				s.setInt(2, p.getUsuario().getIdUsuario());
+				s.setBoolean(3,p.isAdmin());
+				s.setBoolean(4, p.isPagado());
+				s.setBoolean(5, p.isActivo());
+				s.execute();
+				PoolConnection.getPoolConnection().realeaseConnection(con);
+		}catch(Exception e){
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
 		
+	}
+	
+	public void updateParticipante(ListaDeRegalo l, Participante p){
+		try {
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[Participantes] set Pagado = ? where IdLista = ? AND IdUsuario = ?");
+			s.setBoolean(1,p.isPagado());
+			s.setInt(2, l.getIdLista());
+			s.setInt(3, p.getUsuario().getIdUsuario());
+			s.execute();
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+		}catch(Exception e) {
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+	}
+	
+	public void deleteParticipante(ListaDeRegalo l, Participante p) {
+		try {
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[Participantes] set Activo = ? where IdLista = ? AND IdUsuario = ?");
+			s.setBoolean(1,p.isActivo());
+			s.setInt(2, l.getIdLista());
+			s.setInt(3, p.getUsuario().getIdUsuario());
+			s.execute();
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+		}catch(Exception e) {
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+	}
+	
+	//Setea como inactivos todos los participantes de una lista de regalo. Utilizado cuando se borra una lista.
+	public void deleteParticipantes(ListaDeRegalo l){
+		try {
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[Participantes] set Activo = ? where IdLista = ?");
+			s.setBoolean(1,false);
+			s.setInt(2, l.getIdLista());
+			s.execute();
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+		}catch(Exception e) {
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+	}
+	
+
+	//Trae una lista de la BD por ID..
+	public ListaDeRegalo getListaDeRegalo(int id){
+		ListaDeRegalo a = null;	
 		try {
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			
@@ -131,13 +197,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			p.setInt(1, a.getIdLista());
 			ResultSet resultP = p.executeQuery();
 			while(resultP.next()) {
-				part = new Participante(
-						resultP.getInt(1),
-						resultP.getString(2),
-						resultP.getBoolean(3),
-						resultP.getBoolean(4)
-						);
-				a.addUser(part);
+				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3));
 			}
 			
 			PoolConnection.getPoolConnection().realeaseConnection(con);
@@ -150,9 +210,9 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		return null;
 	}
 	
-	public ListaDeRegalo getListaDeRegalo(String nombre) {
-		ListaDeRegalo a = null;
-		Participante part = null;
+	//Trae una lista de la BD por nombre
+	public ListaDeRegalo getListaDeRegalo(String nombre){
+		ListaDeRegalo a = null;	
 		try {
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			
@@ -170,115 +230,26 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 						,result.getBoolean(6)
 						,result.getBoolean(7)
 						,result.getFloat(8));
-			}	
+			}
 			
 			//Luego me traigo los participantes de dicha lista
 			PreparedStatement p = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where IdLista = ?");
 			p.setInt(1, a.getIdLista());
 			ResultSet resultP = p.executeQuery();
 			while(resultP.next()) {
-				part = new Participante(
-						resultP.getInt(1),
-						resultP.getString(2),
-						resultP.getBoolean(3),
-						resultP.getBoolean(4)
-						);
-				a.addUser(part);
+				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3));
 			}
 			
-			
 			PoolConnection.getPoolConnection().realeaseConnection(con);
-				
+			
 			return a;
-				
 			
 		}catch(Exception e) {
 			System.out.println("Mensaje Error: " + e.getMessage());
 		}
 		return null;
 	}
-	
-	public void insertParticipantesALista(ListaDeRegalo l){
-		try{
-			for (Participante p : l.getUsuarios()) {
-				Connection con = PoolConnection.getPoolConnection().getConnection();
-				PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Participantes] values (?,?,?,?,?)");
-				s.setInt(1, p.getIdLista());
-				s.setString(2, p.getMailUsuario());
-				s.setBoolean(3,p.isAdmin());
-				s.setBoolean(4, p.isPagado());
-				s.setBoolean(5, p.isActivo());
-				s.execute();
-				PoolConnection.getPoolConnection().realeaseConnection(con);
-			}
-			
-		}catch(Exception e){
-			System.out.println("Mensaje Error: " + e.getMessage());
-		}
-		
-	}
-	
-	public void insertParticipantesALista(ListaDeRegalo l, Participante p){
-		try{
-			
-				Connection con = PoolConnection.getPoolConnection().getConnection();
-				PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Participantes] values (?,?,?,?,?)");
-				s.setInt(1, l.getIdLista());
-				s.setString(2, p.getMailUsuario());
-				s.setBoolean(3,p.isAdmin());
-				s.setBoolean(4, p.isPagado());
-				s.setBoolean(5, p.isActivo());
-				s.execute();
-				PoolConnection.getPoolConnection().realeaseConnection(con);
-			
-			
-		}catch(Exception e){
-			System.out.println("Mensaje Error: " + e.getMessage());
-		}
-		
-	}
-	
-	public void updateParticipante(ListaDeRegalo l, Participante p){
-		try {
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[Participantes] set Pagado = ? where IdLista = ? AND MailUsuario = ?");
-			s.setBoolean(1,p.isPagado());
-			s.setInt(2, l.getIdLista());
-			s.setString(3, p.getMailUsuario());
-			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
-		}catch(Exception e) {
-			System.out.println("Mensaje Error: " + e.getMessage());
-		}
-	}
-	
-	public void deleteParticipante(ListaDeRegalo l, Participante p) {
-		try {
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[Participantes] set Activo = ? where IdLista = ? AND MailUsuario = ?");
-			s.setBoolean(1,p.isActivo());
-			s.setInt(2, l.getIdLista());
-			s.setString(3, p.getMailUsuario());
-			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
-		}catch(Exception e) {
-			System.out.println("Mensaje Error: " + e.getMessage());
-		}
-	}
-	
-	public void deleteParticipantes(ListaDeRegalo l){
-		try {
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[Participantes] set Activo = ? where IdLista = ?");
-			s.setBoolean(1,false);
-			s.setInt(2, l.getIdLista());
-			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
-		}catch(Exception e) {
-			System.out.println("Mensaje Error: " + e.getMessage());
-		}
-	}
-	
+
 	
 	//Devuelve las listas administradas por un usuario
 	public List<ListaDeRegalo> getListasAdm(Usuario user) {

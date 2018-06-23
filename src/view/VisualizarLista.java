@@ -132,7 +132,7 @@ public class VisualizarLista {
 				calendar.set(Integer.parseInt(vigenciaAñoText.getText()),Integer.parseInt(vigenciaMesText.getText()) - 1,Integer.parseInt(vigenciaDiaText.getText()));
 				Date date = calendar.getTime();
 				ControladorDeLista.getInstancia().getListaAdm().setVigencia(new java.sql.Date(date.getTime()));
-				ControladorDeLista.getInstancia().modificarLista(ControladorDeLista.getInstancia().getListaAdm());
+				ControladorDeLista.getInstancia().updateLista(ControladorDeLista.getInstancia().getListaAdm());
 				
 				//Actualizamos los combos del administrador.
 				AdmListas.getInstancia().borrarCombos();
@@ -149,7 +149,7 @@ public class VisualizarLista {
 		JButton btnEliminarLista = new JButton("Eliminar lista");
 		btnEliminarLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ControladorDeLista.getInstancia().eliminarLista(ControladorDeLista.getInstancia().getListaAdm());
+				ControladorDeLista.getInstancia().deleteLista(ControladorDeLista.getInstancia().getListaAdm());
 				AdmListas.getInstancia().borrarCombos();
 				AdmListas.getInstancia().actualizarCombos();
 				frame.dispose();
@@ -251,7 +251,7 @@ public class VisualizarLista {
 	
 	//Recorre el TextArea y lo completa con los participantes.
 	void setearParticipantes(JTextArea textArea){
-		for(String str : ControladorDeLista.getInstancia().getListaAdm().getMailParticipantes()){
+		for(String str : ControladorDeLista.getInstancia().getMailParticipantes(ControladorDeLista.getInstancia().getListaAdm())){
 			textArea.append(str + "\n");
 		}
 	}

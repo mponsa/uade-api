@@ -29,7 +29,8 @@ private static AdmPerUsuario instancia;
 	}
 	
 	@Override
-	public void insert(Object o) {
+	public int insert(Object o) {
+		int key = -1;
 		try
 		{
 			Usuario a = (Usuario)o;
@@ -42,15 +43,20 @@ private static AdmPerUsuario instancia;
 			s.setString(4, a.getMail());
 			s.setString(5,a.getPassword());
 			s.setBoolean(6, a.getActivo());
-
 			s.execute();
+			
+			ResultSet rs = s.getGeneratedKeys();
+			if(rs.next()) {
+				key = rs.getInt(1);
+			}
+	
 			PoolConnection.getPoolConnection().realeaseConnection(con);
 		}
 		catch (Exception e)
 		{
 			System.out.println("Mensaje Error: " + e.getMessage());
 		}
-		
+		return key;
 	}
 
 	@Override
@@ -147,11 +153,28 @@ private static AdmPerUsuario instancia;
 		return null;
 	}
 	
+	public Usuario getUsuario(int id){
+		Usuario a = null;
+		try {
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Usuarios] where IdUsuario = ?");
+			s.setInt(1, id);
+			ResultSet result = s.executeQuery();
+			while(result.next()) {
+				a = new Usuario(result.getInt(1),result.getString(2),result.getString(3),result.getDate(4),result.getString(5),result.getString(6),result.getBoolean(7));
+				return a;
+			}
+		}catch(Exception e) {
+			System.out.println();
+		}
+		return null;
+	}
+	
 	public Usuario getUsuario(String mail){
 		Usuario a = null;
 		try {
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Usuarios] where mail = ?");
+			PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Usuarios] where Mail = ?");
 			s.setString(1, mail);
 			ResultSet result = s.executeQuery();
 			while(result.next()) {

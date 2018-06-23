@@ -2,6 +2,8 @@ package model;
 
 import java.util.Date;
 
+import persistencia.AdmPerUsuario;
+
 public class Usuario {
 
 	private int IdUsuario; //Identity en la base
@@ -22,6 +24,7 @@ public class Usuario {
 		this.setMail(m);
 		this.setPassword(p);
 		this.setActivo(aa);
+		this.setIdUsuario(AdmPerUsuario.getInstancia().insert(this));
 	}
 	
 	
