@@ -14,7 +14,7 @@ import model.Pago;
 import observer.ObserverSP;
 import persistencia.PoolConnection;
 
-public class DeamonPagos extends Thread implements ObserverSP{
+public class DeamonPagos extends Thread{
 	
 	public DeamonPagos () throws InterruptedException{}
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
@@ -120,10 +120,6 @@ public class DeamonPagos extends Thread implements ObserverSP{
 	}
 	
 	
-	@Override
-	public void noti() {
-		// TODO Auto-generated method stub
-		
-	}
+
 	
 }
