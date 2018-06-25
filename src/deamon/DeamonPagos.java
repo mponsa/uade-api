@@ -15,7 +15,7 @@ import observer.ObserverSP;
 import persistencia.AdmPerListaDeRegalo;
 import persistencia.PoolConnection;
 
-public class DeamonPagos extends Thread implements ObserverSP{
+public class DeamonPagos extends Thread{
 	
 	public DeamonPagos () throws InterruptedException{}
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyymmdd");
@@ -27,67 +27,56 @@ public class DeamonPagos extends Thread implements ObserverSP{
 			
 			//Al iniciar, tengo que verificar que haya un archivo de pagos
 			File archivo = new File("Pagos.txt");
-			try 
-		    {
-				//Si existe el archivo, leo todas las lineas
-				if(archivo.exists()){
-					
-					List<Pago> pagos = new ArrayList<Pago>();
-				    
-				    	String linea;
-				        FileReader f = new FileReader("Pagos.txt");
-				        BufferedReader b = new BufferedReader(f);
-				        
-				        while((linea = b.readLine())!=null) {
-				        	
-				        	//Parseo cada linea e instancio una clase pago
-				        	String[] partes = linea.split(";");
-				        	
-				            Pago p = new Pago(
-				            		Integer.parseInt(partes[0]),
-				            		partes[1],
-				            		Float.parseFloat(partes[2])
-				            		,formatter.parse(partes[3]));
-				            
-							//Actualizar al participante y la lista
-				            AdmPerListaDeRegalo.getInstancia().resgistrarPago(p);
-				            
-				            AdmPerListaDeRegalo.getInstancia().actualizarMontoLista(p);
-				            
-				            //TODO: Aun no se que haremos con esta lista
-				            pagos.add(p);
-				        }
-				        b.close();
-	
-				      //Mover el archivo original a una carpeta de historicos, renombrandolo
-				        boolean t = archivo.renameTo(new File("HistoricoPagos/Pagos" + new SimpleDateFormat("yyyymmddhhmm").format(new Date().getTime()) +".txt"));
-						 
-						 if(t)
-							 archivo.delete();
-				}
+			
+			//Si existe el archivo, leo todas las lineas
+			if(archivo.exists()){
 				
-				Thread.sleep(60000);
+				List<Pago> pagos = new ArrayList<Pago>();
+			    try 
+			    {
+			    	String linea;
+			        FileReader f = new FileReader("Pagos.txt");
+			        BufferedReader b = new BufferedReader(f);
+			        
+			        while((linea = b.readLine())!=null) {
+			        	
+			        	//Parseo cada linea e instancio una clase pago
+			        	String[] partes = linea.split(";");
+			        	
+			            Pago p = new Pago(
+			            		Integer.parseInt(partes[0]),
+			            		partes[1],
+			            		Float.parseFloat(partes[2])
+			            		,formatter.parse(partes[3]));
+			            
+						//Actualizar al participante y la lista
+			            AdmPerListaDeRegalo.getInstancia().resgistrarPago(p);
+			            AdmPerListaDeRegalo.getInstancia().actualizarMontoLista(p);
+			            
+			            //TODO: Aun no se que haremos con esta lista
+			            pagos.add(p);
+			        }
+			        b.close();
+
+			      //Mover el archivo original a una carpeta de historicos, renombrandolo
+			        boolean t = archivo.renameTo(new File("HistoricoPagos/Pagos" + new SimpleDateFormat("yyyyMMddhhmm").format(new Date().getTime()) +".txt"));
 					 
-		    } 
+					 if(t)
+						 archivo.delete();
+			        
+					 Thread.sleep(60000);
+					 
+			     } 
 			    catch (Exception e) 
 			     {
 						System.out.println("Mensaje Error: " + e.getMessage());
 						System.out.println("Stack Trace: " + e.getStackTrace());
 			     }
-			
+			}
 
 						
 		}
 		
 	}
 
-	
-	
-	
-	@Override
-	public void noti() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }
