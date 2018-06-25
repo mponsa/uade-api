@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.ListaDeRegalo;
+import model.Pago;
 import model.Participante;
 import model.Usuario;
 
@@ -290,6 +291,92 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		}else {
 			return result;
 		}
+	}
+	
+	public List<ListaDeRegalo> getListasCalendar(int cantDias){
+		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
+		ListaDeRegalo a = null;	
+		try {
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			
+			//Traigo la lista
+			PreparedStatement s = con.prepareStatement("SELECT * FROM [API_GRUPO_25].[dbo].[ListaDeRegalo] WHERE datediff(DD, getDate(),Vigencia ) <  ?"+
+														" AND Estado = 0 AND Activo = 1");
+			s.setInt(1, cantDias);
+			ResultSet resultS = s.executeQuery();
+			while(resultS.next()) {
+				a = new ListaDeRegalo(
+						resultS.getInt(1)
+						,resultS.getString(2)
+						,resultS.getDate(3)
+						,resultS.getString(4)
+						,resultS.getFloat(5)
+						,resultS.getBoolean(6)
+						,resultS.getBoolean(7)
+						,resultS.getFloat(8));
+			}
+			
+			//Luego me traigo los participantes de dicha lista
+			PreparedStatement p = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where IdLista = ?");
+			p.setInt(1, a.getIdLista());
+			ResultSet resultP = p.executeQuery();
+			while(resultP.next()) {
+				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3));
+			}
+			
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+			
+			result.add(a);
+			
+		}catch(Exception e) {
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+		
+		return result;
+	}
+	
+	public void resgistrarPago(Pago p){
+		try
+		{
+			Connection con = PoolConnection.getPoolConnection().getConnection();		
+			PreparedStatement s = con.prepareStatement("UPDATE [API_GRUPO_25].[dbo].[Participantes] " +
+					"SET Pagado = 1 " +
+					"WHERE IdLista = ? " +
+					" AND IdUsuario = (SELECT IdUsuario FROM [API_GRUPO_25].[dbo].[Usuarios] WHERE Mail = ? )");
+
+			//agregar campos
+			s.setInt(1,p.getIdLista());
+			s.setString(2, p.getMailUsuario());
+
+			s.execute();
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+
+		}catch (Exception e)
+		{
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+	}
+	
+	public void actualizarMontoLista(Pago p){
+
+		try{
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			PreparedStatement s = con.prepareStatement("UPDATE [API_GRUPO_25].[dbo].[ListaDeRegalo] " +
+					"SET Monto += ? " +
+					"WHERE IdLista = ? ");
+			
+			
+			//agregar campos
+			s.setInt(1,p.getIdLista());
+			
+			s.execute();
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+			
+		}catch (Exception e)
+		{
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+		
 	}
 
 }

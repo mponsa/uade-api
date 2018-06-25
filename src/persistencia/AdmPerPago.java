@@ -50,6 +50,8 @@ public class AdmPerPago extends AdministradorPersistencia {
 	
 		return key;
 	}
+	
+	
 
 	@Override
 	public void update(Object o) {
