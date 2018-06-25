@@ -2,20 +2,25 @@ package model;
 
 import java.util.Date;
 
+import persistencia.AdmPerPago;
+
 public class Pago {
 
-	private float Monto;
-	private Date Fecha;
+	private int IdPago;
 	private int IdLista;
 	private String MailUsuario;
+	private float Monto;
+	private Date Fecha;
+	
 	
 	public Pago(){}
 	
-	public Pago(float monto, Date fecha, int idLista, String mailUsuario){
+	public Pago(int idLista, String mailUsuario,float monto, Date fecha){
 		setMonto(monto);
 		setFecha(fecha);
 		setIdLista(idLista);
 		setMailUsuario(mailUsuario);
+		setIdPago(AdmPerPago.getInstancia().insert(this));
 	}
 	
 	public float getMonto() {
@@ -41,5 +46,13 @@ public class Pago {
 	}
 	public void setMailUsuario(String mailUsuario) {
 		this.MailUsuario = mailUsuario;
+	}
+
+	public int getIdPago() {
+		return IdPago;
+	}
+
+	public void setIdPago(int idPago) {
+		IdPago = idPago;
 	}
 }

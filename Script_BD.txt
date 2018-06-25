@@ -30,7 +30,7 @@ GO
 		Pass VARCHAR(20) not null,
 		Activo BIT not null,
 
-		CONSTRAINT pk_usuarios PRIMARY KEY (Mail)
+		CONSTRAINT pk_usuarios PRIMARY KEY (IdUsuario)
 	)
 
 	CREATE TABLE dbo.ListaDeRegalo
@@ -58,7 +58,16 @@ GO
 			CONSTRAINT pk_participante PRIMARY KEY (IdLista, MailUsuario)
 	)
 
+	CREATE TABLE dbo.Pagos(
+		IdPago INT IDENTITY(1,1),
+		IdLista INT not null,
+		MailUsuario VARCHAR(30) not null,
+		Monto DECIMAL not null, 
+		Fecha DATETIME not null,
+		
 
+		CONSTRAINT pk_pagos PRIMARY KEY (IdPago)
+	)
 
 
 --Inserts

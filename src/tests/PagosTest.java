@@ -2,23 +2,43 @@ package tests;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
+import java.io.File;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 
-import controlador.ControladorDePagos;
-import model.Pago;
-
 public class PagosTest {
 
+		
 	@Test
-	public void testGetPagos(){
+	public void testLeerArhivo(){
 		
-		ControladorDePagos cp = ControladorDePagos.getInstancia();
+		File archivo = new File("Pagos.txt");
 		
-		List<Pago> p = cp.getPagoFromFile();
 		
-		assertTrue(p.size() > 0);
+		
+		assertTrue(archivo.exists() );
+	}
+	
+	@Test
+	public void testCopiarArchivo(){
+		File archivo = new File("Pagos.txt");
+		
+		boolean t = false;
+		try{
+			 t = archivo.renameTo(new File("HistoricoPagos/Pagos" + new SimpleDateFormat("yyyymmddhhmm").format(new Date().getTime()) +".txt"));
+			 
+			 if(t)
+				 archivo.delete();
+		 } 
+	    catch (Exception e) 
+	     {
+				System.out.println("Mensaje Error: " + e.getMessage());
+				System.out.println("Stack Trace: " + e.getStackTrace());
+	     }
+		
+		assertTrue(t );
 	}
 	
 }
