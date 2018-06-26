@@ -1,5 +1,5 @@
 jdbc=jdbc:sqlserver://
-servidor=UADE-PC\\SQLEXPRESS:1433
+servidor=DESKTOP-N3VUFLU\\SQLEXPRESS:1424
 usuario=GRUPO_25
 password=GRUPO_25
 conexiones=3

@@ -38,7 +38,7 @@ public class ControladorDeLista {
 	
 	
 	public void updateLista(ListaDeRegalo l) {
-		l.updateLista();;
+		l.updateLista();
 	}
 	
 	public void deleteLista(ListaDeRegalo l) {
@@ -127,6 +127,7 @@ public class ControladorDeLista {
 		this.listaAdm = lista;
 	}
 	
+	
 	public List<String> getMailParticipantes(ListaDeRegalo lista) {
 		List<String> result = new ArrayList<String>();
 		for (Participante p : lista.getParticipantes()) {
@@ -135,5 +136,13 @@ public class ControladorDeLista {
 		return result;
 	}
 	
+
+	public void registrarPago(int IdLista, String mailUser, float monto, Date fecha) {
+		ListaDeRegalo lista = this.getListaDeRegalo(IdLista);
+		Usuario user = ControladorDeUsuarios.getInstancia().getUsuario(mailUser);
+		lista.getParticipante(user).registrarPago(monto, fecha, lista);
+		lista.setMonto(monto);
+		lista.updateLista();
+	}
 	
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import model.Pago;
 
@@ -28,20 +29,21 @@ public class AdmPerPago extends AdministradorPersistencia {
 		{
 			Pago a = (Pago)o;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Pagos] values (?,?,?,?)");
+			PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Pagos] values (?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
 			//agregar campos
-			s.setInt(1,a.getIdLista());
-			s.setString(2, a.getMailUsuario());
+			s.setInt(1,a.getListaDeRegalo().getIdLista());
+			s.setInt(2, a.getParticipante().getUsuario().getIdUsuario());
 			s.setFloat(3,a.getMonto());
 			s.setDate(4,(Date) a.getFecha());
 
 			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
+			
 			//Devuelve la clave generada en la tabla Lista
 			ResultSet rs = s.getGeneratedKeys();
 			if(rs.next()) {
 				key = rs.getInt(1);
 			}
+			PoolConnection.getPoolConnection().realeaseConnection(con);
 			
 		}catch (Exception e)
 		{

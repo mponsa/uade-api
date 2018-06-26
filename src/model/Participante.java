@@ -1,5 +1,9 @@
 package model;
 
+import java.util.Date;
+
+import persistencia.AdmPerListaDeRegalo;
+
 public class Participante {
 	
 	//private int IdLista;
@@ -9,11 +13,18 @@ public class Participante {
 	private boolean Activo;
 	private Usuario usuario;//agregar solo aca y no en la base
 	
-	public Participante(Usuario usuario,boolean IsAdmin){
+	public Participante(ListaDeRegalo lista, Usuario usuario , boolean IsAdmin){
 		setAdmin(IsAdmin);
 		setPagado(false);
 		setActivo(true);
+		setUsuario(usuario);
+		AdmPerListaDeRegalo.getInstancia().insertParticipante(lista, this);
 	}
+	
+	public void updateParticipante(ListaDeRegalo lista) {
+		AdmPerListaDeRegalo.getInstancia().updateParticipante(lista, this);
+	}
+
 	
 	public boolean isPagado() {
 		return Pagado;
@@ -46,4 +57,10 @@ public class Participante {
 		return this.usuario;
 	}
 
+	public void registrarPago(float monto, Date fecha, ListaDeRegalo lista) {
+		new Pago(monto,fecha,lista,this);
+		this.setPagado(true);
+		this.updateParticipante(lista);
+	}
+	
 }

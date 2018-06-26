@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		{
 			ListaDeRegalo a = (ListaDeRegalo)o;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[ListaDeRegalo] values (?,?,?,?,?,?,?)");
+			PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[ListaDeRegalo] values (?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			//agregar campos
 			s.setString(1,a.getNombre());
 			s.setDate(2,(Date) a.getVigencia());
@@ -44,13 +45,12 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			s.setBoolean(6, a.isActivo());
 			s.setFloat(7,a.getMontoPorParticipante());
 			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
 			//Devuelve la clave generada en la tabla Lista
 			ResultSet rs = s.getGeneratedKeys();
 			if(rs.next()) {
 				key = rs.getInt(1);
 			}
-			
+			PoolConnection.getPoolConnection().realeaseConnection(con);
 		}
 		catch (Exception e)
 		{
@@ -74,14 +74,17 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			ListaDeRegalo a = (ListaDeRegalo)o;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[ListaDeRegalo] " +
-					"set Nombre = ?, " +
-					" Vigencia = ? " +
-
+					"set Nombre = ?," +
+					" Vigencia = ?," +
+					" Monto = ?," +
+					" Estado = ? "  +
 					"WHERE IdLista = ?");
 			//agregar campos
 			s.setString(1, a.getNombre());
 			s.setDate(2,(Date) a.getVigencia());
-			s.setInt(3, a.getIdLista());
+			s.setFloat(3, a.getMonto());
+			s.setBoolean(4, a.getEstado());
+			s.setInt(5, a.getIdLista());
 			
 			s.execute();
 			PoolConnection.getPoolConnection().realeaseConnection(con);
@@ -257,8 +260,8 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
 		try {
 		Connection con = PoolConnection.getPoolConnection().getConnection();
-		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where MailUsuario = ? AND isAdmin = '1' AND Activo = '1'");
-		s.setString(1,user.getMail());
+		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where IdUsuario = ? AND isAdmin = '1' AND Activo = '1'");
+		s.setInt(1,user.getIdUsuario());
 		ResultSet resultP = s.executeQuery();
 		while(resultP.next()){
 			result.add(this.getListaDeRegalo(resultP.getInt(1)));
@@ -277,8 +280,8 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
 		try {
 		Connection con = PoolConnection.getPoolConnection().getConnection();
-		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where MailUsuario = ? AND IsAdmin = '0' AND Activo = '1'");
-		s.setString(1,user.getMail());
+		PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where IdUsuario = ? AND IsAdmin = '0' AND Activo = '1'");
+		s.setInt(1,user.getIdUsuario());
 		ResultSet resultP = s.executeQuery();
 		while(resultP.next()){
 			result.add(this.getListaDeRegalo(resultP.getInt(1)));
@@ -335,18 +338,19 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		return result;
 	}
 	
-	public void resgistrarPago(Pago p){
+	public void registrarPago(Pago p){
 		try
 		{
 			Connection con = PoolConnection.getPoolConnection().getConnection();		
 			PreparedStatement s = con.prepareStatement("UPDATE [API_GRUPO_25].[dbo].[Participantes] " +
 					"SET Pagado = 1 " +
+					"SET Monto += ?" +
 					"WHERE IdLista = ? " +
 					" AND IdUsuario = (SELECT IdUsuario FROM [API_GRUPO_25].[dbo].[Usuarios] WHERE Mail = ? )");
 
 			//agregar campos
-			s.setInt(1,p.getIdLista());
-			s.setString(2, p.getMailUsuario());
+			s.setInt(1,p.getListaDeRegalo().getIdLista());
+			s.setInt(2, p.getParticipante().getUsuario().getIdUsuario());
 
 			s.execute();
 			PoolConnection.getPoolConnection().realeaseConnection(con);
@@ -356,27 +360,4 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			System.out.println("Mensaje Error: " + e.getMessage());
 		}
 	}
-	
-	public void actualizarMontoLista(Pago p){
-
-		try{
-			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("UPDATE [API_GRUPO_25].[dbo].[ListaDeRegalo] " +
-					"SET Monto += ? " +
-					"WHERE IdLista = ? ");
-			
-			
-			//agregar campos
-			s.setInt(1,p.getIdLista());
-			
-			s.execute();
-			PoolConnection.getPoolConnection().realeaseConnection(con);
-			
-		}catch (Exception e)
-		{
-			System.out.println("Mensaje Error: " + e.getMessage());
-		}
-		
-	}
-
 }

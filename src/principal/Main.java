@@ -17,8 +17,8 @@ public class Main {
 		DeamonPagos hiloPagos = new DeamonPagos();
 		hiloPagos.start();
 		
-		DeamonVigencia hiloVigencia = new DeamonVigencia();
-		hiloVigencia.start();
+		/*DeamonVigencia hiloVigencia = new DeamonVigencia();
+		hiloVigencia.start();*/
 		
 		//Login start
 		Login window = new Login();

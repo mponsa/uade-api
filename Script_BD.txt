@@ -55,13 +55,13 @@ GO
 			Pagado BIT not null,
 			Activo BIT not null,
 	
-			CONSTRAINT pk_participante PRIMARY KEY (IdLista, MailUsuario)
+			CONSTRAINT pk_participante PRIMARY KEY (IdLista, IdUsuario)
 	)
 
 	CREATE TABLE dbo.Pagos(
 		IdPago INT IDENTITY(1,1),
 		IdLista INT not null,
-		MailUsuario VARCHAR(30) not null,
+		IdUsuario INT not null,
 		Monto DECIMAL not null, 
 		Fecha DATETIME not null,
 		

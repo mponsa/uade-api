@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ private static AdmPerUsuario instancia;
 		{
 			Usuario a = (Usuario)o;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Usuarios] values (?,?,?,?,?,?)");
+			PreparedStatement s = con.prepareStatement("insert into [API_GRUPO_25].[dbo].[Usuarios] values (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
 			//agregar campos
 			s.setString(1,a.getNombre());
 			s.setString(2, a.getApellido());

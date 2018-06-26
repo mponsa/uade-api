@@ -57,10 +57,9 @@ public class ListaDeRegalo implements ObserverSP{
 	
 	
 	public String addParticipante(Usuario user, boolean isAdmin){
-		Participante p = new Participante(user,isAdmin);
 		if (this.participantes.size() <= maxIntegrantes){
+			Participante p = new Participante(this,user,isAdmin);
 			this.participantes.add(p);
-			AdmPerListaDeRegalo.getInstancia().insertParticipante(this,p);
 			return "Usuario añadido!";
 		}else{
 			return "Limite de usuarios alcanzado!";	
@@ -107,7 +106,7 @@ public class ListaDeRegalo implements ObserverSP{
 	}
 
 	public void setMonto(float monto) {
-		this.monto = monto;
+		this.monto += monto;
 	}
 	
 	

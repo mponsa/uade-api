@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import controlador.ControladorDeLista;
 import model.Pago;
 import observer.ObserverSP;
 import persistencia.AdmPerListaDeRegalo;
@@ -31,7 +32,6 @@ public class DeamonPagos extends Thread{
 			//Si existe el archivo, leo todas las lineas
 			if(archivo.exists()){
 				
-				List<Pago> pagos = new ArrayList<Pago>();
 			    try 
 			    {
 			    	String linea;
@@ -42,27 +42,17 @@ public class DeamonPagos extends Thread{
 			        	
 			        	//Parseo cada linea e instancio una clase pago
 			        	String[] partes = linea.split(";");
-			        	
-			            Pago p = new Pago(
-			            		Integer.parseInt(partes[0]),
-			            		partes[1],
-			            		Float.parseFloat(partes[2])
-			            		,formatter.parse(partes[3]));
-			            
-						//Actualizar al participante y la lista
-			            AdmPerListaDeRegalo.getInstancia().resgistrarPago(p);
-			            AdmPerListaDeRegalo.getInstancia().actualizarMontoLista(p);
-			            
-			            //TODO: Aun no se que haremos con esta lista
-			            pagos.add(p);
+			        	Date parsed = formatter.parse(partes[3]);
+			        	java.sql.Date sqlDate = new java.sql.Date(parsed.getTime());
+			            ControladorDeLista.getInstancia().registrarPago(Integer.parseInt(partes[0]),partes[1],Float.parseFloat(partes[2]),sqlDate);
 			        }
 			        b.close();
 
 			      //Mover el archivo original a una carpeta de historicos, renombrandolo
-			        boolean t = archivo.renameTo(new File("HistoricoPagos/Pagos" + new SimpleDateFormat("yyyyMMddhhmm").format(new Date().getTime()) +".txt"));
+			       //boolean t = archivo.renameTo(new File("HistoricoPagos/Pagos" + new SimpleDateFormat("yyyyMMddhhmm").format(new Date().getTime()) +".txt"));
 					 
-					 if(t)
-						 archivo.delete();
+					 //if(t)
+						// archivo.delete();
 			        
 					 Thread.sleep(60000);
 					 

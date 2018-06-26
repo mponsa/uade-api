@@ -7,20 +7,37 @@ import persistencia.AdmPerPago;
 public class Pago {
 
 	private int IdPago;
-	private int IdLista;
-	private String MailUsuario;
 	private float Monto;
 	private Date Fecha;
+	private ListaDeRegalo Lista; 
+	private Participante participante;
 	
 	
-	public Pago(){}
+
 	
-	public Pago(int idLista, String mailUsuario,float monto, Date fecha){
+	public Pago(float monto, Date fecha,ListaDeRegalo lista, Participante p){
 		setMonto(monto);
 		setFecha(fecha);
-		setIdLista(idLista);
-		setMailUsuario(mailUsuario);
+		setLista(lista);
+		setParticipante(p);
 		setIdPago(AdmPerPago.getInstancia().insert(this));
+	}
+	
+	public void setLista(ListaDeRegalo lista) {
+		this.Lista = lista;
+	}
+	
+	public ListaDeRegalo getListaDeRegalo() {
+		return Lista;
+	}
+	
+	public void setParticipante(Participante participante) {
+		// TODO Auto-generated method stub
+		this.participante = participante;
+	}
+	
+	public Participante getParticipante() {
+		return participante;
 	}
 	
 	public float getMonto() {
@@ -34,18 +51,6 @@ public class Pago {
 	}
 	public void setFecha(Date fecha) {
 		Fecha = fecha;
-	}
-	public int getIdLista() {
-		return IdLista;
-	}
-	public void setIdLista(int idLista) {
-		this.IdLista = idLista;
-	}
-	public String getMailUsuario() {
-		return MailUsuario;
-	}
-	public void setMailUsuario(String mailUsuario) {
-		this.MailUsuario = mailUsuario;
 	}
 
 	public int getIdPago() {

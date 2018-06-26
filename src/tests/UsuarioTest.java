@@ -25,6 +25,8 @@ public class UsuarioTest {
 				
 		AdmPerUsuario.getInstancia().insert(a);
 		
+		System.out.println(a.getIdUsuario());
+		
 		assertTrue(a != null);
 	}
 	
