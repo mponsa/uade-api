@@ -32,13 +32,6 @@ public class CrearLista {
 	private void initialize() {
 		frame = new JFrame();
 		
-		//Window Listener, para actualizar combos en Clase AdmListas si se creo una lista nueva.
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent arg0) {
-				AdmListas.getInstancia().actualizarCombos();
-			}
-		});
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);

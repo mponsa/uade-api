@@ -6,7 +6,7 @@ import java.util.Date;
 import observer.*;
 import persistencia.AdmPerListaDeRegalo;
 
-public class ListaDeRegalo implements ObserverSP{
+public class ListaDeRegalo implements ObserverModel{
 	private static int maxIntegrantes = 10;
 		
 	private int IdLista; //Identity en la base.

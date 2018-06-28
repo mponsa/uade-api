@@ -82,7 +82,7 @@ public class Login {
 						//Setea el administrador de la sesión.
 						ControladorDeUsuarios.getInstancia().setAdm(ControladorDeUsuarios.getInstancia().getUsuario(mailText.getText()));
 						
-						AdmListas window = AdmListas.getInstancia();
+						AdmListas window = new AdmListas();
 						window.frame.setVisible(true);
 
 						frame.dispose();

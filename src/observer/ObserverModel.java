@@ -1,5 +1,5 @@
 package observer;
 
-public interface ObserverSP {
+public interface ObserverModel {
 	public void noti();
 }

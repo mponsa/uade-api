@@ -20,12 +20,14 @@ import javax.swing.event.DocumentListener;
 
 import controlador.ControladorDeLista;
 import controlador.ControladorDeUsuarios;
+import observer.ObserverModel;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class VisualizarLista {
+public class VisualizarLista implements ObserverModel {
 
 	public JFrame frame;
 	private JTextField nombreText;
@@ -34,6 +36,7 @@ public class VisualizarLista {
 	private JTextField montoText;
 	private JTextField vigenciaMesText;
 	private JTextField vigenciaAñoText;
+	private JTextArea textAreaParticipantes;
 	private boolean isAdm = false;
 	
 	
@@ -50,6 +53,7 @@ public class VisualizarLista {
 		//Realiza la comparacion para saber si la lista que se está administrando, es administrada por el usuario logueado
 		setAdm(adm);
 		initialize();
+		ControladorDeLista.getInstancia().add(this);
 	}
 
 	//Inizializa el frame
@@ -133,12 +137,7 @@ public class VisualizarLista {
 				Date date = calendar.getTime();
 				ControladorDeLista.getInstancia().getListaAdm().setVigencia(new java.sql.Date(date.getTime()));
 				ControladorDeLista.getInstancia().updateLista(ControladorDeLista.getInstancia().getListaAdm());
-				
-				//Actualizamos los combos del administrador.
-				AdmListas.getInstancia().borrarCombos();
-				AdmListas.getInstancia().actualizarCombos();
-				
-			
+		
 			}
 		});
 		btnGuardarCambios.setBounds(114, 227, 185, 23);
@@ -150,8 +149,6 @@ public class VisualizarLista {
 		btnEliminarLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ControladorDeLista.getInstancia().deleteLista(ControladorDeLista.getInstancia().getListaAdm());
-				AdmListas.getInstancia().borrarCombos();
-				AdmListas.getInstancia().actualizarCombos();
 				frame.dispose();
 			}
 		});
@@ -237,7 +234,7 @@ public class VisualizarLista {
 				///Fin text fields.
 		
 		///Text area.
-		JTextArea textAreaParticipantes = new JTextArea();
+		textAreaParticipantes = new JTextArea();
 		textAreaParticipantes.setBounds(309, 25, 196, 192);
 		setearParticipantes(textAreaParticipantes);
 		textAreaParticipantes.setEditable(false);
@@ -254,5 +251,16 @@ public class VisualizarLista {
 		for(String str : ControladorDeLista.getInstancia().getMailParticipantes(ControladorDeLista.getInstancia().getListaAdm())){
 			textArea.append(str + "\n");
 		}
+	}
+	
+	void limpiarText(JTextArea textArea){
+		textArea.setText("");
+	}
+
+	@Override
+	public void noti() {
+		// TODO Auto-generated method stub
+		this.limpiarText(textAreaParticipantes);
+		this.setearParticipantes(textAreaParticipantes);
 	}
 }

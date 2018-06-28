@@ -7,10 +7,11 @@ import java.util.List;
 import model.ListaDeRegalo;
 import model.Participante;
 import model.Usuario;
+import observer.ObservableModel;
 import persistencia.AdmPerListaDeRegalo;
 import persistencia.AdmPerUsuario;
 
-public class ControladorDeLista {
+public class ControladorDeLista extends ObservableModel {
 	private static ControladorDeLista instancia;
 	private List<ListaDeRegalo> listas;
 	private ListaDeRegalo listaAdm; //Variable para cuando se administra una lista en particular;
@@ -34,11 +35,13 @@ public class ControladorDeLista {
 		lista.addParticipante(ControladorDeUsuarios.getInstancia().getAdm(),true);
 		//Agregamos la lista al controlador.
 		listas.add(lista);
+		this.notiAll();
 	}
 	
 	
 	public void updateLista(ListaDeRegalo l) {
 		l.updateLista();
+		this.notiAll();
 	}
 	
 	public void deleteLista(ListaDeRegalo l) {
@@ -49,6 +52,7 @@ public class ControladorDeLista {
 			}
 		}
 		l.deleteLista();;
+		this.notiAll();
 	}
 	
 	public ListaDeRegalo getListaDeRegalo(int id){;
@@ -146,5 +150,13 @@ public class ControladorDeLista {
 			lista.updateLista();
 		}
 	}
+
+	public void addParticipante(ListaDeRegalo lista, Usuario usuario, boolean b) {
+		// TODO Auto-generated method stub
+		lista.addParticipante(usuario, b);
+		this.notiAll();
+	}
+	
+	
 	
 }

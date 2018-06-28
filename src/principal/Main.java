@@ -14,8 +14,8 @@ public class Main {
 		//ControladorDeLista cl = new ControladorDeLista();
 		
 		//Inicio los Deamons
-		DeamonPagos hiloPagos = new DeamonPagos();
-		hiloPagos.start();
+		//DeamonPagos hiloPagos = new DeamonPagos();
+		//hiloPagos.start();
 		
 		/*DeamonVigencia hiloVigencia = new DeamonVigencia();
 		hiloVigencia.start();*/

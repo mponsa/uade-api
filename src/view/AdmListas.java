@@ -9,38 +9,35 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import controlador.ControladorDeLista;
 import controlador.ControladorDeUsuarios;
+import observer.ObserverModel;
+
 import javax.swing.JComboBox;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
-public class AdmListas {
-	private static AdmListas instancia;
+public class AdmListas implements ObserverModel {
+
 	public JFrame frame;
 	public JComboBox<String> listasAdmCombo;
 	public JComboBox<String> listasPartCombo;
 
-	//Singleton
-	public static AdmListas getInstancia() {
-		if (instancia == null) {
-			instancia = new AdmListas();
-			return instancia;
-		}else {
-			return instancia;
-		}
-	}
+
 	
 	//Constructor
 	public AdmListas() {
 		initialize();
+		ControladorDeLista.getInstancia().add(this);
 	}
 	
 	//Inizializa el frame
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 472, 214);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setTitle(Parametros.getInstancia().getTitle());
 		frame.setResizable(Parametros.getInstancia().getResizable());
@@ -169,5 +166,12 @@ public class AdmListas {
 			this.listasPartCombo.addItem(lista);
 		}
 		}
+	}
+
+	@Override
+	public void noti() {
+		// TODO Auto-generated method stub
+		this.borrarCombos();
+		this.actualizarCombos();
 	}
 }

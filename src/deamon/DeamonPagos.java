@@ -12,7 +12,7 @@ import java.util.List;
 
 import controlador.ControladorDeLista;
 import model.Pago;
-import observer.ObserverSP;
+import observer.ObserverModel;
 import persistencia.AdmPerListaDeRegalo;
 import persistencia.PoolConnection;
 
