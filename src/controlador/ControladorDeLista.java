@@ -139,10 +139,12 @@ public class ControladorDeLista {
 
 	public void registrarPago(int IdLista, String mailUser, float monto, Date fecha) {
 		ListaDeRegalo lista = this.getListaDeRegalo(IdLista);
-		Usuario user = ControladorDeUsuarios.getInstancia().getUsuario(mailUser);
-		lista.getParticipante(user).registrarPago(monto, fecha, lista);
-		lista.setMonto(monto);
-		lista.updateLista();
+		if (lista != null) {
+			Usuario user = ControladorDeUsuarios.getInstancia().getUsuario(mailUser);
+			lista.getParticipante(user).registrarPago(monto, fecha, lista);
+			lista.setMonto(monto);
+			lista.updateLista();
+		}
 	}
 	
 }
