@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import controlador.ControladorDeLista;
 import model.ListaDeRegalo;
 import persistencia.AdmPerListaDeRegalo;
 
@@ -25,8 +26,8 @@ public void run(){
 					if(calendario.get(Calendar.HOUR_OF_DAY) == 14 && calendario.get(Calendar.MINUTE) == 16){
 					
 					//Obtengo las listas de Regalo cuya vigencia sea menor a x dias
-					List<ListaDeRegalo> lista = AdmPerListaDeRegalo.getInstancia().getListasCalendar(10);
-					System.out.println(" Entro!");
+					
+					ControladorDeLista.getInstancia().checkVigencia(10);
 					//TODO: Ver como aplicar
 					//Para cada miembro de la lista, antes de enviar el mail, verificar que su atributo pagado = 1
 					}

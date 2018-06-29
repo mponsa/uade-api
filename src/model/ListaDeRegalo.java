@@ -150,6 +150,18 @@ public class ListaDeRegalo implements ObserverModel{
 		return null;
 	}
 	
+	//Devuelve los participantes que no pagaron.
+	public List<Participante> getDeudores() {
+		List<Participante> result = new ArrayList<Participante>();
+		for (Participante p : participantes) {
+			if(p.isPagado()) {
+				result.add(p);
+			}
+		}
+		// TODO Auto-generated method stub
+		return result;
+	}
+
 	
 	public boolean getEstado() {
 		return estado;
@@ -173,5 +185,6 @@ public class ListaDeRegalo implements ObserverModel{
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

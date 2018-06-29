@@ -1,8 +1,11 @@
 package controlador;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import model.ListaDeRegalo;
 import model.Participante;
@@ -131,8 +134,9 @@ public class ControladorDeLista extends ObservableModel {
 		this.listaAdm = lista;
 	}
 	
+	public 
 	
-	public List<String> getMailParticipantes(ListaDeRegalo lista) {
+	 List<String> getMailParticipantes(ListaDeRegalo lista) {
 		List<String> result = new ArrayList<String>();
 		for (Participante p : lista.getParticipantes()) {
 			result.add(p.getUsuario().getMail());
@@ -147,6 +151,13 @@ public class ControladorDeLista extends ObservableModel {
 			Usuario user = ControladorDeUsuarios.getInstancia().getUsuario(mailUser);
 			lista.getParticipante(user).registrarPago(monto, fecha, lista);
 			lista.setMonto(monto);
+			//Chequea si quedan deudores en la lista.
+			if(lista.getDeudores() == null) {
+				
+				lista.setActivo(false);
+				lista.setEstado(false);
+				ControladorMail.getInstancia().enviarMail(lista.getAdminLista().getUsuario().getMail(), "Notificacion de Lista de Regalos finalizada", setMensajeListaPagada(lista,lista.getAdminLista().getUsuario()));
+			}
 			lista.updateLista();
 		}
 	}
@@ -154,10 +165,32 @@ public class ControladorDeLista extends ObservableModel {
 	public void addParticipante(ListaDeRegalo lista, Usuario usuario, boolean b) {
 		// TODO Auto-generated method stub
 		lista.addParticipante(usuario, b);
-		
 		ControladorMail.getInstancia().enviarMail(usuario.getMail(), "Notificación de Lista de Regalos.", setMensajeNuevoParticipante(lista, usuario));
-		
 		this.notiAll();
+	}
+	
+
+	public void checkVigencia(int i) {
+/*		Date today = new Date();
+		Calendar cal = Calendar.getInstance();
+		today = cal.getTime();
+		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
+		
+		//Recupera las listas que entren en el periodo de vigencia desde el caché del controlador.
+		for (ListaDeRegalo lista : listas) {
+			int diff =  (int) TimeUnit.DAYS.convert(today.getTime() - lista.getVigencia().getTime(),TimeUnit.MILLISECONDS);
+			if(diff < i) {
+				result.add(lista);
+			}
+		}*/
+		List<ListaDeRegalo> bdListas = new ArrayList<ListaDeRegalo>();
+		//Recupera las listas que entren en el periodo de vigencia 
+		bdListas = AdmPerListaDeRegalo.getInstancia().getListasCalendar(i);
+		for (ListaDeRegalo lista : bdListas) {
+			for (Participante p : lista.getDeudores()){
+				ControladorMail.getInstancia().enviarMail(p.getUsuario().getMail(),"Notificación de Lista de Regalos.", setMensajeListaAVencer(lista,p.getUsuario()));
+			}
+		}
 	}
 	
 	private String setMensajeNuevoParticipante(ListaDeRegalo l, Usuario u){
@@ -165,8 +198,27 @@ public class ControladorDeLista extends ObservableModel {
 		return "Hola " + u.getNombre() + ".\n " +
 							l.getAdminLista().getUsuario().getNombre() + " " + l.getAdminLista().getUsuario().getApellido() +
 							" te ha agregado a la Lista de Regalos de " + l.getAgasajado() + ".\n\n" +
-							"El monto a abonar es de $" + l.getMonto() + ".\n\n" +  
+							"El monto a abonar es de $" + l.getMontoPorParticipante() + ".\n\n" +  
 							"Saludos y que tengas buen día!!!";
+	}
+	
+	private String setMensajeListaAVencer(ListaDeRegalo l, Usuario u) {
+		String format1 = new SimpleDateFormat("dd/MM/yyyy").format(l.getVigencia());
+		return "Hola " + u.getNombre() + ".\n " 
+				+ "La lista de regalos: " + l.getNombre() + " está por vencer y todavia no registramos su pago.\n."
+				+ "Le recordamos que la vigencia de la lista es hasta el dia: " + format1 + "\n."+
+							"El monto a abonar es de $" + l.getMontoPorParticipante() + ".\n\n" +  
+							"Saludos y que tengas buen día!";
+		
+	}
+	
+	private String setMensajeListaPagada(ListaDeRegalo l, Usuario u) {
+		return "Hola " + u.getNombre() + ".\n " 
+				+ "La lista de regalos: " + l.getNombre() + " ya se ha pagado en su totalidad\n"
+				+ "El monto recaudado fue de: $" + l.getMonto() + ".\n" +
+							"Gracias por usar nuestra aplicación para tu evento!\n" +  
+							"Saludos y que tengas buen día!";
+		
 	}
 	
 }
