@@ -2,17 +2,17 @@ package controlador;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 
 import model.ListaDeRegalo;
 import model.Participante;
 import model.Usuario;
 import observer.ObservableModel;
 import persistencia.AdmPerListaDeRegalo;
-import persistencia.AdmPerUsuario;
+
 
 public class ControladorDeLista extends ObservableModel {
 	private static ControladorDeLista instancia;
