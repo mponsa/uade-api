@@ -216,6 +216,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 	
 	//Trae una lista de la BD por nombre
 	public ListaDeRegalo getListaDeRegalo(String nombre){
+		
 		ListaDeRegalo a = null;	
 		try {
 			Connection con = PoolConnection.getPoolConnection().getConnection();
@@ -257,6 +258,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 	
 	//Devuelve las listas administradas por un usuario
 	public List<ListaDeRegalo> getListasAdm(Usuario user) {
+		
 		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
 		try {
 		Connection con = PoolConnection.getPoolConnection().getConnection();
@@ -277,6 +279,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 	}
 	
 	public List<ListaDeRegalo> getListasPar(Usuario user) {
+		
 		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
 		try {
 		Connection con = PoolConnection.getPoolConnection().getConnection();
@@ -303,7 +306,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			
 			//Traigo la lista
-			PreparedStatement s = con.prepareStatement("SELECT * FROM [API_GRUPO_25].[dbo].[ListaDeRegalo] WHERE datediff(DD, getDate(),Vigencia ) <  ?"+
+			PreparedStatement s = con.prepareStatement("SELECT * FROM [API_GRUPO_25].[dbo].[ListaDeRegalo] WHERE datediff(DD, getDate(),Vigencia ) <=  ?"+
 														" AND Estado = 0 AND Activo = 1");
 			s.setInt(1, cantDias);
 			ResultSet resultS = s.executeQuery();

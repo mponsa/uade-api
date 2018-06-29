@@ -32,9 +32,9 @@ public class ControladorMail {
 		properties.put("mail.smtp.host", "smtp.live.com");
 		properties.put("mail.smtp.starttls.enable", "true");
 		properties.put("mail.smtp.port",587);
-		properties.put("mail.smtp.mail.sender","dmalagueno85@hotmail.com");
-		properties.put("mail.smtp.user", "dmalagueno85@hotmail.com");
-		properties.put("mail.smtp.auth", "koenigstaiger");
+		properties.put("mail.smtp.mail.sender","api_g25@outlook.com.ar");
+		properties.put("mail.smtp.user", "api_g25@outlook.com.ar");
+		properties.put("mail.smtp.auth", "Interactivas25");
 
 		session = Session.getDefaultInstance(properties);
 
@@ -50,7 +50,7 @@ public class ControladorMail {
 			message.setSubject(subject);
 			message.setText(text);
 			Transport t = session.getTransport("smtp");
-			t.connect((String)properties.get("mail.smtp.user"), "koenigstaiger");
+			t.connect((String)properties.get("mail.smtp.user"), "Interactivas25");
 			t.sendMessage(message, message.getAllRecipients());
 			t.close();
 		}catch (MessagingException me)

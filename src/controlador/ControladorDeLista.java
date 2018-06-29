@@ -134,9 +134,7 @@ public class ControladorDeLista extends ObservableModel {
 		this.listaAdm = lista;
 	}
 	
-	public 
-	
-	 List<String> getMailParticipantes(ListaDeRegalo lista) {
+	public List<String> getMailParticipantes(ListaDeRegalo lista) {
 		List<String> result = new ArrayList<String>();
 		for (Participante p : lista.getParticipantes()) {
 			result.add(p.getUsuario().getMail());
@@ -169,7 +167,15 @@ public class ControladorDeLista extends ObservableModel {
 		this.notiAll();
 	}
 	
+	public void cerrarLista(ListaDeRegalo lista) {
+		
+		//Seteo la lista como cerrada antes de hacerle el update
+		lista.setEstado(false);
+		
+		AdmPerListaDeRegalo.getInstancia().update(lista);
+	}
 
+	//TODO: Consultar si esto está bien hacerlo asi
 	public void checkVigencia(int i) {
 /*		Date today = new Date();
 		Calendar cal = Calendar.getInstance();
@@ -186,10 +192,23 @@ public class ControladorDeLista extends ObservableModel {
 		List<ListaDeRegalo> bdListas = new ArrayList<ListaDeRegalo>();
 		//Recupera las listas que entren en el periodo de vigencia 
 		bdListas = AdmPerListaDeRegalo.getInstancia().getListasCalendar(i);
-		for (ListaDeRegalo lista : bdListas) {
-			for (Participante p : lista.getDeudores()){
-				ControladorMail.getInstancia().enviarMail(p.getUsuario().getMail(),"Notificación de Lista de Regalos.", setMensajeListaAVencer(lista,p.getUsuario()));
+		
+		if(i == 0) {
+			for (ListaDeRegalo lista : bdListas) {
+				
+				//Se setean las listas que hayan vencido como Cerradas
+				ControladorDeLista.getInstancia().cerrarLista(lista);
+				//Se informa al Administrador del cierre de su lista
+				ControladorMail.getInstancia().enviarMail(lista.getAdminLista().getUsuario().getMail(),"Lista Cerrada.", setMensajeListaCerrada(lista));
+				
 			}
+		}else {
+			for (ListaDeRegalo lista : bdListas) {
+				for (Participante p : lista.getDeudores()){
+					ControladorMail.getInstancia().enviarMail(p.getUsuario().getMail(),"Notificación de Lista de Regalos.", setMensajeListaAVencer(lista,p.getUsuario()));
+				}
+			}
+		
 		}
 	}
 	
@@ -199,7 +218,7 @@ public class ControladorDeLista extends ObservableModel {
 							l.getAdminLista().getUsuario().getNombre() + " " + l.getAdminLista().getUsuario().getApellido() +
 							" te ha agregado a la Lista de Regalos de " + l.getAgasajado() + ".\n\n" +
 							"El monto a abonar es de $" + l.getMontoPorParticipante() + ".\n\n" +  
-							"Saludos y que tengas buen día!!!";
+							"Saludos y que tengas buen día!";
 	}
 	
 	private String setMensajeListaAVencer(ListaDeRegalo l, Usuario u) {
@@ -214,7 +233,16 @@ public class ControladorDeLista extends ObservableModel {
 	
 	private String setMensajeListaPagada(ListaDeRegalo l, Usuario u) {
 		return "Hola " + u.getNombre() + ".\n " 
-				+ "La lista de regalos: " + l.getNombre() + " ya se ha pagado en su totalidad\n"
+				+ "La lista de regalos: " + l.getNombre() + " ya se ha pagado en su totalidad.\n"
+				+ "El monto recaudado fue de: $" + l.getMonto() + ".\n" +
+							"Gracias por usar nuestra aplicación para tu evento!\n" +  
+							"Saludos y que tengas buen día!";
+		
+	}
+	
+	private String setMensajeListaCerrada(ListaDeRegalo l) {
+		return "Hola " + l.getAdminLista().getUsuario().getNombre() + ".\n " 
+				+ "La lista de regalos: " + l.getNombre() + " se ha cerrado al haber terminado su vigencia.\n"
 				+ "El monto recaudado fue de: $" + l.getMonto() + ".\n" +
 							"Gracias por usar nuestra aplicación para tu evento!\n" +  
 							"Saludos y que tengas buen día!";
