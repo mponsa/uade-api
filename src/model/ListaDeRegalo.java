@@ -59,7 +59,7 @@ public class ListaDeRegalo implements ObserverModel{
 	public String addParticipante(Usuario user, boolean isAdmin){
 		if (this.participantes.size() <= maxIntegrantes){
 			Participante p = new Participante(this,user,isAdmin);
-			this.participantes.add(p);
+			this.participantes.add(p);		
 			return "Usuario añadido!";
 		}else{
 			return "Limite de usuarios alcanzado!";	

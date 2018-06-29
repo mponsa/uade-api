@@ -15,7 +15,7 @@ public class ControladorDeLista extends ObservableModel {
 	private static ControladorDeLista instancia;
 	private List<ListaDeRegalo> listas;
 	private ListaDeRegalo listaAdm; //Variable para cuando se administra una lista en particular;
-	
+		
 	public ControladorDeLista(){
 		listas = new ArrayList<ListaDeRegalo>();
 	}
@@ -154,9 +154,19 @@ public class ControladorDeLista extends ObservableModel {
 	public void addParticipante(ListaDeRegalo lista, Usuario usuario, boolean b) {
 		// TODO Auto-generated method stub
 		lista.addParticipante(usuario, b);
+		
+		ControladorMail.getInstancia().enviarMail(usuario.getMail(), "Notificación de Lista de Regalos.", setMensajeNuevoParticipante(lista, usuario));
+		
 		this.notiAll();
 	}
 	
-	
+	private String setMensajeNuevoParticipante(ListaDeRegalo l, Usuario u){
+		
+		return "Hola " + u.getNombre() + ".\n " +
+							l.getAdminLista().getUsuario().getNombre() + " " + l.getAdminLista().getUsuario().getApellido() +
+							" te ha agregado a la Lista de Regalos de " + l.getAgasajado() + ".\n\n" +
+							"El monto a abonar es de $" + l.getMonto() + ".\n\n" +  
+							"Saludos y que tengas buen día!!!";
+	}
 	
 }
