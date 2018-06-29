@@ -15,8 +15,8 @@ public class ListaDeRegalo implements ObserverModel{
 	private String agasajado;
 	private List<Participante> participantes; 
 	private float monto;
-	private boolean estado;
-	private boolean activo;
+	private boolean estado;//True: Sin finalizar - False: Finalizada
+	private boolean activo;//True: Activa - False: No activa
 	private float montoPorParticipante;
 	
 	//Metodo para crear la lista e instertarla en la base de datos.

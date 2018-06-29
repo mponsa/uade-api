@@ -25,11 +25,8 @@ public void run(){
 				try{
 					if(calendario.get(Calendar.HOUR_OF_DAY) == 14 && calendario.get(Calendar.MINUTE) == 16){
 					
-					//Obtengo las listas de Regalo cuya vigencia sea menor a x dias
-					
+				
 					ControladorDeLista.getInstancia().checkVigencia(10);
-					//TODO: Ver como aplicar
-					//Para cada miembro de la lista, antes de enviar el mail, verificar que su atributo pagado = 1
 					}
 					Thread.sleep(60000);
 					
