@@ -60,12 +60,8 @@ public class ControladorDeLista extends ObservableModel {
 	
 	public void deleteLista(ListaDeRegalo l) {
 		//Eliminamos la lista del controlador si existe.
-		for (ListaDeRegalo lista : listas) {
-			if (lista.getIdLista() == l.getIdLista()) {
-				listas.remove(l);
-			}
-		}
-		l.deleteLista();;
+		listas.remove(l);
+		l.deleteLista();
 		this.notiAll();
 	}
 	
