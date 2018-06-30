@@ -35,7 +35,7 @@ public class ControladorDeLista extends ObservableModel {
 	public void crearLista (String nombre , Date vigencia , String agasajado, float monto,boolean estado, boolean activo, float montoPorParticipante) {
 		ListaDeRegalo lista = new ListaDeRegalo(nombre,vigencia,agasajado,monto,estado,activo,montoPorParticipante);
 		//Inserta el participante a la lista, la tenemos que traer de vuelta de memoria para recuperar el ID que genero la base.
-		lista.addParticipante(ControladorDeUsuarios.getInstancia().getAdm(),true);
+		lista.addParticipante(ControladorDeUsuarios.getInstancia().getAdm(),true,false);
 		//Agregamos la lista al controlador.
 		listas.add(lista);
 		this.notiAll();
@@ -160,18 +160,37 @@ public class ControladorDeLista extends ObservableModel {
 		}
 	}
 
-	public void addParticipante(ListaDeRegalo lista, Usuario usuario, boolean b) {
+	public void addParticipante(ListaDeRegalo lista, Usuario usuario, boolean IsAdmin, boolean pagado) {
 		// TODO Auto-generated method stub
-		lista.addParticipante(usuario, b);
+		if(lista.addParticipante(usuario, IsAdmin, pagado)) {
 		ControladorMail.getInstancia().enviarMail(usuario.getMail(), "Notificación de Lista de Regalos.", setMensajeNuevoParticipante(lista, usuario));
 		this.notiAll();
+		}
 	}
+
+	
+	public void deleteParticipante(ListaDeRegalo lista, Participante p) {
+		if(lista.deleteParticipante(p)) {
+		this.notiAll();
+		}
+	}
+	
+
+	
+	public List<String> getMailDeudores(ListaDeRegalo l) {
+		List<String> result = new ArrayList<String>();
+		for(Participante p : l.getDeudores()) {
+			result.add(p.getUsuario().getMail());
+		}
+		return result;
+	}
+	
+
 	
 	public void cerrarLista(ListaDeRegalo lista) {
 		
 		//Seteo la lista como cerrada antes de hacerle el update
 		lista.setEstado(false);
-		
 		AdmPerListaDeRegalo.getInstancia().update(lista);
 	}
 

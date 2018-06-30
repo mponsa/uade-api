@@ -14,12 +14,12 @@ public class Main {
 		//ControladorDeLista cl = new ControladorDeLista();
 		
 		//Inicio los Deamons
-		DeamonPagos hiloPagos = new DeamonPagos();
-		hiloPagos.start();
+//		DeamonPagos hiloPagos = new DeamonPagos();
+//		hiloPagos.start();
 	
 		
-		/*DeamonVigencia hiloVigencia = new DeamonVigencia();
-		hiloVigencia.start();*/
+		DeamonVigencia hiloVigencia = new DeamonVigencia();
+		hiloVigencia.start();
 		
 		//Login start
 		Login window = new Login();

@@ -157,6 +157,12 @@ public class VisualizarLista implements ObserverModel {
 		frame.getContentPane().add(btnEliminarLista);
 		
 		JButton btnEliminarParticipante = new JButton("Eliminar Participante");
+		btnEliminarParticipante.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EliminarParticipante window = new EliminarParticipante();
+				window.frame.setVisible(true);
+			}
+		});
 		btnEliminarParticipante.setBounds(309, 262, 196, 23);
 		frame.getContentPane().add(btnEliminarParticipante);
 		///Fin buttons

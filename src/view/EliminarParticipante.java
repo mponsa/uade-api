@@ -11,13 +11,13 @@ import java.awt.event.ActionEvent;
 import controlador.ControladorDeLista;
 import controlador.ControladorDeUsuarios;
 
-public class AgregarParticipante {
+public class EliminarParticipante {
 
 	public JFrame frame;
 
 
 	//Constructor
-	public AgregarParticipante() {
+	public EliminarParticipante() {
 		initialize();
 	}
 
@@ -39,32 +39,29 @@ public class AgregarParticipante {
 		//ComboBox
 		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setBounds(10, 36, 230, 20);
-		List<String> mailsUsuarios = ControladorDeUsuarios.getInstancia().getMailsUsuarios();
-		//List<String> participantes = ControladorDeLista.getInstancia().getListaAdm().getMailParticipantes();
-		
-		for(String mail : mailsUsuarios){
-			//for(String mailPart  : participantes){
-				if(!mail.equals(ControladorDeUsuarios.getInstancia().getAdm().getMail())){
-			
-							comboBox.addItem(mail);
-					
-				}
-			//}
+		List<String> participantes = ControladorDeLista.getInstancia().getMailDeudores(ControladorDeLista.getInstancia().getListaAdm());
+		for(String mail : participantes){
+			//Agrego los usuarios deudores para eliminar. No se puede eliminar un usuario de una lista que ya pago.
+			//Tampoco puedo eliminarme como participante siendo el administrador.
+			if(!mail.equals(ControladorDeUsuarios.getInstancia().getAdm().getMail())) {
+			comboBox.addItem(mail);
+			}
+
 		}
 		
 		frame.getContentPane().add(comboBox);
 		//Fin ComboBox
 		
 		//Button.
-		JButton btnAgPart = new JButton("Agregar Participante");
-		btnAgPart.addActionListener(new ActionListener() {
+		JButton btnElPart = new JButton("Eliminar Participante");
+		btnElPart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ControladorDeLista.getInstancia().addParticipante(ControladorDeLista.getInstancia().getListaAdm(),ControladorDeUsuarios.getInstancia().getUsuario(comboBox.getSelectedItem().toString()), false,false);
+				ControladorDeLista.getInstancia().deleteParticipante(ControladorDeLista.getInstancia().getListaAdm(),ControladorDeLista.getInstancia().getListaAdm().getParticipante(ControladorDeUsuarios.getInstancia().getUsuario(comboBox.getSelectedItem().toString())));
 				frame.dispose();
 			}
 		});
-		btnAgPart.setBounds(252, 35, 180, 23);
-		frame.getContentPane().add(btnAgPart);
+		btnElPart.setBounds(252, 35, 180, 23);
+		frame.getContentPane().add(btnElPart);
 		//Fin buttons
 	}
 

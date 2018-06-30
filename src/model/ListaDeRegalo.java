@@ -56,13 +56,13 @@ public class ListaDeRegalo implements ObserverModel{
 	}
 	
 	
-	public String addParticipante(Usuario user, boolean isAdmin){
+	public boolean addParticipante(Usuario user, boolean isAdmin, boolean pagado){
 		if (this.participantes.size() <= maxIntegrantes){
-			Participante p = new Participante(this,user,isAdmin);
+			Participante p = new Participante(this,user,isAdmin,pagado);
 			this.participantes.add(p);		
-			return "Usuario añadido!";
+			return true;
 		}else{
-			return "Limite de usuarios alcanzado!";	
+			return false;	
 		}
 	}
 	
@@ -70,8 +70,17 @@ public class ListaDeRegalo implements ObserverModel{
 		AdmPerListaDeRegalo.getInstancia().updateParticipante(this, p);
 	}
 	
-	public void deleteParticipante(Participante p) {
-		AdmPerListaDeRegalo.getInstancia().deleteParticipante(this, p);
+	public boolean deleteParticipante(Participante p) {
+		try {
+			p.setActivo(false);
+			participantes.remove(p);
+			AdmPerListaDeRegalo.getInstancia().deleteParticipante(this, p);
+			return true;
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+			return false;
+		} 
 	}
 	
 	
@@ -154,7 +163,7 @@ public class ListaDeRegalo implements ObserverModel{
 	public List<Participante> getDeudores() {
 		List<Participante> result = new ArrayList<Participante>();
 		for (Participante p : participantes) {
-			if(p.isPagado()) {
+			if(!p.isPagado()) {
 				result.add(p);
 			}
 		}

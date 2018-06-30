@@ -13,9 +13,9 @@ public class Participante {
 	private boolean Activo;
 	private Usuario usuario;//agregar solo aca y no en la base
 	
-	public Participante(ListaDeRegalo lista, Usuario usuario , boolean IsAdmin){
+	public Participante(ListaDeRegalo lista, Usuario usuario , boolean IsAdmin, boolean pagado){
 		setAdmin(IsAdmin);
-		setPagado(false);
+		setPagado(pagado);
 		setActivo(true);
 		setUsuario(usuario);
 		AdmPerListaDeRegalo.getInstancia().insertParticipante(lista, this);
