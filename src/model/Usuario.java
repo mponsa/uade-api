@@ -85,4 +85,7 @@ public class Usuario {
 		Password = password;
 	}
 		
+	public void updateUsuario() {
+		AdmPerUsuario.getInstancia().update(this);
+	}
 }

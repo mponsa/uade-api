@@ -8,17 +8,11 @@ import deamon.DeamonVigencia;
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
-		// TODO Auto-generated method stub
-		//Creamos los controladores
-		//ControladorDeUsuarios cu = new ControladorDeUsuarios();
-		//ControladorDeLista cl = new ControladorDeLista();
 		
-//		//Inicio los Deamons
-		DeamonPagos hiloPagos = new DeamonPagos();
-		hiloPagos.start();
-
-		DeamonVigencia hiloVigencia = new DeamonVigencia();
-		hiloVigencia.start();
+		//Inicio los Deamons
+		ControladorDeamons.getInstancia().addDeamon(new DeamonPagos());
+		ControladorDeamons.getInstancia().addDeamon(new DeamonVigencia());
+		new AdmDeamon();
 		
 		//Login start
 		Login window = new Login();

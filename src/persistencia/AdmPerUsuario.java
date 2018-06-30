@@ -67,16 +67,13 @@ private static AdmPerUsuario instancia;
 			Usuario a = (Usuario)o;
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[Usuarios] " +
-					"set nombre = ?, " +
-					" apellido = ?, " +
-					" fechanac = ? " +
-					"WHERE mail = ?");
+					"set mail = ?," +
+					"pass = ? " +
+					"WHERE IdUsuario = ?");
 			//agregar campos
-			s.setString(1, a.getNombre());
-			s.setString(2,a.getApellido());
-			s.setDate(3,(Date) a.getFechaNac());
-			s.setString(4,a.getMail());
-			
+			s.setString(1, a.getMail());
+			s.setString(2,a.getPassword());
+			s.setInt(3, a.getIdUsuario());
 			s.execute();
 			PoolConnection.getPoolConnection().realeaseConnection(con);
 		}

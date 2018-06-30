@@ -1,6 +1,6 @@
 package controlador;
 
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 
 import java.util.Date;
@@ -32,6 +32,17 @@ public class ControladorDeLista extends ObservableModel {
 		}
 	}
 	
+	//Devuelve la lista que se está administrando.
+	public ListaDeRegalo getListaAdm() {
+		return listaAdm;
+	}
+	//Setea la lista que se está administrando.
+	public void setListaAdm(ListaDeRegalo lista) {
+		this.listaAdm = lista;
+	}
+	
+	
+	//Metodos asociados a la lsita de participantes
 	public void crearLista (String nombre , Date vigencia , String agasajado, float monto,boolean estado, boolean activo, float montoPorParticipante) {
 		ListaDeRegalo lista = new ListaDeRegalo(nombre,vigencia,agasajado,monto,estado,activo,montoPorParticipante);
 		//Inserta el participante a la lista, la tenemos que traer de vuelta de memoria para recuperar el ID que genero la base.
@@ -88,8 +99,61 @@ public class ControladorDeLista extends ObservableModel {
 	return null;
 }
 	
+	//Registra el pago de un usuario y actualiza los Observers.
+	public void registrarPago(int IdLista, String mailUser, float monto, Date fecha) {
+		ListaDeRegalo lista = this.getListaDeRegalo(IdLista);
+		if (lista != null) {
+			Usuario user = ControladorDeUsuarios.getInstancia().getUsuario(mailUser);
+			lista.getParticipante(user).registrarPago(monto, fecha, lista);
+			lista.setMonto(monto);
+			//Chequea si quedan deudores en la lista.
+			if(lista.getDeudores().isEmpty()) {
+				lista.setActivo(false);
+				lista.setEstado(false);
+				ControladorMail.getInstancia().enviarMail(lista.getAdminLista().getUsuario().getMail(), "Notificacion de Lista de Regalos finalizada", 
+						ControladorMail.getInstancia().setMessage(lista, lista.getAdminLista().getUsuario(), 3));
+			}
+			lista.updateLista();
+			this.notiAll();
+		}
+	}
 	
-	//Devuelve los nombres de las listas administradas por un usuario.
+	//Añade un participante a la lista y actualiza los Observers.
+	public void addParticipante(ListaDeRegalo lista, Usuario usuario, boolean IsAdmin, boolean pagado) {
+		// TODO Auto-generated method stub
+		if(lista.addParticipante(usuario, IsAdmin, pagado,true)) {
+		ControladorMail.getInstancia().enviarMail(usuario.getMail(), "Notificación de Lista de Regalos.", 
+				ControladorMail.getInstancia().setMessage(lista, usuario, 1));
+		this.notiAll();
+		}
+	}
+
+	//Quita un participante de la lista y actualiza los Observers.
+	public void deleteParticipante(ListaDeRegalo lista, Participante p) {
+		if(lista.deleteParticipante(p)) {
+		this.notiAll();
+		}
+	}
+	
+	
+	//Obtiene una lista String con los mails de los participantes.
+	public List<String> getMailParticipantes(ListaDeRegalo lista) {
+		List<String> result = new ArrayList<String>();
+		for (Participante p : lista.getParticipantes()) {
+			result.add(p.getUsuario().getMail());
+		}
+		return result;
+	}
+	//Obtiene una lista String de mails de los deudores de una lista.
+	public List<String> getMailDeudores(ListaDeRegalo l) {
+		List<String> result = new ArrayList<String>();
+		for(Participante p : l.getDeudores()) {
+			result.add(p.getUsuario().getMail());
+		}
+		return result;
+	}
+	
+	//Obtiene una lista String con los nombres de las listas administradas por un usuario y las agrega a la memoria del controlador.
 	public List<String> getListasAdm(Usuario user){
 		List<String> result = new ArrayList<String>();
 		List<ListaDeRegalo> listas = AdmPerListaDeRegalo.getInstancia().getListasAdm(user);
@@ -107,7 +171,7 @@ public class ControladorDeLista extends ObservableModel {
 		}
 	}
 	
-	//Devuelve los nombres de las listas en las que un usuario es participante.
+	//Obtiene una lista String con los nombres de las listas en las que un usuario es participante y las agrega a la memoria del controlador.
 	public List<String> getListasPar(Usuario user){
 		List<String> result = new ArrayList<String>();
 		List<ListaDeRegalo> listas = AdmPerListaDeRegalo.getInstancia().getListasPar(user);
@@ -125,78 +189,16 @@ public class ControladorDeLista extends ObservableModel {
 		}
 	}
 	
-	//Devuelve la lista que se está administrando.
-	public ListaDeRegalo getListaAdm() {
-		return listaAdm;
-	}
-	//Setea la lista que se está administrando.
-	public void setListaAdm(ListaDeRegalo lista) {
-		this.listaAdm = lista;
-	}
-	
-	public List<String> getMailParticipantes(ListaDeRegalo lista) {
-		List<String> result = new ArrayList<String>();
-		for (Participante p : lista.getParticipantes()) {
-			result.add(p.getUsuario().getMail());
-		}
-		return result;
-	}
-	
 
-	public void registrarPago(int IdLista, String mailUser, float monto, Date fecha) {
-		ListaDeRegalo lista = this.getListaDeRegalo(IdLista);
-		if (lista != null) {
-			Usuario user = ControladorDeUsuarios.getInstancia().getUsuario(mailUser);
-			lista.getParticipante(user).registrarPago(monto, fecha, lista);
-			lista.setMonto(monto);
-			//Chequea si quedan deudores en la lista.
-			if(lista.getDeudores() == null) {
-				lista.setActivo(false);
-				lista.setEstado(false);
-				ControladorMail.getInstancia().enviarMail(lista.getAdminLista().getUsuario().getMail(), "Notificacion de Lista de Regalos finalizada", 
-						ControladorMail.getInstancia().setMessage(lista, lista.getAdminLista().getUsuario(), 3));
-			}
-			lista.updateLista();
-		}
-	}
-
-	public void addParticipante(ListaDeRegalo lista, Usuario usuario, boolean IsAdmin, boolean pagado) {
-		// TODO Auto-generated method stub
-		if(lista.addParticipante(usuario, IsAdmin, pagado,true)) {
-		ControladorMail.getInstancia().enviarMail(usuario.getMail(), "Notificación de Lista de Regalos.", 
-				ControladorMail.getInstancia().setMessage(lista, usuario, 1));
-		this.notiAll();
-		}
-	}
-
-	
-	public void deleteParticipante(ListaDeRegalo lista, Participante p) {
-		if(lista.deleteParticipante(p)) {
-		this.notiAll();
-		}
-	}
-	
-
-	
-	public List<String> getMailDeudores(ListaDeRegalo l) {
-		List<String> result = new ArrayList<String>();
-		for(Participante p : l.getDeudores()) {
-			result.add(p.getUsuario().getMail());
-		}
-		return result;
-	}
-	
-
-	
+	//Cambia el estado de una lista a False -> Cerrada.
 	public void cerrarLista(ListaDeRegalo lista) {
-		
 		//Seteo la lista como cerrada antes de hacerle el update
 		lista.setEstado(false);
-		AdmPerListaDeRegalo.getInstancia().update(lista);
+		lista.updateLista();
 		this.notiAll();
 	}
 
-	//TODO: Consultar si esto está bien hacerlo asi
+	//Valida la vigencia de las listas y le avisa a los participantes mediante el controlador
 	public void checkVigencia(int i) {
 		List<ListaDeRegalo> bdListas = new ArrayList<ListaDeRegalo>();
 		//Recupera las listas que entren en el periodo de vigencia 

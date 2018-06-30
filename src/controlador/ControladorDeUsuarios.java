@@ -8,8 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 import model.Usuario;
+import observer.ObservableModel;
 
-public class ControladorDeUsuarios {
+public class ControladorDeUsuarios extends ObservableModel {
 	private static ControladorDeUsuarios instancia;
 	//Lista de usuarios manejados por el controlador.
 	private List<Usuario> usuarios;
@@ -59,6 +60,11 @@ public class ControladorDeUsuarios {
 	public List<Usuario> getUsuarios(){
 		setUsuarios(AdmPerUsuario.getInstancia().buscarUsuarios(null));
 		return usuarios;
+	}
+	
+	public void updateUsuario(Usuario user) {
+		user.updateUsuario();
+		this.notiAll();
 	}
 	
 	/***

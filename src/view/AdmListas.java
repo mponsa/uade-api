@@ -134,6 +134,11 @@ public class AdmListas implements ObserverModel {
 		});
 		
 		JMenuItem mntmDarseDeBaja = new JMenuItem("Administrar usuario");
+		mntmDarseDeBaja.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new AdmUsuarios();
+			}
+		});
 		mnSistema.add(mntmDarseDeBaja);
 		mnSistema.add(mntmSalir);
 		
