@@ -120,15 +120,6 @@ public class VisualizarLista implements ObserverModel {
 		btnAgregarParticipante.setVisible(isAdm);
 		frame.getContentPane().add(btnAgregarParticipante);
 		
-		JButton btnEnviarMsg = new JButton("Enviar mensaje al administrador");
-		btnEnviarMsg.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnEnviarMsg.setBounds(10, 187, 289, 23);
-		btnEnviarMsg.setVisible(!isAdm);
-		frame.getContentPane().add(btnEnviarMsg);
-		
 		JButton btnGuardarCambios = new JButton("Guardar cambios");
 		btnGuardarCambios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -164,8 +155,23 @@ public class VisualizarLista implements ObserverModel {
 				window.frame.setVisible(true);
 			}
 		});
-		btnEliminarParticipante.setBounds(309, 262, 196, 23);
+		btnEliminarParticipante.setBounds(309, 259, 196, 23);
+		btnEliminarParticipante.setVisible(isAdm);
 		frame.getContentPane().add(btnEliminarParticipante);
+		
+		
+		JButton btnDarseDeBaja = new JButton("Darse de Baja");
+		btnDarseDeBaja.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ControladorDeLista.getInstancia().deleteParticipante(
+						ControladorDeLista.getInstancia().getListaAdm(), 
+						ControladorDeLista.getInstancia().getListaAdm().getParticipante(ControladorDeUsuarios.getInstancia().getAdm()));
+				frame.dispose();
+			}
+		});
+		btnDarseDeBaja.setBounds(10, 193, 289, 23);
+		frame.getContentPane().add(btnDarseDeBaja);
+		frame.setVisible(!isAdm);
 		///Fin buttons
 		
 		///Text Fields.
@@ -258,6 +264,7 @@ public class VisualizarLista implements ObserverModel {
 		textMontoRecaudado.setBounds(151, 155, 86, 20);
 		textMontoRecaudado.setText(String.valueOf(ControladorDeLista.getInstancia().getListaAdm().getMonto()));
 		frame.getContentPane().add(textMontoRecaudado);
+
 		///Fin text area
 
 

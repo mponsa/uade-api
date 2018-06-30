@@ -149,9 +149,8 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		try {
 			Connection con = PoolConnection.getPoolConnection().getConnection();
 			PreparedStatement s = con.prepareStatement("delete [API_GRUPO_25].[dbo].[Participantes] where IdLista = ? AND IdUsuario = ?");
-			s.setBoolean(1,p.isActivo());
-			s.setInt(2, l.getIdLista());
-			s.setInt(3, p.getUsuario().getIdUsuario());
+			s.setInt(1, l.getIdLista());
+			s.setInt(2, p.getUsuario().getIdUsuario());
 			s.execute();
 			PoolConnection.getPoolConnection().realeaseConnection(con);
 		}catch(Exception e) {
