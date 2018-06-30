@@ -49,10 +49,10 @@ public class DeamonPagos extends Thread{
 			        b.close();
 
 			        //Mover el archivo original a una carpeta de historicos, renombrandolo
-			        //boolean t = archivo.renameTo(new File("HistoricoPagos/Pagos" + new SimpleDateFormat("yyyyMMddhhmm").format(new Date().getTime()) +".txt"));
+			        boolean t = archivo.renameTo(new File("HistoricoPagos/Pagos" + new SimpleDateFormat("yyyyMMddhhmm").format(new Date().getTime()) +".txt"));
 					 
-					//if(t)
-						// archivo.delete();
+					if(t)
+						archivo.delete();
 			        
 					 Thread.sleep(60000);
 					 

@@ -38,6 +38,7 @@ public class VisualizarLista implements ObserverModel {
 	private JTextField vigenciaAñoText;
 	private JTextArea textAreaParticipantes;
 	private boolean isAdm = false;
+	private JTextField textMontoRecaudado;
 	
 	
 	public void setAdm(boolean adm){
@@ -84,7 +85,7 @@ public class VisualizarLista implements ObserverModel {
 		frame.getContentPane().add(lblFecha);
 		
 		JLabel lblMontoPorParticipante = new JLabel("Monto por participante:");
-		lblMontoPorParticipante.setBounds(10, 148, 131, 14);
+		lblMontoPorParticipante.setBounds(10, 130, 131, 14);
 		frame.getContentPane().add(lblMontoPorParticipante);
 		
 		JLabel lblParticipantes = new JLabel("Participantes:");
@@ -231,7 +232,7 @@ public class VisualizarLista implements ObserverModel {
 				
 				montoText = new JTextField();
 				montoText.setColumns(10);
-				montoText.setBounds(151, 145, 86, 20);
+				montoText.setBounds(151, 127, 86, 20);
 				montoText.setText(String.valueOf(ControladorDeLista.getInstancia().getListaAdm().getMontoPorParticipante()));
 				montoText.setEditable(false);
 				frame.getContentPane().add(montoText);
@@ -245,6 +246,18 @@ public class VisualizarLista implements ObserverModel {
 		setearParticipantes(textAreaParticipantes);
 		textAreaParticipantes.setEditable(false);
 		frame.getContentPane().add(textAreaParticipantes);
+		
+		JLabel lblMontoRecaudado = new JLabel("Monto recaudado:");
+		lblMontoRecaudado.setBounds(10, 158, 131, 14);
+		frame.getContentPane().add(lblMontoRecaudado);
+		
+		textMontoRecaudado = new JTextField();
+		textMontoRecaudado.setText("0.0");
+		textMontoRecaudado.setEditable(false);
+		textMontoRecaudado.setColumns(10);
+		textMontoRecaudado.setBounds(151, 155, 86, 20);
+		textMontoRecaudado.setText(String.valueOf(ControladorDeLista.getInstancia().getListaAdm().getMonto()));
+		frame.getContentPane().add(textMontoRecaudado);
 		///Fin text area
 
 
@@ -268,5 +281,6 @@ public class VisualizarLista implements ObserverModel {
 		// TODO Auto-generated method stub
 		this.limpiarText(textAreaParticipantes);
 		this.setearParticipantes(textAreaParticipantes);
+		this.textMontoRecaudado.setText(String.valueOf(ControladorDeLista.getInstancia().getListaAdm().getMonto()));
 	}
 }

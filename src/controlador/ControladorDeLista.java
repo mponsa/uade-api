@@ -35,7 +35,7 @@ public class ControladorDeLista extends ObservableModel {
 	public void crearLista (String nombre , Date vigencia , String agasajado, float monto,boolean estado, boolean activo, float montoPorParticipante) {
 		ListaDeRegalo lista = new ListaDeRegalo(nombre,vigencia,agasajado,monto,estado,activo,montoPorParticipante);
 		//Inserta el participante a la lista, la tenemos que traer de vuelta de memoria para recuperar el ID que genero la base.
-		lista.addParticipante(ControladorDeUsuarios.getInstancia().getAdm(),true,false);
+		lista.addParticipante(ControladorDeUsuarios.getInstancia().getAdm(),true,false,true);
 		//Agregamos la lista al controlador.
 		listas.add(lista);
 		this.notiAll();
@@ -151,10 +151,10 @@ public class ControladorDeLista extends ObservableModel {
 			lista.setMonto(monto);
 			//Chequea si quedan deudores en la lista.
 			if(lista.getDeudores() == null) {
-				
 				lista.setActivo(false);
 				lista.setEstado(false);
-				ControladorMail.getInstancia().enviarMail(lista.getAdminLista().getUsuario().getMail(), "Notificacion de Lista de Regalos finalizada", setMensajeListaPagada(lista,lista.getAdminLista().getUsuario()));
+				ControladorMail.getInstancia().enviarMail(lista.getAdminLista().getUsuario().getMail(), "Notificacion de Lista de Regalos finalizada", 
+						ControladorMail.getInstancia().setMessage(lista, lista.getAdminLista().getUsuario(), 3));
 			}
 			lista.updateLista();
 		}
@@ -162,8 +162,9 @@ public class ControladorDeLista extends ObservableModel {
 
 	public void addParticipante(ListaDeRegalo lista, Usuario usuario, boolean IsAdmin, boolean pagado) {
 		// TODO Auto-generated method stub
-		if(lista.addParticipante(usuario, IsAdmin, pagado)) {
-		ControladorMail.getInstancia().enviarMail(usuario.getMail(), "Notificación de Lista de Regalos.", setMensajeNuevoParticipante(lista, usuario));
+		if(lista.addParticipante(usuario, IsAdmin, pagado,true)) {
+		ControladorMail.getInstancia().enviarMail(usuario.getMail(), "Notificación de Lista de Regalos.", 
+				ControladorMail.getInstancia().setMessage(lista, usuario, 1));
 		this.notiAll();
 		}
 	}
@@ -192,22 +193,11 @@ public class ControladorDeLista extends ObservableModel {
 		//Seteo la lista como cerrada antes de hacerle el update
 		lista.setEstado(false);
 		AdmPerListaDeRegalo.getInstancia().update(lista);
+		this.notiAll();
 	}
 
 	//TODO: Consultar si esto está bien hacerlo asi
 	public void checkVigencia(int i) {
-/*		Date today = new Date();
-		Calendar cal = Calendar.getInstance();
-		today = cal.getTime();
-		List<ListaDeRegalo> result = new ArrayList<ListaDeRegalo>();
-		
-		//Recupera las listas que entren en el periodo de vigencia desde el caché del controlador.
-		for (ListaDeRegalo lista : listas) {
-			int diff =  (int) TimeUnit.DAYS.convert(today.getTime() - lista.getVigencia().getTime(),TimeUnit.MILLISECONDS);
-			if(diff < i) {
-				result.add(lista);
-			}
-		}*/
 		List<ListaDeRegalo> bdListas = new ArrayList<ListaDeRegalo>();
 		//Recupera las listas que entren en el periodo de vigencia 
 		bdListas = AdmPerListaDeRegalo.getInstancia().getListasCalendar(i);
@@ -218,54 +208,19 @@ public class ControladorDeLista extends ObservableModel {
 				//Se setean las listas que hayan vencido como Cerradas
 				ControladorDeLista.getInstancia().cerrarLista(lista);
 				//Se informa al Administrador del cierre de su lista
-				ControladorMail.getInstancia().enviarMail(lista.getAdminLista().getUsuario().getMail(),"Lista Cerrada.", setMensajeListaCerrada(lista));
+				ControladorMail.getInstancia().enviarMail(lista.getAdminLista().getUsuario().getMail(),"Lista Cerrada.", 
+						ControladorMail.getInstancia().setMessage(lista, null, 4));
 				
 			}
 		}else {
 			for (ListaDeRegalo lista : bdListas) {
 				for (Participante p : lista.getDeudores()){
-					ControladorMail.getInstancia().enviarMail(p.getUsuario().getMail(),"Notificación de Lista de Regalos.", setMensajeListaAVencer(lista,p.getUsuario()));
+					ControladorMail.getInstancia().enviarMail(p.getUsuario().getMail(),"Notificación de Lista de Regalos.", 
+							ControladorMail.getInstancia().setMessage(lista, p.getUsuario(), 2));
 				}
 			}
 		
 		}
-	}
-	
-	private String setMensajeNuevoParticipante(ListaDeRegalo l, Usuario u){
-		
-		return "Hola " + u.getNombre() + ".\n " +
-							l.getAdminLista().getUsuario().getNombre() + " " + l.getAdminLista().getUsuario().getApellido() +
-							" te ha agregado a la Lista de Regalos de " + l.getAgasajado() + ".\n\n" +
-							"El monto a abonar es de $" + l.getMontoPorParticipante() + ".\n\n" +  
-							"Saludos y que tengas buen día!";
-	}
-	
-	private String setMensajeListaAVencer(ListaDeRegalo l, Usuario u) {
-		String format1 = new SimpleDateFormat("dd/MM/yyyy").format(l.getVigencia());
-		return "Hola " + u.getNombre() + ".\n " 
-				+ "La lista de regalos: " + l.getNombre() + " está por vencer y todavia no registramos su pago.\n."
-				+ "Le recordamos que la vigencia de la lista es hasta el dia: " + format1 + "\n."+
-							"El monto a abonar es de $" + l.getMontoPorParticipante() + ".\n\n" +  
-							"Saludos y que tengas buen día!";
-		
-	}
-	
-	private String setMensajeListaPagada(ListaDeRegalo l, Usuario u) {
-		return "Hola " + u.getNombre() + ".\n " 
-				+ "La lista de regalos: " + l.getNombre() + " ya se ha pagado en su totalidad.\n"
-				+ "El monto recaudado fue de: $" + l.getMonto() + ".\n" +
-							"Gracias por usar nuestra aplicación para tu evento!\n" +  
-							"Saludos y que tengas buen día!";
-		
-	}
-	
-	private String setMensajeListaCerrada(ListaDeRegalo l) {
-		return "Hola " + l.getAdminLista().getUsuario().getNombre() + ".\n " 
-				+ "La lista de regalos: " + l.getNombre() + " se ha cerrado al haber terminado su vigencia.\n"
-				+ "El monto recaudado fue de: $" + l.getMonto() + ".\n" +
-							"Gracias por usar nuestra aplicación para tu evento!\n" +  
-							"Saludos y que tengas buen día!";
-		
 	}
 	
 }

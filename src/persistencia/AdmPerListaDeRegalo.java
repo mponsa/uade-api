@@ -148,7 +148,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 	public void deleteParticipante(ListaDeRegalo l, Participante p) {
 		try {
 			Connection con = PoolConnection.getPoolConnection().getConnection();
-			PreparedStatement s = con.prepareStatement("update [API_GRUPO_25].[dbo].[Participantes] set Activo = ? where IdLista = ? AND IdUsuario = ?");
+			PreparedStatement s = con.prepareStatement("delete [API_GRUPO_25].[dbo].[Participantes] where IdLista = ? AND IdUsuario = ?");
 			s.setBoolean(1,p.isActivo());
 			s.setInt(2, l.getIdLista());
 			s.setInt(3, p.getUsuario().getIdUsuario());
@@ -173,7 +173,47 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		}
 	}
 	
-
+	
+	//Trae una lista de la BD por ID.. traerAbiertas = true -> trae las listas que estén abiertas.
+	public ListaDeRegalo getListaDeRegalo(int id, boolean traerAbiertas){
+		ListaDeRegalo a = null;	
+		try {
+			Connection con = PoolConnection.getPoolConnection().getConnection();
+			
+			//Traigo la lista
+			PreparedStatement s = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[ListaDeRegalo] where IdLista = ? and Estado = ?");
+			s.setInt(1, id);
+			s.setBoolean(2, traerAbiertas);
+			ResultSet result = s.executeQuery();
+			while(result.next()) {
+				a = new ListaDeRegalo(
+						result.getInt(1)
+						,result.getString(2)
+						,result.getDate(3)
+						,result.getString(4)
+						,result.getFloat(5)
+						,result.getBoolean(6)
+						,result.getBoolean(7)
+						,result.getFloat(8));
+			}
+			
+			//Luego me traigo los participantes de dicha lista
+			PreparedStatement p = con.prepareStatement("select * from [API_GRUPO_25].[dbo].[Participantes] where IdLista = ? and Activo = 1");
+			p.setInt(1, a.getIdLista());
+			ResultSet resultP = p.executeQuery();
+			while(resultP.next()) {
+				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3),resultP.getBoolean(4),false);
+			}
+			
+			PoolConnection.getPoolConnection().realeaseConnection(con);
+			
+			return a;
+			
+		}catch(Exception e) {
+			System.out.println("Mensaje Error: " + e.getMessage());
+		}
+		return null;
+	}
 	//Trae una lista de la BD por ID..
 	public ListaDeRegalo getListaDeRegalo(int id){
 		ListaDeRegalo a = null;	
@@ -201,17 +241,13 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			p.setInt(1, a.getIdLista());
 			ResultSet resultP = p.executeQuery();
 			while(resultP.next()) {
-				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3),resultP.getBoolean(4));
+				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3),resultP.getBoolean(4),false);
 			}
-			
 			PoolConnection.getPoolConnection().realeaseConnection(con);
-			
-			return a;
-			
 		}catch(Exception e) {
 			System.out.println("Mensaje Error: " + e.getMessage());
 		}
-		return null;
+		return a;
 	}
 	
 	//Trae una lista de la BD por nombre
@@ -241,7 +277,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			p.setInt(1, a.getIdLista());
 			ResultSet resultP = p.executeQuery();
 			while(resultP.next()) {
-				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3),resultP.getBoolean(4));
+				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3),resultP.getBoolean(4),false);
 			}
 			
 			PoolConnection.getPoolConnection().realeaseConnection(con);
@@ -264,7 +300,10 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		s.setInt(1,user.getIdUsuario());
 		ResultSet resultP = s.executeQuery();
 		while(resultP.next()){
-			result.add(this.getListaDeRegalo(resultP.getInt(1)));
+			ListaDeRegalo lista = this.getListaDeRegalo(resultP.getInt(1),true);
+			if (lista!=null) {
+			result.add(lista);
+			}
 		}
 		}catch(Exception e) {
 			System.out.println("Mensaje Error: " + e.getMessage());
@@ -284,7 +323,10 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 		s.setInt(1,user.getIdUsuario());
 		ResultSet resultP = s.executeQuery();
 		while(resultP.next()){
-			result.add(this.getListaDeRegalo(resultP.getInt(1)));
+			ListaDeRegalo lista = this.getListaDeRegalo(resultP.getInt(1),true);
+			if (lista!=null) {
+			result.add(lista);
+			}
 		}
 		}catch(Exception e) {
 			System.out.println("Mensaje Error: " + e.getMessage());
@@ -304,7 +346,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			
 			//Traigo la lista
 			PreparedStatement s = con.prepareStatement("SELECT * FROM [API_GRUPO_25].[dbo].[ListaDeRegalo] WHERE datediff(DD, getDate(),Vigencia ) <  ?"+
-														" AND Estado = 0 AND Activo = 1");
+														" AND Estado = 1 AND Activo = 1");
 			s.setInt(1, cantDias);
 			ResultSet resultS = s.executeQuery();
 			while(resultS.next()) {
@@ -324,7 +366,7 @@ public class AdmPerListaDeRegalo extends AdministradorPersistencia{
 			p.setInt(1, a.getIdLista());
 			ResultSet resultP = p.executeQuery();
 			while(resultP.next()) {
-				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3), resultP.getBoolean(4));
+				a.addParticipante(AdmPerUsuario.getInstancia().getUsuario(resultP.getInt(2)), resultP.getBoolean(3), resultP.getBoolean(4),false);
 			}
 			
 			PoolConnection.getPoolConnection().realeaseConnection(con);

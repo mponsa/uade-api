@@ -13,12 +13,14 @@ public class Participante {
 	private boolean Activo;
 	private Usuario usuario;//agregar solo aca y no en la base
 	
-	public Participante(ListaDeRegalo lista, Usuario usuario , boolean IsAdmin, boolean pagado){
+	public Participante(ListaDeRegalo lista, Usuario usuario , boolean IsAdmin, boolean pagado,boolean base){
 		setAdmin(IsAdmin);
 		setPagado(pagado);
 		setActivo(true);
 		setUsuario(usuario);
+		if(base){
 		AdmPerListaDeRegalo.getInstancia().insertParticipante(lista, this);
+		}
 	}
 	
 	public void updateParticipante(ListaDeRegalo lista) {

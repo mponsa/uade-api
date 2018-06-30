@@ -26,7 +26,7 @@ public class ListaDeRegalo implements ObserverModel{
 		setAgasajado(agasajado);
 		setMonto(monto);
 		setMontoPorParticipante(montoPorParticipante);
-		setEstado(false);
+		setEstado(estado);
 		setActivo(activo);
 		this.participantes = new ArrayList<Participante>();
 		setIdLista(AdmPerListaDeRegalo.getInstancia().insert(this));
@@ -39,7 +39,7 @@ public class ListaDeRegalo implements ObserverModel{
 		setAgasajado(agasajado);
 		setMonto(monto);
 		setMontoPorParticipante(montoPorParticipante);
-		setEstado(false);
+		setEstado(estado);
 		setActivo(activo);
 		this.participantes = new ArrayList<Participante>();
 		setIdLista(IdLista);
@@ -56,9 +56,9 @@ public class ListaDeRegalo implements ObserverModel{
 	}
 	
 	
-	public boolean addParticipante(Usuario user, boolean isAdmin, boolean pagado){
+	public boolean addParticipante(Usuario user, boolean isAdmin, boolean pagado,boolean base){
 		if (this.participantes.size() <= maxIntegrantes){
-			Participante p = new Participante(this,user,isAdmin,pagado);
+			Participante p = new Participante(this,user,isAdmin,pagado,base);
 			this.participantes.add(p);		
 			return true;
 		}else{
