@@ -146,7 +146,7 @@ public class AdmUsuarios implements ObserverModel {
 		mesText = new JTextField();
 		mesText.setColumns(10);
 		mesText.setBounds(66, 195, 46, 20);
-		mesText.setText(String.valueOf(cal.get(Calendar.MONTH)));
+		mesText.setText(String.valueOf(cal.get(Calendar.MONTH)+1));
 		frame.getContentPane().add(mesText);
 		mesText.setEditable(false);
 		
@@ -156,6 +156,20 @@ public class AdmUsuarios implements ObserverModel {
 		añoText.setText(String.valueOf(cal.get(Calendar.YEAR)));
 		frame.getContentPane().add(añoText);
 		añoText.setEditable(false);
+		
+		JButton btnGuardarCambiosPass = new JButton("Guardar Cambios");
+		btnGuardarCambiosPass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblError.setVisible(true);
+				lblError.setText(checkPassword(String.valueOf(antPassword.getPassword()),
+						String.valueOf(newPassword.getPassword()),
+						String.valueOf(password.getPassword())));
+				clearPasswords();
+			}
+		});
+		btnGuardarCambiosPass.setBounds(254, 198, 170, 23);
+		btnGuardarCambiosPass.setVisible(false);
+		frame.getContentPane().add(btnGuardarCambiosPass);
 		
 		JButton btnCambiarContraseña = new JButton("Cambiar Contrase\u00F1a");
 		btnCambiarContraseña.addActionListener(new ActionListener() {
@@ -169,23 +183,14 @@ public class AdmUsuarios implements ObserverModel {
 				lblConfirmar.setVisible(true);
 				password.setVisible(true);
 				password.setEditable(true);
+				btnGuardarCambiosPass.setVisible(true);
+				
 			}
 		});
 		btnCambiarContraseña.setBounds(254, 11, 170, 23);
 		frame.getContentPane().add(btnCambiarContraseña);
 		
-		JButton btnGuardarCambiosPass = new JButton("Guardar Cambios");
-		btnGuardarCambiosPass.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lblError.setVisible(true);
-				lblError.setText(checkPassword(String.valueOf(antPassword.getPassword()),
-						String.valueOf(newPassword.getPassword()),
-						String.valueOf(password.getPassword())));
-				clearPasswords();
-			}
-		});
-		btnGuardarCambiosPass.setBounds(254, 198, 170, 23);
-		frame.getContentPane().add(btnGuardarCambiosPass);
+
 		
 		JButton btnGuardarCambios = new JButton("Guardar Cambios");
 		btnGuardarCambios.addActionListener(new ActionListener() {
