@@ -47,6 +47,7 @@ public class AdmUsuarios implements ObserverModel {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(false);
+		frame.setTitle(Parametros.getInstancia().getTitle());
 		
 		//Labels
 		JLabel lblConfirmar = new JLabel("Confirmar contrase\u00F1a:");

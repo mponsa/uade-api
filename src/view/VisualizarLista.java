@@ -182,7 +182,7 @@ public class VisualizarLista implements ObserverModel {
 						btnGuardarCambios.setEnabled(true);
 					}
 				});
-				nombreText.setBounds(74, 8, 86, 20);
+				nombreText.setBounds(74, 8, 150, 20);
 				nombreText.setText(ControladorDeLista.getInstancia().getListaAdm().getNombre());
 				frame.getContentPane().add(nombreText);
 				nombreText.setEditable(isAdm);
@@ -190,7 +190,7 @@ public class VisualizarLista implements ObserverModel {
 				
 				agasajadoText = new JTextField();
 				agasajadoText.setColumns(10);
-				agasajadoText.setBounds(74, 39, 86, 20);
+				agasajadoText.setBounds(74, 39, 150, 20);
 				agasajadoText.setText(ControladorDeLista.getInstancia().getListaAdm().getAgasajado());
 				agasajadoText.setEditable(false);
 				frame.getContentPane().add(agasajadoText);

@@ -54,7 +54,7 @@ public class DeamonPagos extends Thread{
 					if(t)
 						archivo.delete();
 			        
-					 Thread.sleep(60000);
+					
 					 
 			     } 
 			    catch (Exception e) 
@@ -64,7 +64,12 @@ public class DeamonPagos extends Thread{
 			     }
 			}
 
-						
+			 try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
 		}
 		
 	}
