@@ -1,0 +1,3 @@
+HoraVigencia=10
+MinutoVigencia=00
+DiasVigencia=10

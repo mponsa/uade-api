@@ -171,7 +171,7 @@ public class VisualizarLista implements ObserverModel {
 		});
 		btnDarseDeBaja.setBounds(10, 193, 289, 23);
 		frame.getContentPane().add(btnDarseDeBaja);
-		frame.setVisible(!isAdm);
+		frame.setVisible(isAdm);
 		///Fin buttons
 		
 		///Text Fields.
@@ -219,7 +219,7 @@ public class VisualizarLista implements ObserverModel {
 				});
 				vigenciaMesText.setColumns(10);
 				vigenciaMesText.setBounds(74, 103, 46, 20);
-				vigenciaMesText.setText(String.valueOf(calendar.get(Calendar.MONTH)));
+				vigenciaMesText.setText(String.valueOf(calendar.get(Calendar.MONTH)+1));
 				vigenciaMesText.setEditable(isAdm);
 				frame.getContentPane().add(vigenciaMesText);
 				
