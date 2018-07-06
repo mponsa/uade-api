@@ -36,8 +36,8 @@ public class ControladorMail {
 		properties.put("mail.smtp.host", "smtp.live.com");
 		properties.put("mail.smtp.starttls.enable", "true");
 		properties.put("mail.smtp.port",587);
-		properties.put("mail.smtp.mail.sender","api_g25@outlook.com.ar");
-		properties.put("mail.smtp.user", "api_g25@outlook.com.ar");
+		properties.put("mail.smtp.mail.sender","apigrupo25@outlook.com");
+		properties.put("mail.smtp.user", "apigrupo25@outlook.com");
 		properties.put("mail.smtp.auth", "Interactivas25");
 
 		session = Session.getDefaultInstance(properties);

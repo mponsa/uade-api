@@ -21,7 +21,7 @@ public void run(){
 	
 	
 	//Correrá siempre
-		while(true){
+//		while(true){
 			
 			try{
 				
@@ -34,13 +34,13 @@ public void run(){
 			    int minutos = Integer.parseInt(propiedades.getProperty("MinutoVigencia"));
 			    int dias = Integer.parseInt(propiedades.getProperty("DiasVigencia"));
 				
-				if(calendario.get(Calendar.HOUR_OF_DAY) == hora && calendario.get(Calendar.MINUTE) == minutos){
+//				if(calendario.get(Calendar.HOUR_OF_DAY) == hora && calendario.get(Calendar.MINUTE) == minutos){
 					//Controlo las listas que esten por vencer en 10 dias
 					ControladorDeLista.getInstancia().checkVigencia(dias);
 					
 					//Controlo las listas que hayan vencido hoy
 					ControladorDeLista.getInstancia().checkVigencia(0);
-				}
+//				}
 				Thread.sleep(60000);
 				
 			}catch (Exception e) 
@@ -48,7 +48,7 @@ public void run(){
 					System.out.println("Mensaje Error: " + e.getMessage());
 					System.out.println("Stack Trace: " + e.getStackTrace());
 		     }
-		}
+//		}
 			
 			
 			

@@ -170,6 +170,7 @@ public class VisualizarLista implements ObserverModel {
 			}
 		});
 		btnDarseDeBaja.setBounds(10, 193, 289, 23);
+		btnDarseDeBaja.setVisible(!isAdm);
 		frame.getContentPane().add(btnDarseDeBaja);
 		frame.setVisible(isAdm);
 		///Fin buttons

@@ -10,7 +10,7 @@ public class SendMailTest {
 	@Test
 	public void testSendMail() {
 		
-		ControladorMail.getInstancia().enviarMail("manuponsa@gmail.com","Lista Cerrada.", "Prueba Lista.\n Sarasa");
+		ControladorMail.getInstancia().enviarMail("dmalagueno85@gmail.com","Lista Cerrada.", "Prueba Lista.\n Sarasa");
 		
 		assertTrue(true);
 	}
