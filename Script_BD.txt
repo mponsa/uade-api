@@ -60,8 +60,8 @@ GO
 
 	CREATE TABLE dbo.Pagos(
 		IdPago INT IDENTITY(1,1),
-		IdLista INT not null,
-		IdUsuario INT not null,
+		IdLista INT not null foreign key references dbo.ListaDeRegalo (IdLista),
+		IdUsuario INT not null  foreign key references dbo.Usuarios (IdUsuario),
 		Monto DECIMAL not null, 
 		Fecha DATETIME not null,
 		
